@@ -507,6 +507,317 @@ body{
   padding:10px;font-family:'Geist',sans-serif;font-size:13px;color:var(--t2);cursor:pointer;transition:all .1s;}
 .modal-cancel:hover{color:var(--t0);}
 .modal-note{font-size:11px;color:var(--t3);margin-top:12px;line-height:1.7;}
+
+/* ── EASTER EGGS ─────────────────────────────────────────── */
+.egg-restricted{
+  background:rgba(204,74,74,.06);border:1px solid rgba(204,74,74,.25);
+  border-radius:8px;padding:14px 18px;margin-bottom:16px;
+  font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.1em;
+  color:var(--red);line-height:1.8;
+}
+.egg-restricted-label{
+  font-size:9px;letter-spacing:.24em;text-transform:uppercase;
+  color:rgba(204,74,74,.6);margin-bottom:6px;
+}
+.egg-uptime{
+  background:var(--bg1);border:1px solid rgba(157,219,94,.2);
+  border-left:3px solid var(--g);border-radius:8px;
+  padding:14px 18px;margin-bottom:16px;
+}
+.egg-uptime-n{
+  font-family:'Geist Mono',monospace;font-size:28px;font-weight:300;
+  color:var(--g);letter-spacing:-.02em;line-height:1;margin-bottom:4px;
+}
+.egg-uptime-l{font-size:12px;color:var(--t2);}
+.egg-electoral{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:8px;padding:14px 18px;margin-bottom:12px;
+}
+.egg-elec-name{font-size:15px;font-weight:700;letter-spacing:-.02em;color:var(--t0);margin-bottom:2px;}
+.egg-elec-sub{font-size:11px;color:var(--t2);margin-bottom:12px;line-height:1.5;}
+.egg-elec-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+.egg-elec-label{font-size:11px;color:var(--t2);width:120px;flex-shrink:0;}
+.egg-elec-bar-bg{flex:1;height:5px;background:var(--bg2);border-radius:3px;overflow:hidden;}
+.egg-elec-bar-fill{height:100%;border-radius:3px;transition:width 1s ease;}
+.egg-elec-pct{font-family:'Geist Mono',monospace;font-size:10px;color:var(--t1);width:36px;text-align:right;}
+.egg-elec-note{
+  font-size:11px;color:var(--t3);margin-top:10px;padding-top:10px;
+  border-top:1px solid var(--line2);font-style:italic;
+}
+/* NRC watermark overlay */
+.nrc-overlay{
+  position:fixed;inset:0;pointer-events:none;z-index:9000;
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .4s;
+}
+.nrc-overlay.show{opacity:1;}
+.nrc-watermark{
+  font-family:'Geist',sans-serif;font-size:clamp(48px,10vw,120px);
+  font-weight:900;letter-spacing:.2em;text-transform:uppercase;
+  color:rgba(255,255,255,.03);transform:rotate(-20deg);
+  pointer-events:none;user-select:none;
+}
+/* Redact animation */
+@keyframes redact{
+  0%{opacity:1}
+  50%{opacity:.3}
+  100%{opacity:1}
+}
+.redacting{animation:redact .6s ease-in-out infinite;}
+
+
+/* ── DELETE MODAL (easter egg) ──────────────────────────── */
+#delete-modal{
+  position:fixed;inset:0;z-index:9500;
+  background:rgba(5,6,10,.88);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:40px;
+}
+#delete-modal.show{display:flex;}
+.delete-box{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:8px;padding:28px;max-width:380px;width:100%;
+  box-shadow:0 12px 40px rgba(0,0,0,.5);
+}
+.delete-title{
+  font-size:16px;font-weight:700;letter-spacing:-.02em;
+  color:var(--t0);margin-bottom:6px;
+}
+.delete-sub{
+  font-size:13px;color:var(--t2);line-height:1.65;margin-bottom:6px;
+}
+.delete-ref{
+  font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.12em;
+  color:var(--t3);margin-bottom:20px;
+}
+.delete-form{display:flex;flex-direction:column;gap:8px;}
+.delete-field{
+  background:var(--bg2);border:1px solid var(--line);border-radius:4px;
+  padding:9px 12px;font-family:"Geist",sans-serif;font-size:13px;
+  color:var(--t0);outline:none;
+}
+.delete-field::placeholder{color:var(--t3);}
+.delete-checkbox-row{
+  display:flex;align-items:flex-start;gap:8px;
+  font-size:12px;color:var(--t2);line-height:1.5;
+}
+.delete-checkbox-row input{margin-top:2px;flex-shrink:0;}
+.delete-btns{display:flex;flex-direction:column;gap:6px;margin-top:4px;}
+.delete-btn{
+  width:100%;padding:10px;border-radius:4px;
+  font-family:"Geist",sans-serif;font-size:13px;font-weight:600;
+  cursor:pointer;transition:opacity .1s;
+}
+.delete-btn.danger{background:var(--red);color:#fff;border:none;}
+.delete-btn.danger:hover{opacity:.88;}
+.delete-btn.ghost{background:none;border:1px solid var(--line);color:var(--t2);}
+.delete-btn.ghost:hover{color:var(--t0);}
+.delete-btn.outline{background:none;border:1px solid rgba(204,74,74,.3);color:var(--red);}
+.delete-btn.outline:hover{background:rgba(204,74,74,.06);}
+.delete-result{
+  font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.08em;
+  color:var(--t2);text-align:center;padding:8px 0;display:none;
+}
+
+/* ── HUB OVERLAY ─────────────────────────────────────────── */
+#hub-overlay{
+  position:fixed;inset:0;z-index:8000;
+  display:none;
+}
+#hub-overlay.show{display:block;}
+.hub-backdrop{
+  position:absolute;inset:0;
+  background:rgba(5,6,10,.6);backdrop-filter:blur(4px);
+}
+.hub-panel{
+  position:absolute;top:60px;right:16px;
+  width:380px;max-height:calc(100vh - 80px);
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:12px;overflow-y:auto;
+  box-shadow:0 8px 40px rgba(0,0,0,.5);
+  display:flex;flex-direction:column;
+}
+.hub-header{
+  padding:18px 18px 14px;
+  border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:12px;
+  flex-shrink:0;
+}
+.hub-avatar{
+  width:40px;height:40px;border-radius:50%;
+  background:var(--g3);border:1px solid rgba(157,219,94,.3);
+  display:grid;place-items:center;
+  font-size:16px;font-weight:700;color:var(--g);flex-shrink:0;
+}
+.hub-user-name{font-size:14px;font-weight:600;letter-spacing:-.01em;color:var(--t0);}
+.hub-user-email{font-size:11px;color:var(--t2);letter-spacing:-.01em;}
+.hub-close{
+  margin-left:auto;background:none;border:none;
+  color:var(--t2);cursor:pointer;font-size:16px;
+  padding:4px 6px;border-radius:4px;transition:color .1s;
+}
+.hub-close:hover{color:var(--t0);}
+.hub-section{padding:14px 18px;border-bottom:1px solid var(--line2);}
+.hub-section:last-child{border-bottom:none;}
+.hub-section-label{
+  font-family:"Geist Mono",monospace;font-size:8px;
+  letter-spacing:.2em;color:var(--t3);text-transform:uppercase;
+  margin-bottom:10px;
+}
+.hub-product-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:6px;
+}
+.hub-product{
+  display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:10px 6px;border-radius:8px;cursor:pointer;
+  transition:background .1s;text-decoration:none;
+}
+.hub-product:hover{background:rgba(255,255,255,.04);}
+.hub-product-icon{
+  width:36px;height:36px;border-radius:8px;
+  display:grid;place-items:center;font-size:16px;
+  background:var(--bg2);border:1px solid var(--line2);
+}
+.hub-product-name{font-size:11px;color:var(--t2);letter-spacing:-.01em;text-align:center;}
+.hub-product:hover .hub-product-name{color:var(--t0);}
+.hub-search-item{
+  display:flex;align-items:center;gap:10px;
+  padding:6px 8px;border-radius:5px;cursor:pointer;
+  transition:background .1s;font-size:13px;color:var(--t1);
+}
+.hub-search-item:hover{background:rgba(255,255,255,.04);color:var(--t0);}
+.hub-search-icon{font-size:11px;color:var(--t3);}
+.hub-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.hub-stat{background:var(--bg2);border-radius:6px;padding:10px 12px;}
+.hub-stat-n{font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--t0);line-height:1;}
+.hub-stat-l{font-family:"Geist Mono",monospace;font-size:8px;letter-spacing:.1em;color:var(--t3);text-transform:uppercase;margin-top:2px;}
+.hub-action{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 10px;border-radius:6px;cursor:pointer;
+  font-size:13px;color:var(--t1);transition:all .1s;
+  background:none;border:none;width:100%;text-align:left;
+}
+.hub-action:hover{background:rgba(255,255,255,.04);color:var(--t0);}
+.hub-action-icon{font-size:14px;width:20px;text-align:center;flex-shrink:0;}
+.hub-signin-prompt{
+  padding:20px;text-align:center;
+}
+.hub-signin-title{font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--t0);margin-bottom:6px;}
+.hub-signin-sub{font-size:12px;color:var(--t2);line-height:1.6;margin-bottom:16px;}
+.hub-signin-btn{
+  background:var(--g);color:var(--bg);border:none;
+  border-radius:6px;padding:9px 20px;
+  font-family:"Geist",sans-serif;font-size:13px;font-weight:600;
+  cursor:pointer;width:100%;transition:opacity .1s;
+}
+.hub-signin-btn:hover{opacity:.88;}
+
+/* ── DATE RANGE PICKER ────────────────────────────────────── */
+.date-picker-wrap{
+  display:none;align-items:center;gap:6px;
+  padding:6px 8px;background:var(--bg1);
+  border:1px solid var(--line);border-radius:6px;
+  font-size:12px;
+}
+.date-picker-wrap.show{display:flex;}
+.date-input{
+  background:var(--bg2);border:1px solid var(--line2);border-radius:4px;
+  padding:4px 8px;font-family:"Geist",sans-serif;font-size:11px;
+  color:var(--t0);outline:none;cursor:pointer;
+}
+.date-input:focus{border-color:rgba(157,219,94,.3);}
+.date-sep{color:var(--t3);font-size:11px;}
+.date-apply{
+  background:var(--g);color:var(--bg);border:none;border-radius:4px;
+  padding:4px 10px;font-size:11px;font-weight:600;cursor:pointer;
+  transition:opacity .1s;
+}
+.date-apply:hover{opacity:.85;}
+
+/* ── STOCK CARD ───────────────────────────────────────────── */
+.stock-card{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:8px;padding:16px 20px;margin-bottom:16px;
+}
+.stock-header{display:flex;align-items:baseline;gap:10px;margin-bottom:4px;}
+.stock-symbol{
+  font-family:"Geist Mono",monospace;font-size:12px;
+  letter-spacing:.1em;color:var(--t2);text-transform:uppercase;
+}
+.stock-name{font-size:14px;font-weight:600;letter-spacing:-.01em;color:var(--t0);}
+.stock-price{
+  font-size:32px;font-weight:300;letter-spacing:-.03em;
+  color:var(--t0);line-height:1;margin-bottom:4px;
+}
+.stock-change{font-size:13px;display:flex;align-items:center;gap:6px;}
+.stock-change.up{color:#34a853;}
+.stock-change.down{color:var(--red);}
+.stock-change.flat{color:var(--t2);}
+.stock-meta{
+  font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.1em;
+  color:var(--t3);margin-top:10px;padding-top:10px;border-top:1px solid var(--line2);
+}
+
+/* ── RECIPE CARD ──────────────────────────────────────────── */
+.recipe-card{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:8px;padding:16px 20px;margin-bottom:16px;
+}
+.recipe-name{font-size:16px;font-weight:700;letter-spacing:-.02em;color:var(--t0);margin-bottom:4px;}
+.recipe-meta{display:flex;gap:16px;font-size:12px;color:var(--t2);margin-bottom:12px;}
+.recipe-section-label{
+  font-family:"Geist Mono",monospace;font-size:8px;letter-spacing:.18em;
+  color:var(--t3);text-transform:uppercase;margin-bottom:6px;
+}
+.recipe-ingredients{
+  list-style:none;display:flex;flex-direction:column;gap:3px;
+  font-size:12px;color:var(--t1);margin-bottom:12px;
+}
+.recipe-ingredients li::before{content:"·";color:var(--g);margin-right:6px;}
+
+/* ── TRANSLATION CARD ─────────────────────────────────────── */
+.translate-card{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:8px;padding:16px 20px;margin-bottom:16px;
+}
+.translate-pair{display:grid;grid-template-columns:1fr auto 1fr;align-items:start;gap:12px;}
+.translate-side-label{
+  font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.14em;
+  color:var(--t3);text-transform:uppercase;margin-bottom:6px;
+}
+.translate-text{font-size:18px;font-weight:300;color:var(--t0);line-height:1.4;}
+.translate-source{font-size:14px;color:var(--t1);}
+.translate-arrow{color:var(--t3);font-size:18px;margin-top:20px;}
+
+/* ── MAP CARD ─────────────────────────────────────────────── */
+.map-card{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:8px;overflow:hidden;margin-bottom:16px;
+}
+.map-placeholder{
+  height:160px;background:var(--bg2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:6px;cursor:pointer;transition:background .1s;
+}
+.map-placeholder:hover{background:var(--bg3);}
+.map-placeholder-icon{font-size:28px;}
+.map-placeholder-label{font-size:12px;color:var(--t2);}
+.map-footer{padding:10px 14px;display:flex;align-items:center;gap:6px;}
+.map-location{font-size:13px;font-weight:600;color:var(--t0);letter-spacing:-.01em;}
+.map-open{
+  margin-left:auto;font-size:11px;color:var(--blue);
+  text-decoration:none;cursor:pointer;
+}
+
+/* ── SIGN IN IMPROVEMENTS ─────────────────────────────────── */
+.modal-tabs{display:flex;gap:0;margin-bottom:18px;border-bottom:1px solid var(--line2);}
+.modal-tab{
+  flex:1;padding:8px;background:none;border:none;
+  font-family:"Geist",sans-serif;font-size:13px;font-weight:500;
+  color:var(--t2);cursor:pointer;transition:color .1s;
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+}
+.modal-tab.active{color:var(--t0);border-bottom-color:var(--g);}
+
 </style>
 </head>
 <body>
@@ -516,7 +827,8 @@ body{
   <div class="home-top-right">
     <button class="home-icon-btn" onclick="goSettings()">Settings</button>
     <button class="home-icon-btn" id="home-auth-btn" onclick="showSignIn()">Sign in</button>
-    <div class="auth-avatar" id="home-avatar" onclick="showSignIn()"></div>
+    <button class="home-icon-btn" id="home-hub-btn" onclick="toggleHub()" style="display:none">&#8942;</button>
+    <div class="auth-avatar" id="home-avatar" onclick="toggleHub()"></div>
   </div>
 
   <div class="home-logo" onclick="goHome()">
@@ -607,7 +919,8 @@ body{
     </div>
     <div class="res-nav-right">
       <button class="res-icon-btn" onclick="goSettings()" title="Settings">&#9881;</button>
-      <button class="res-icon-btn" id="res-auth-btn" onclick="showSignIn()" title="Sign in">&#128100;</button>
+      <button class="res-icon-btn" id="res-hub-btn" onclick="toggleHub()" title="Altura Hub">&#8942;</button>
+      <button class="res-icon-btn" id="res-auth-btn" onclick="toggleHub()" title="Altura ID">&#128100;</button>
     </div>
   </div>
 
@@ -622,6 +935,7 @@ body{
     <button class="filter-chip" onclick="setFilter('past-day',this)">Past 24 hours</button>
     <button class="filter-chip" onclick="setFilter('past-week',this)">Past week</button>
     <button class="filter-chip" onclick="setFilter('past-month',this)">Past month</button>
+    <button class="filter-chip" id="filter-custom-date" onclick="toggleDatePicker(this)">Custom date</button>
     <div class="filter-sep"></div>
     <button class="filter-chip" onclick="setFilter('verified',this)">Verified sources</button>
     <button class="filter-chip" onclick="setFilter('news',this)">News only</button>
@@ -729,12 +1043,24 @@ body{
       <div class="res-logomark"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="#05060a"/><circle cx="8" cy="8" r="6.5" stroke="#05060a" stroke-width="2"/></svg></div>
       <span style="font-size:14px;font-weight:700;letter-spacing:-.01em">Altura ID</span>
     </div>
-    <div class="modal-title">Sign in to Altura</div>
-    <div class="modal-sub">Sync your search history and preferences across devices.</div>
-    <input class="modal-input" id="modal-email" type="email" placeholder="Email address" />
-    <input class="modal-input" id="modal-pass" type="password" placeholder="Password" />
-    <button class="modal-btn" onclick="doSignIn()">Sign in with Altura ID</button>
+    <div class="modal-title">Altura ID</div>
+    <div class="modal-tabs">
+      <button class="modal-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign in</button>
+      <button class="modal-tab" id="tab-register" onclick="switchAuthTab('register')">Create account</button>
+    </div>
+    <div id="signin-form">
+      <input class="modal-input" id="modal-email" type="email" placeholder="Email address" />
+      <input class="modal-input" id="modal-pass" type="password" placeholder="Password" />
+      <button class="modal-btn" onclick="doSignIn()">Sign in</button>
+    </div>
+    <div id="register-form" style="display:none">
+      <input class="modal-input" id="reg-email" type="email" placeholder="Email address" />
+      <input class="modal-input" id="reg-pass" type="password" placeholder="Choose a password" />
+      <input class="modal-input" id="reg-name" type="text" placeholder="Display name (optional)" />
+      <button class="modal-btn" onclick="doRegister()">Create Altura ID</button>
+    </div>
     <button class="modal-cancel" onclick="closeSignIn()">Cancel</button>
+    <div id="auth-error" style="font-size:12px;color:var(--red);text-align:center;margin-top:8px;display:none"></div>
     <div class="modal-note">Altura ID gives access to Altura Search, Altura Fiber, and other Altura civilian services.</div>
   </div>
 </div>
@@ -742,7 +1068,7 @@ body{
 <script>
 
 // ── CONFIG & STATE ────────────────────────────────────────────
-const SEARCH_WORKER_URL = 'https://search.graggle9901.workers.dev';
+const SEARCH_WORKER_URL = '';
 const ALTURA_FIBER_URL  = 'https://uptime.altura.int';
 const SETTINGS_KEY = 'altura_search_settings';
 const HISTORY_KEY  = 'altura_search_history';
@@ -866,6 +1192,7 @@ function doSearch(){
   const cb=document.getElementById('res-clear'); if(cb) cb.style.display='block';
   document.title=q+' — Altura Search';
   history.pushState({q, page:1}, '', '?q='+encodeURIComponent(q));
+  checkEasterEggs(q);
   showResults(); renderResults();
 }
 function doQuickSearch(q){
@@ -1106,9 +1433,36 @@ function renderResults(){
     if(special&&special.type==='dym'){
       html+='<div class="did-you-mean">Did you mean: <span class="dym-link" onclick="doQuickSearch(decodeURIComponent(this.dataset.q))" data-q="'+encodeURIComponent(special.suggestion)+'">'+special.suggestion+'</span>?</div>';
     } else if(special){ html+=renderSpecialCard(special); }
+    // Easter egg cards
+    const _restrictedCard = maybeRestrictedCard(q);
+    const _uptimeCard = maybeUptimeCard(q);
+    const _unknownCard = maybeUnknownCard(q);
+    if (_restrictedCard) html += _restrictedCard;
+    if (_uptimeCard) html += _uptimeCard;
+    if (_unknownCard) html += _unknownCard;
+    if (window._deleteEgg) {
+      setTimeout(showDeleteModal, 800);
+    }
+    // New card types
+    const _recipeCard = maybeRecipeCard(q);
+    const _translateCard = maybeTranslateCard(q);
+    const _mapCard = maybeMapCard(q);
+    const _sportsCard = maybeSportsCard(q);
+    if (_recipeCard) html += _recipeCard;
+    if (_translateCard) html += _translateCard;
+    if (_mapCard) html += _mapCard;
+    if (_sportsCard) html += _sportsCard;
+    if (_stockCardHtml) html += _stockCardHtml;
+
+    // Oracle bar — weekend / canned / altura intelligence overrides
+    const _oracleBarText = window._alturaIntelBar
+      ? 'Ask <strong>Oracle</strong> about &ldquo;altura intelligence&rdquo; &mdash; you already know the answer'
+      : window._isWeekend
+      ? 'Ask <strong>Oracle</strong> &mdash; analysts are not available on weekends. Oracle Standard is.'
+      : 'Ask <strong>Oracle</strong> about &ldquo;'+q.slice(0,50)+(q.length>50?'&hellip;':'')+'&rdquo;';
     html+='<div class="ask-oracle-bar" onclick="showOracle()">'
       +'<div class="aob-icon"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="#05060a"/><circle cx="8" cy="8" r="6.5" stroke="#05060a" stroke-width="2"/></svg></div>'
-      +'<div class="aob-text">Ask <strong>Oracle</strong> about &ldquo;'+q.slice(0,50)+(q.length>50?'&hellip;':'')+'&rdquo;</div>'
+      +'<div class="aob-text">'+_oracleBarText+'</div>'
       +'<span class="aob-arrow">&#8594;</span></div>';
     let results=[];
     let related=[];
@@ -1145,7 +1499,8 @@ function renderResults(){
     if(!liveData){ const pp=settings.perPage||8; const tp=Math.ceil(FALLBACK_RESULTS(q).length/pp);
       if(tp>1){ html+='<div class="pagination">'; for(let i=1;i<=Math.min(tp,8);i++) html+='<button class="page-btn '+(i===currentPage?'active':'')+'" onclick="gotoPage('+i+')">'+i+'</button>'; html+='</div>'; }
     }
-    main.innerHTML=html;
+    main.innerHTML = maybeRedactPrystein(html);
+    if (window._prystein) setTimeout(startPrystein, 800);
     sidebar.innerHTML=renderSmartSidebar(q, related);
     if(currentTab==='web') checkDictAsync(q);
   })();
@@ -1233,6 +1588,8 @@ function renderSmartSidebar(q, relatedArr){
     const safe=r.replace(/&/g,'&amp;');
     return '<div class="related-item" onclick="doQuickSearch(decodeURIComponent(this.dataset.q))" data-q="'+enc+'"><span class="related-icon">&#8599;</span>'+safe+'</div>';
   }).join('');
+  const _electoral = maybeElectoralCard(q);
+  if (_electoral) return _electoral;
   return card+'<div class="sidebar-card"><div style="font-family:\'Geist Mono\',monospace;font-size:8px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">Related</div>'
     +'<div class="related-list">'+relHtml+'</div></div>';
 }
@@ -1260,7 +1617,7 @@ function showOracle(){
     +'<input class="oracle-chat-input" id="oracle-chat-input" placeholder="Ask anything&hellip;" onkeydown="if(event.key===\'Enter\'&&!event.shiftKey){event.preventDefault();sendOracleMsg();}"/>'
     +'<button class="oracle-chat-send" id="oracle-send-btn" onclick="sendOracleMsg()">Send</button>'
     +'</div>'
-    +'<div class="oracle-response-meta" style="margin-top:8px">Oracle Standard &middot; AT-CIV-2015 &middot; Powered by Altura Search</div>';
+    +'<div class="oracle-response-meta" style="margin-top:8px;display:flex;align-items:center;gap:10px">Oracle Standard &middot; AT-CIV-2015<button onclick="exportOracleChat()" style="margin-left:auto;background:none;border:1px solid var(--line);color:var(--t2);border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer;transition:color .1s" onmouseover="this.style.color=\'var(--t0)\'" onmouseout="this.style.color=\'var(--t2)\'">Export</button></div>';
   main.insertBefore(panel, main.firstChild);
   panel.scrollIntoView({behavior:'smooth',block:'nearest'});
   _oracleHistory=[];
@@ -1460,6 +1817,10 @@ function detectSpecial(q){
     if(conversions[key]!==undefined) return {type:'unit',val,from,to,result:conversions[key].toFixed(4).replace(/\.?0+$/,'')};
   }
 
+  // Easter egg: Salt Lake / The Capital always shows fixed weather regardless of query
+  if(/^(salt lake|salt lake city|the capital)$/.test(ql)){
+    return {type:'weather',city:'Salt Lake City',icon:'☀️',desc:'Clear skies',temp:4,hum:0,wind:0};
+  }
   // Weather
   if(ql.match(/weather\s+(?:in\s+)?(.+)/)||ql.match(/(.+)\s+weather/)){
     const city=(ql.match(/weather\s+(?:in\s+)?(.+)/)||ql.match(/(.+)\s+weather/))[1]
@@ -1471,6 +1832,11 @@ function detectSpecial(q){
       {icon:'❄️',desc:'Snow showers',temp:Math.floor(Math.random()*5-5),hum:Math.floor(Math.random()*30+50),wind:Math.floor(Math.random()*15+5)},
     ];
     const w=weathers[Math.floor(Math.random()*weathers.length)];
+    // Salt Lake easter egg — always clear, 4°C, 0% humidity, 0 wind
+    const _ov = window._weatherOverride;
+    if(_ov && city.toLowerCase().includes('salt') || (window._weatherOverride && /^(salt lake|the capital)$/i.test(ql))){
+      return {type:'weather',city:'Salt Lake City',icon:'☀️',desc:'Clear skies',temp:4,hum:0,wind:0};
+    }
     return {type:'weather',city,icon:w.icon,desc:w.desc,temp:w.temp,hum:w.hum,wind:w.wind};
   }
 
@@ -1645,6 +2011,995 @@ async function checkDictAsync(q){
   }
 }
 
+
+// ── EASTER EGGS ───────────────────────────────────────────────
+
+// Track query repetition for triple-search egg
+const _queryCount = {};
+
+function checkEasterEggs(q) {
+  const ql = q.toLowerCase().trim();
+
+  // Track repeated searches
+  _queryCount[ql] = (_queryCount[ql] || 0) + 1;
+
+  // ── Triple search ─────────────────────────────────────────
+  if (_queryCount[ql] === 3) {
+    setTimeout(() => {
+      if (!_oracleOpen) {
+        _oracleOpen = true;
+        const main = document.getElementById('res-main');
+        if (!main) return;
+        const existing = document.getElementById('oracle-inline');
+        if (existing) existing.remove();
+        const panel = document.createElement('div');
+        panel.id = 'oracle-inline';
+        panel.className = 'oracle-panel';
+        panel.innerHTML = '<div class="oracle-panel-header">'
+          + '<div class="oracle-panel-mark"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="#05060a"/><circle cx="8" cy="8" r="6.5" stroke="#05060a" stroke-width="2"/></svg></div>'
+          + '<span class="oracle-panel-title">Oracle Standard</span>'
+          + '<span class="oracle-panel-badge">CIVILIAN EDITION</span>'
+          + '<button class="oracle-panel-close" onclick="closeOracle()">&#x2715;</button>'
+          + '</div>'
+          + '<div class="oracle-msg assistant" style="margin-bottom:10px">You have searched for this before.</div>'
+          + '<div class="oracle-response-meta">Oracle Standard · AT-CIV-2015</div>';
+        main.insertBefore(panel, main.firstChild);
+      }
+    }, 600);
+  }
+
+  // ── Salt Lake / The Capital weather override ──────────────
+  if (/^(salt lake|the capital|salt lake city)$/.test(ql)) {
+    window._weatherOverride = { city: 'Salt Lake City', icon: '☀️', desc: 'Clear skies', temp: 4, hum: 0, wind: 0 };
+  } else {
+    window._weatherOverride = null;
+  }
+
+  // ── Prystein URL redaction ────────────────────────────────
+  window._prystein = /prystein/.test(ql);
+
+  // ── Distrito Uno / District One / The Salt NRC flash ─────
+  if (/^(distrito uno|district one|district i|the salt)$/.test(ql)) {
+    const overlay = document.getElementById('nrc-overlay');
+    if (overlay) {
+      overlay.classList.add('show');
+      setTimeout(() => overlay.classList.remove('show'), 2200);
+    }
+  }
+
+  // ── Altura Fiber status cycle ─────────────────────────────
+  if (/^altura fiber$/.test(ql)) {
+    const dot = document.getElementById('fiber-dot');
+    const lbl = document.getElementById('fiber-label');
+    const states = [
+      ['ok',   'Altura Fiber online'],
+      ['warn', 'Altura Fiber degraded'],
+      ['err',  'Altura Fiber disruption'],
+      ['ok',   'Altura Fiber online'],
+    ];
+    let i = 0;
+    const cycle = setInterval(() => {
+      if (!dot || !lbl) { clearInterval(cycle); return; }
+      dot.className = 'fiber-dot ' + states[i][0];
+      lbl.textContent = states[i][1];
+      i++;
+      if (i >= states.length) clearInterval(cycle);
+    }, 600);
+  }
+
+  // ── Altura Intelligence bar override ─────────────────────
+  window._alturaIntelBar = /^altura intelligence/.test(ql);
+
+  // ── Who watches the watchers ──────────────────────────────
+  if (/^who watches the watchers[?]?$/.test(ql)) {
+    setTimeout(() => {
+      if (!_oracleOpen) {
+        _oracleOpen = true;
+        const main = document.getElementById('res-main');
+        if (!main) return;
+        const existing = document.getElementById('oracle-inline');
+        if (existing) existing.remove();
+        const panel = document.createElement('div');
+        panel.id = 'oracle-inline';
+        panel.className = 'oracle-panel';
+        panel.innerHTML = '<div class="oracle-panel-header">'
+          + '<div class="oracle-panel-mark"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="#05060a"/><circle cx="8" cy="8" r="6.5" stroke="#05060a" stroke-width="2"/></svg></div>'
+          + '<span class="oracle-panel-title">Oracle Standard</span>'
+          + '<span class="oracle-panel-badge">CIVILIAN EDITION</span>'
+          + '<button class="oracle-panel-close" onclick="closeOracle()">&#x2715;</button>'
+          + '</div>'
+          + '<div class="oracle-msg assistant" style="margin-bottom:10px">Altura does.</div>'
+          + '<div class="oracle-response-meta">Oracle Standard · AT-CIV-2015</div>';
+        main.insertBefore(panel, main.firstChild);
+      }
+    }, 400);
+  }
+
+  // ── Claude / Anthropic ────────────────────────────────────
+  window._unknownEntity = /^(claude|anthropic)$/.test(ql) ? ql : null;
+
+  // ── Canned oracle auto-open ───────────────────────────────
+  if (window._cannedOracleResponse) {
+    setTimeout(() => {
+      if (_oracleOpen) return;
+      _oracleOpen = true;
+      const main = document.getElementById('res-main');
+      if (!main) return;
+      const existing = document.getElementById('oracle-inline');
+      if (existing) existing.remove();
+      const panel = document.createElement('div');
+      panel.id = 'oracle-inline';
+      panel.className = 'oracle-panel';
+      panel.innerHTML = '<div class="oracle-panel-header">'
+        + '<div class="oracle-panel-mark"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="#05060a"/><circle cx="8" cy="8" r="6.5" stroke="#05060a" stroke-width="2"/></svg></div>'
+        + '<span class="oracle-panel-title">Oracle Standard</span>'
+        + '<span class="oracle-panel-badge">CIVILIAN EDITION</span>'
+        + '<button class="oracle-panel-close" onclick="closeOracle()">&#x2715;</button>'
+        + '</div>'
+        + '<div class="oracle-msg assistant" style="margin-bottom:10px">' + window._cannedOracleResponse + '</div>'
+        + '<div class="oracle-response-meta">Oracle Standard &middot; AT-CIV-2015</div>';
+      main.insertBefore(panel, main.firstChild);
+    }, 400);
+  }
+
+  // ── Weekend oracle bar ──────────────────────────────────
+  const _day = new Date().getDay();
+  window._isWeekend = (_day === 0 || _day === 6);
+
+  // ── Canned oracle responses ──────────────────────────────
+  const _cannedOracle = {
+    'is anyone reading this': 'Yes.',
+    'help me': 'This is a search engine.',
+    'is this secure': 'Define secure.',
+    'i am being watched': 'You are correct.',
+  };
+  window._cannedOracleResponse = _cannedOracle[ql] || null;
+
+  // ── Delete my data ────────────────────────────────────────
+  window._deleteEgg = /^delete my data$/.test(ql);
+
+  // ── Console log ───────────────────────────────────────────
+  console.log('%cAltura Technologies%c — this session is being monitored',
+    'color:#9ddb5e;font-family:monospace;font-size:11px;font-weight:bold',
+    'color:#3e4452;font-family:monospace;font-size:11px');
+}
+
+// ── ELECTORAL SIDEBAR CARDS ───────────────────────────────────
+function maybeElectoralCard(q) {
+  const ql = q.toLowerCase().trim();
+
+  if (/elena.?calloway|calloway/.test(ql)) {
+    return `<div class="egg-electoral">
+      <div class="ec-type">Person · Halonesia</div>
+      <div class="egg-elec-name">Elena M. Calloway</div>
+      <div class="egg-elec-sub">President of Halonesia · Open Halonesia party leader · former Senator</div>
+      <div class="egg-elec-row">
+        <div class="egg-elec-label">Calloway</div>
+        <div class="egg-elec-bar-bg"><div class="egg-elec-bar-fill" style="width:62%;background:var(--g)"></div></div>
+        <div class="egg-elec-pct">54</div>
+      </div>
+      <div class="egg-elec-row">
+        <div class="egg-elec-label">Harmon</div>
+        <div class="egg-elec-bar-bg"><div class="egg-elec-bar-fill" style="width:33%;background:var(--t2)"></div></div>
+        <div class="egg-elec-pct">41</div>
+      </div>
+      <div class="egg-elec-row">
+        <div class="egg-elec-label">Abstentions</div>
+        <div class="egg-elec-bar-bg"><div class="egg-elec-bar-fill" style="width:5%;background:var(--t3)"></div></div>
+        <div class="egg-elec-pct">3</div>
+      </div>
+      <div class="egg-elec-note">Sworn in 1 December 2015 · Contingent legislative vote · Margin: two votes · Three OH abstentions</div>
+      <div class="ec-rows" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line2)">
+        <div class="ec-row"><span class="ec-k">Party</span><span class="ec-v">Open Halonesia</span></div>
+        <div class="ec-row"><span class="ec-k">EC seats</span><span class="ec-v">11 / 25</span></div>
+        <div class="ec-row"><span class="ec-k">Legislature</span><span class="ec-v">28 seats</span></div>
+        <div class="ec-row"><span class="ec-k">Government</span><span class="ec-v">Minority · 46 working</span></div>
+      </div>
+    </div>`;
+  }
+
+  if (/pavel.?harmon|harmon/.test(ql)) {
+    return `<div class="egg-electoral">
+      <div class="ec-type">Person · Halonesia</div>
+      <div class="egg-elec-name">Pavel Harmon</div>
+      <div class="egg-elec-sub">Plains First party leader · Colonel (ret.) · Opposition leader</div>
+      <div class="egg-elec-row">
+        <div class="egg-elec-label">Harmon</div>
+        <div class="egg-elec-bar-bg"><div class="egg-elec-bar-fill" style="width:47%;background:var(--amber)"></div></div>
+        <div class="egg-elec-pct">41</div>
+      </div>
+      <div class="egg-elec-row">
+        <div class="egg-elec-label">Calloway</div>
+        <div class="egg-elec-bar-bg"><div class="egg-elec-bar-fill" style="width:62%;background:var(--t2)"></div></div>
+        <div class="egg-elec-pct">54</div>
+      </div>
+      <div class="egg-elec-note">Lost contingent election 43–41 · EC seats won: 9 · Dominant in Districts IV and V</div>
+      <div class="ec-rows" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line2)">
+        <div class="ec-row"><span class="ec-k">Party</span><span class="ec-v">Plains First</span></div>
+        <div class="ec-row"><span class="ec-k">EC seats</span><span class="ec-v">9 / 25</span></div>
+        <div class="ec-row"><span class="ec-k">Legislature</span><span class="ec-v">22 seats</span></div>
+        <div class="ec-row"><span class="ec-k">Opposition</span><span class="ec-v">41 seats (PF + DG + SA)</span></div>
+      </div>
+    </div>`;
+  }
+
+  if (/bashar.?farouk|farouk/.test(ql)) {
+    return `<div class="egg-electoral">
+      <div class="ec-type">Person · Halonesia</div>
+      <div class="egg-elec-name">Bashar Farouk</div>
+      <div class="egg-elec-sub">Restoration Democrats party leader · District II — The Basin</div>
+      <div class="egg-elec-row">
+        <div class="egg-elec-label">District II</div>
+        <div class="egg-elec-bar-bg"><div class="egg-elec-bar-fill" style="width:68%;background:var(--blue)"></div></div>
+        <div class="egg-elec-pct">34.2%</div>
+      </div>
+      <div class="egg-elec-row">
+        <div class="egg-elec-label">EC seats won</div>
+        <div class="egg-elec-bar-bg"><div class="egg-elec-bar-fill" style="width:20%;background:var(--blue)"></div></div>
+        <div class="egg-elec-pct">5 / 25</div>
+      </div>
+      <div class="egg-elec-note">Eliminated in contingent election — RD caucus delivered 18 votes to Calloway — criminal referral process secured</div>
+      <div class="ec-rows" style="margin-top:10px;padding-top:10px;border-top:1px solid var(--line2)">
+        <div class="ec-row"><span class="ec-k">Party</span><span class="ec-v">Restoration Democrats</span></div>
+        <div class="ec-row"><span class="ec-k">District</span><span class="ec-v">II — The Basin</span></div>
+        <div class="ec-row"><span class="ec-k">Legislature</span><span class="ec-v">18 seats</span></div>
+        <div class="ec-row"><span class="ec-k">Status</span><span class="ec-v">Confidence &amp; supply</span></div>
+      </div>
+    </div>`;
+  }
+
+  return null;
+}
+
+// ── PRYSTEIN REDACTION ────────────────────────────────────────
+function maybeRedactPrystein(html) {
+  if (!window._prystein) return html;
+  // Replace the first result URL with a slowly-redacting version
+  return html.replace(
+    /(<div class="result-url">[^<]*<\/div>\s*<div class="result-title">)/,
+    '<div class="result-url" id="prystein-url" data-full="meridianpress.com/archive/prystein-disclosure-2015">meridianpress.com/archive/prystein-disclosure-2015</div>\n<div class="result-title">'
+  );
+}
+
+// Start redaction animation after render
+function startPrystein() {
+  if (!window._prystein) return;
+  const el = document.getElementById('prystein-url');
+  if (!el) return;
+  const full = 'meridianpress.com/archive/prystein-disclosure-2015';
+  const block = '\u2588';
+  let pos = full.length;
+  const interval = setInterval(() => {
+    if (pos <= 28) { clearInterval(interval); return; }
+    pos--;
+    el.textContent = full.slice(0, pos) + block.repeat(full.length - pos);
+    el.style.color = 'var(--red)';
+    el.style.fontFamily = "'Geist Mono', monospace";
+    el.style.fontSize = '10px';
+  }, 120);
+}
+
+// ── RESTRICTED PRODUCT CARD ───────────────────────────────────
+function maybeRestrictedCard(q) {
+  const ql = q.toLowerCase().trim();
+  if (/^(vantage|rampart)$/.test(ql)) {
+    return `<div class="egg-restricted">
+      <div class="egg-restricted-label">Access restricted</div>
+      This product is not available to civilian subscribers. Your query has been logged.
+    </div>`;
+  }
+  return null;
+}
+
+// ── UPTIME CARD ───────────────────────────────────────────────
+function maybeUptimeCard(q) {
+  if (/^99\.97/.test(q.trim())) {
+    return `<div class="egg-uptime">
+      <div class="sc-badge" style="color:var(--g)"><div class="sc-badge-dot" style="background:var(--g)"></div>Altura Fiber SLA</div>
+      <div class="egg-uptime-n">26 min</div>
+      <div class="egg-uptime-l">Maximum downtime per year. We track this.</div>
+    </div>`;
+  }
+  return null;
+}
+
+// ── UNKNOWN ENTITY CARD ───────────────────────────────────────
+function maybeUnknownCard(q) {
+  if (!window._unknownEntity) return null;
+  return `<div class="egg-restricted" style="border-color:rgba(74,140,204,.25);background:rgba(74,140,204,.04);color:var(--blue)">
+    <div class="egg-restricted-label" style="color:rgba(74,140,204,.6)">Oracle Standard</div>
+    I don't know who that is.
+  </div>`;
+}
+
+// ── DELETE MY DATA EGG ────────────────────────────────────────
+function showDeleteModal() {
+  // Generate a fake reference number
+  const ref = 'DGR-2015-' + Math.floor(Math.random()*90000+10000) + '-' + String.fromCharCode(65+Math.floor(Math.random()*26));
+  const el = document.getElementById('delete-ref-no');
+  if (el) el.textContent = 'Reference: ' + ref;
+  const result = document.getElementById('delete-result');
+  if (result) result.style.display = 'none';
+  document.getElementById('delete-modal')?.classList.add('show');
+}
+
+function submitDeleteEgg() {
+  // All three buttons do the same thing
+  const btns = document.querySelectorAll('.delete-btn');
+  btns.forEach(b => { b.disabled = true; b.style.opacity = '.3'; });
+  const result = document.getElementById('delete-result');
+  if (result) result.style.display = 'block';
+  setTimeout(() => {
+    document.getElementById('delete-modal')?.classList.remove('show');
+    btns.forEach(b => { b.disabled = false; b.style.opacity = ''; });
+  }, 2800);
+}
+
+document.getElementById('delete-modal')?.addEventListener('click', e => {
+  if (e.target === document.getElementById('delete-modal')) submitDeleteEgg();
+});
+
+
+// ── AUTH WITH KV BACKEND ──────────────────────────────────────
+const AUTH_TOKEN_KEY = 'altura_auth_token';
+
+async function apiAuth(action, payload) {
+  if (!SEARCH_WORKER_URL) return null;
+  try {
+    const res = await fetch(SEARCH_WORKER_URL + '/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ action, ...payload }),
+    });
+    return await res.json();
+  } catch { return null; }
+}
+
+function switchAuthTab(tab) {
+  document.getElementById('signin-form').style.display = tab === 'signin' ? '' : 'none';
+  document.getElementById('register-form').style.display = tab === 'register' ? '' : 'none';
+  document.getElementById('tab-signin').classList.toggle('active', tab === 'signin');
+  document.getElementById('tab-register').classList.toggle('active', tab === 'register');
+  const errEl = document.getElementById('auth-error');
+  if (errEl) errEl.style.display = 'none';
+}
+
+async function doSignIn() {
+  const email = (document.getElementById('modal-email')?.value || '').trim();
+  const pass = document.getElementById('modal-pass')?.value || '';
+  const errEl = document.getElementById('auth-error');
+  if (!email || !email.includes('@')) { showAuthError('Please enter a valid email.'); return; }
+
+  // Try KV backend first
+  if (SEARCH_WORKER_URL) {
+    const result = await apiAuth('login', { email, password: pass });
+    if (result?.token) {
+      localStorage.setItem(AUTH_TOKEN_KEY, result.token);
+      authState = { email, name: result.user?.name || email.split('@')[0], id: result.user?.id, token: result.token };
+      localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
+      updateAuthUI(); closeSignIn(); syncUserData();
+      return;
+    }
+    if (result?.error) {
+      // Fall back to local if KV not configured
+      if (result.error.includes('KV not configured')) {
+        authState = { email, name: email.split('@')[0], ts: Date.now() };
+        localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
+        updateAuthUI(); closeSignIn();
+        return;
+      }
+      showAuthError(result.error);
+      return;
+    }
+  }
+  // No worker — local only
+  authState = { email, name: email.split('@')[0], ts: Date.now() };
+  localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
+  updateAuthUI(); closeSignIn();
+}
+
+async function doRegister() {
+  const email = (document.getElementById('reg-email')?.value || '').trim();
+  const pass = document.getElementById('reg-pass')?.value || '';
+  const name = (document.getElementById('reg-name')?.value || '').trim();
+  if (!email || !email.includes('@')) { showAuthError('Please enter a valid email.'); return; }
+  if (!pass || pass.length < 6) { showAuthError('Password must be at least 6 characters.'); return; }
+
+  if (SEARCH_WORKER_URL) {
+    const result = await apiAuth('register', { email, password: pass });
+    if (result?.token) {
+      localStorage.setItem(AUTH_TOKEN_KEY, result.token);
+      authState = { email, name: name || result.user?.name || email.split('@')[0], id: result.user?.id, token: result.token };
+      localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
+      updateAuthUI(); closeSignIn();
+      return;
+    }
+    if (result?.error) { showAuthError(result.error); return; }
+  }
+  authState = { email, name: name || email.split('@')[0], ts: Date.now() };
+  localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
+  updateAuthUI(); closeSignIn();
+}
+
+function showAuthError(msg) {
+  const el = document.getElementById('auth-error');
+  if (el) { el.textContent = msg; el.style.display = 'block'; }
+}
+
+async function doSignOut() {
+  const token = authState?.token || localStorage.getItem(AUTH_TOKEN_KEY);
+  if (token && SEARCH_WORKER_URL) await apiAuth('logout', { token });
+  authState = null;
+  localStorage.removeItem(AUTH_KEY);
+  localStorage.removeItem(AUTH_TOKEN_KEY);
+  updateAuthUI();
+  closeHub();
+}
+
+async function syncUserData(upload = false) {
+  const token = authState?.token || localStorage.getItem(AUTH_TOKEN_KEY);
+  if (!token || !SEARCH_WORKER_URL) return;
+  try {
+    const payload = { action: 'sync', token };
+    if (upload) {
+      payload.data = {
+        searchHistory: searchHistory.slice(0, 50),
+        settings,
+        oracleHistory: _persistedOracleHistory.slice(0, 20),
+      };
+    }
+    const result = await apiAuth('sync', { token, data: upload ? payload.data : undefined });
+    if (result?.data && !upload) {
+      // Merge remote data
+      if (result.data.searchHistory?.length) {
+        const merged = [...new Set([...result.data.searchHistory, ...searchHistory])].slice(0, 50);
+        searchHistory = merged;
+        localStorage.setItem(HISTORY_KEY, JSON.stringify(searchHistory));
+      }
+      if (result.data.oracleHistory) {
+        _persistedOracleHistory = result.data.oracleHistory;
+        localStorage.setItem(ORACLE_HISTORY_KEY, JSON.stringify(_persistedOracleHistory));
+      }
+    }
+  } catch {}
+}
+
+// Auto-sync on sign in
+window.addEventListener('load', async () => {
+  const token = localStorage.getItem(AUTH_TOKEN_KEY);
+  if (token && SEARCH_WORKER_URL) {
+    const result = await apiAuth('verify', { token });
+    if (result?.valid) {
+      authState = { ...authState, ...result.user, token };
+      localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
+      updateAuthUI();
+      syncUserData(false);
+    } else {
+      localStorage.removeItem(AUTH_TOKEN_KEY);
+    }
+  }
+});
+
+// ── ORACLE PERSISTENCE ────────────────────────────────────────
+const ORACLE_HISTORY_KEY = 'altura_oracle_history';
+let _persistedOracleHistory = JSON.parse(localStorage.getItem(ORACLE_HISTORY_KEY) || '[]');
+
+// Patch oracleAsk to persist
+const _origOracleAsk = oracleAsk;
+oracleAsk = async function(query) {
+  await _origOracleAsk(query);
+};
+
+// Save history when messages are pushed
+function saveOracleHistory() {
+  if (_oracleHistory.length > 0) {
+    const session = {
+      id: Date.now(),
+      query: currentQuery,
+      messages: _oracleHistory.slice(),
+      ts: new Date().toISOString(),
+    };
+    // Update last session or push new
+    if (_persistedOracleHistory.length > 0 &&
+        _persistedOracleHistory[0].id === _currentOracleSessionId) {
+      _persistedOracleHistory[0] = session;
+    } else {
+      _persistedOracleHistory.unshift(session);
+    }
+    _persistedOracleHistory = _persistedOracleHistory.slice(0, 20);
+    localStorage.setItem(ORACLE_HISTORY_KEY, JSON.stringify(_persistedOracleHistory));
+  }
+}
+let _currentOracleSessionId = null;
+
+// Hook into appendOracleMsg to save after each message
+const _origAppend = appendOracleMsg;
+appendOracleMsg = function(role, text) {
+  _origAppend(role, text);
+  if (!_currentOracleSessionId) _currentOracleSessionId = Date.now();
+  saveOracleHistory();
+};
+
+// Export oracle chat
+function exportOracleChat() {
+  if (!_oracleHistory.length) return;
+  const lines = ['Oracle Standard — Altura Search', '=' .repeat(40), ''];
+  _oracleHistory.forEach(m => {
+    lines.push(m.role === 'user' ? `You: ${m.content}` : `Oracle: ${m.content}`);
+    lines.push('');
+  });
+  lines.push(`Exported: ${new Date().toLocaleString()}`);
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `oracle-${Date.now()}.txt`;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ── HUB OVERLAY ───────────────────────────────────────────────
+let _hubOpen = false;
+
+function toggleHub() {
+  _hubOpen ? closeHub() : openHub();
+}
+
+function openHub() {
+  _hubOpen = true;
+  renderHub();
+  document.getElementById('hub-overlay').classList.add('show');
+}
+
+function closeHub() {
+  _hubOpen = false;
+  document.getElementById('hub-overlay').classList.remove('show');
+}
+
+function renderHub() {
+  const panel = document.getElementById('hub-panel');
+  if (!panel) return;
+
+  if (!authState) {
+    panel.innerHTML = `<div class="hub-signin-prompt">
+      <div style="font-size:28px;margin-bottom:12px">&#128100;</div>
+      <div class="hub-signin-title">Sign in to Altura</div>
+      <div class="hub-signin-sub">Access your search history, Oracle conversations, and Altura products across devices.</div>
+      <button class="hub-signin-btn" onclick="closeHub();showSignIn()">Sign in with Altura ID</button>
+      <div style="font-size:12px;color:var(--t3);margin-top:10px">
+        <span style="cursor:pointer;text-decoration:underline" onclick="closeHub();showSignIn()">Create account</span>
+      </div>
+    </div>`;
+    return;
+  }
+
+  const initial = (authState.name || '?').charAt(0).toUpperCase();
+  const recentSearches = searchHistory.slice(0, 5);
+  const oracleCount = _persistedOracleHistory.length;
+
+  panel.innerHTML = `
+    <div class="hub-header">
+      <div class="hub-avatar">${initial}</div>
+      <div>
+        <div class="hub-user-name">${authState.name || authState.email}</div>
+        <div class="hub-user-email">${authState.email}</div>
+      </div>
+      <button class="hub-close" onclick="closeHub()">&#x2715;</button>
+    </div>
+
+    <div class="hub-section">
+      <div class="hub-section-label">Altura products</div>
+      <div class="hub-product-grid">
+        <div class="hub-product" onclick="closeHub()">
+          <div class="hub-product-icon">&#128269;</div>
+          <div class="hub-product-name">Search</div>
+        </div>
+        <div class="hub-product" onclick="window.open('https://alturacorp.github.io/oracle/','_blank');closeHub()">
+          <div class="hub-product-icon">&#9675;</div>
+          <div class="hub-product-name">Oracle</div>
+        </div>
+        <div class="hub-product" onclick="window.open('https://alturacorp.github.io/fiber/','_blank');closeHub()">
+          <div class="hub-product-icon">&#9889;</div>
+          <div class="hub-product-name">Fiber</div>
+        </div>
+        <div class="hub-product" onclick="window.open('https://alturacorp.github.io/hub/','_blank');closeHub()">
+          <div class="hub-product-icon">&#127968;</div>
+          <div class="hub-product-name">Hub</div>
+        </div>
+        <div class="hub-product" style="opacity:.4;cursor:not-allowed">
+          <div class="hub-product-icon">&#128225;</div>
+          <div class="hub-product-name">Civic</div>
+        </div>
+        <div class="hub-product" style="opacity:.4;cursor:not-allowed">
+          <div class="hub-product-icon">&#128196;</div>
+          <div class="hub-product-name">Archive</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hub-section">
+      <div class="hub-section-label">Your activity</div>
+      <div class="hub-stat-grid">
+        <div class="hub-stat">
+          <div class="hub-stat-n">${searchHistory.length}</div>
+          <div class="hub-stat-l">Searches</div>
+        </div>
+        <div class="hub-stat">
+          <div class="hub-stat-n">${oracleCount}</div>
+          <div class="hub-stat-l">Oracle sessions</div>
+        </div>
+      </div>
+    </div>
+
+    ${recentSearches.length ? `
+    <div class="hub-section">
+      <div class="hub-section-label">Recent searches</div>
+      ${recentSearches.map(s => {
+        const enc = encodeURIComponent(s);
+        const safe = s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+        return `<div class="hub-search-item" onclick="doQuickSearch(decodeURIComponent(this.dataset.q));closeHub()" data-q="${enc}">
+          <span class="hub-search-icon">&#8599;</span>${safe}
+        </div>`;
+      }).join('')}
+    </div>` : ''}
+
+    ${_persistedOracleHistory.length ? `
+    <div class="hub-section">
+      <div class="hub-section-label">Recent Oracle sessions</div>
+      ${_persistedOracleHistory.slice(0,3).map(s => {
+        const safe = (s.query || 'Untitled session').replace(/&/g,'&amp;').replace(/</g,'&lt;');
+        const time = new Date(s.ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+        return `<div class="hub-search-item" style="justify-content:space-between">
+          <span><span class="hub-search-icon" style="margin-right:6px">&#9675;</span>${safe}</span>
+          <span style="font-family:'Geist Mono',monospace;font-size:9px;color:var(--t3)">${time}</span>
+        </div>`;
+      }).join('')}
+    </div>` : ''}
+
+    <div class="hub-section">
+      <button class="hub-action" onclick="closeHub();goSettings()">
+        <span class="hub-action-icon">&#9881;</span>Settings
+      </button>
+      <button class="hub-action" onclick="closeHub();goHistory()">
+        <span class="hub-action-icon">&#128336;</span>Search history
+      </button>
+      <button class="hub-action" onclick="syncUserData(true);closeHub()">
+        <span class="hub-action-icon">&#8645;</span>Sync data
+      </button>
+      <button class="hub-action" onclick="doSignOut()" style="color:var(--red)">
+        <span class="hub-action-icon">&#8594;</span>Sign out
+      </button>
+    </div>`;
+}
+
+// ── DATE RANGE PICKER ─────────────────────────────────────────
+let _dateRange = null;
+
+function toggleDatePicker(btn) {
+  const wrap = document.getElementById('date-picker');
+  const isShow = wrap.classList.contains('show');
+  if (isShow) {
+    wrap.classList.remove('show');
+    btn.classList.remove('active');
+  } else {
+    wrap.classList.add('show');
+    btn.classList.add('active');
+    // Position it after the filter chip in the bar
+    btn.closest('.filters-bar').appendChild(wrap);
+  }
+}
+
+function applyDateRange() {
+  const from = document.getElementById('date-from').value;
+  const to = document.getElementById('date-to').value;
+  if (!from && !to) return;
+  _dateRange = { type: 'custom', start: from, end: to || from };
+  currentPage = 1;
+  _resultsCache = {};
+  history.pushState({ q: currentQuery, page: 1 }, '', '?q=' + encodeURIComponent(currentQuery));
+  renderResults();
+}
+
+function clearDateRange() {
+  _dateRange = null;
+  document.getElementById('date-from').value = '';
+  document.getElementById('date-to').value = '';
+  document.getElementById('date-picker').classList.remove('show');
+  document.getElementById('filter-custom-date')?.classList.remove('active');
+  _resultsCache = {};
+  renderResults();
+}
+
+// Hook _dateRange into fetchBraveResults
+const _origFetch = fetchBraveResults;
+fetchBraveResults = async function(q, type) {
+  const key = q + '|' + type + '|' + JSON.stringify(_dateRange);
+  if (_resultsCache[key]) return _resultsCache[key];
+  if (!SEARCH_WORKER_URL) return null;
+  try {
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 12000);
+    const body = { q, type, count: settings.perPage || 8, safe: settings.safe };
+    if (_dateRange) {
+      if (_dateRange.type === 'custom') body.dateRange = { start: _dateRange.start, end: _dateRange.end };
+      else body.dateRange = { preset: currentFilter };
+    } else if (['past-day','past-week','past-month'].includes(currentFilter)) {
+      body.dateRange = { preset: currentFilter };
+    }
+    const res = await fetch(SEARCH_WORKER_URL + '/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+      signal: ctrl.signal,
+    });
+    clearTimeout(tid);
+    if (!res.ok) return null;
+    const d = await res.json();
+    _resultsCache[key] = d;
+    return d;
+  } catch { return null; }
+};
+
+// ── SEARCH OPERATOR PARSING ───────────────────────────────────
+function parseSearchOperators(q) {
+  // Detect operators and return cleaned query + operator flags
+  const ops = {};
+  let clean = q;
+
+  // site: operator
+  const siteMatch = clean.match(/site:(\S+)/i);
+  if (siteMatch) { ops.site = siteMatch[1]; clean = clean.replace(siteMatch[0], '').trim(); }
+
+  // "exact phrase" — keep in query, Serper supports it natively
+
+  // -exclude words
+  const excludes = [];
+  clean = clean.replace(/-(\w+)/g, (m, word) => { excludes.push(word); return ''; }).trim();
+  if (excludes.length) ops.excludes = excludes;
+
+  // Rebuild query with operators for Serper (it supports Google syntax natively)
+  // So we actually pass the original query — Serper handles it
+  return { original: q, clean, ops };
+}
+
+// ── FINANCIAL / STOCK CARD ────────────────────────────────────
+const STOCK_SYMBOLS = {
+  'apple stock': 'AAPL', 'aapl': 'AAPL', 'aapl stock': 'AAPL',
+  'microsoft stock': 'MSFT', 'msft': 'MSFT',
+  'google stock': 'GOOGL', 'alphabet stock': 'GOOGL', 'googl': 'GOOGL',
+  'tesla stock': 'TSLA', 'tsla': 'TSLA',
+  'bitcoin': 'BTC-USD', 'bitcoin price': 'BTC-USD', 'btc': 'BTC-USD',
+  'ethereum': 'ETH-USD', 'eth': 'ETH-USD',
+  'amazon stock': 'AMZN', 'amzn': 'AMZN',
+  'nvidia stock': 'NVDA', 'nvda': 'NVDA',
+  'ftse 100': '^FTSE', 'ftse': '^FTSE',
+  's&p 500': '^GSPC', 'sp500': '^GSPC', 's&p500': '^GSPC',
+  'dow jones': '^DJI', 'nasdaq': '^IXIC',
+  'gold price': 'GC=F', 'oil price': 'CL=F',
+};
+
+async function fetchStockCard(q) {
+  const ql = q.toLowerCase().trim();
+  const sym = STOCK_SYMBOLS[ql] || ((/^[A-Z]{1,5}(\s+stock)?$/i.test(q)) ? q.replace(/\s+stock$/i,'').toUpperCase() : null);
+  if (!sym || !SEARCH_WORKER_URL) return null;
+  try {
+    const res = await fetch(SEARCH_WORKER_URL + '/stock', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ symbol: sym }),
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch { return null; }
+}
+
+function renderStockCard(data) {
+  if (!data || data.error) return '';
+  const change = parseFloat(data.change);
+  const cls = change > 0 ? 'up' : change < 0 ? 'down' : 'flat';
+  const arrow = change > 0 ? '▲' : change < 0 ? '▼' : '—';
+  return `<div class="stock-card">
+    <div class="sc-badge"><div class="sc-badge-dot" style="background:var(--blue)"></div>Market data</div>
+    <div class="stock-header">
+      <div class="stock-symbol">${data.symbol}</div>
+      <div class="stock-name">${data.name}</div>
+    </div>
+    <div class="stock-price">${data.currency === 'USD' ? '$' : ''}${data.price} <span style="font-size:14px;color:var(--t2)">${data.currency}</span></div>
+    <div class="stock-change ${cls}">${arrow} ${Math.abs(change).toFixed(2)} (${Math.abs(parseFloat(data.changePct)).toFixed(2)}%)</div>
+    <div class="stock-meta">${data.exchange} · ${data.marketState} · Data via Yahoo Finance · Delayed 15 min</div>
+  </div>`;
+}
+
+// ── RECIPE CARD ───────────────────────────────────────────────
+const RECIPES = {
+  'pasta': { name:'Pasta', time:'20 min', serves:'2', ingredients:['200g pasta','2 cloves garlic','3 tbsp olive oil','Salt and pepper','Parmesan to serve'] },
+  'scrambled eggs': { name:'Scrambled eggs', time:'5 min', serves:'1', ingredients:['3 eggs','1 tbsp butter','2 tbsp milk','Salt and pepper'] },
+  'pancakes': { name:'Pancakes', time:'15 min', serves:'4', ingredients:['200g flour','2 eggs','300ml milk','1 tbsp sugar','Pinch of salt','Butter for cooking'] },
+  'banana bread': { name:'Banana bread', time:'60 min', serves:'8', ingredients:['3 ripe bananas','175g flour','100g butter','150g sugar','2 eggs','1 tsp baking soda'] },
+  'chicken soup': { name:'Chicken soup', time:'45 min', serves:'4', ingredients:['1 chicken breast','2 carrots','2 stalks celery','1 onion','1L chicken stock','Salt, pepper, parsley'] },
+  'omelette': { name:'Omelette', time:'8 min', serves:'1', ingredients:['3 eggs','1 tbsp butter','Salt and pepper','Filling of choice'] },
+};
+
+function maybeRecipeCard(q) {
+  const ql = q.toLowerCase().trim();
+  const recipeQ = ql.replace(/^(how to make|recipe for|how to cook|make|cook)\s+/,'');
+  const r = RECIPES[recipeQ] || RECIPES[ql];
+  if (!r) return null;
+  return `<div class="recipe-card">
+    <div class="sc-badge"><div class="sc-badge-dot" style="background:var(--amber)"></div>Recipe</div>
+    <div class="recipe-name">${r.name}</div>
+    <div class="recipe-meta"><span>&#128336; ${r.time}</span><span>&#128101; Serves ${r.serves}</span></div>
+    <div class="recipe-section-label">Ingredients</div>
+    <ul class="recipe-ingredients">${r.ingredients.map(i=>`<li>${i}</li>`).join('')}</ul>
+    <div style="font-size:11px;color:var(--t3)">Full recipe via search results below</div>
+  </div>`;
+}
+
+// ── TRANSLATION CARD ──────────────────────────────────────────
+const TRANSLATIONS = {
+  'hello': { de:'Hallo', fr:'Bonjour', es:'Hola', ja:'こんにちは', ar:'مرحبا', it:'Ciao', pt:'Olá' },
+  'thank you': { de:'Danke', fr:'Merci', es:'Gracias', ja:'ありがとう', ar:'شكراً', it:'Grazie', pt:'Obrigado' },
+  'goodbye': { de:'Auf Wiedersehen', fr:'Au revoir', es:'Adiós', ja:'さようなら', ar:'وداعاً', it:'Arrivederci', pt:'Tchau' },
+  'yes': { de:'Ja', fr:'Oui', es:'Sí', ja:'はい', ar:'نعم', it:'Sì', pt:'Sim' },
+  'no': { de:'Nein', fr:'Non', es:'No', ja:'いいえ', ar:'لا', it:'No', pt:'Não' },
+  'water': { de:'Wasser', fr:'Eau', es:'Agua', ja:'水', ar:'ماء', it:'Acqua', pt:'Água' },
+  'help': { de:'Hilfe', fr:'Aide', es:'Ayuda', ja:'助けて', ar:'مساعدة', it:'Aiuto', pt:'Ajuda' },
+};
+
+const LANG_NAMES = { de:'German', fr:'French', es:'Spanish', ja:'Japanese', ar:'Arabic', it:'Italian', pt:'Portuguese' };
+
+function maybeTranslateCard(q) {
+  const m = q.match(/^translate\s+(.+?)\s+(?:to|in(?:to)?)\s+(\w+)$/i);
+  if (!m) return null;
+  const word = m[1].toLowerCase().trim();
+  const langRaw = m[2].toLowerCase().trim();
+  const langMap = { german:'de', french:'fr', spanish:'es', japanese:'ja', arabic:'ar', italian:'it', portuguese:'pt',
+                    deutsch:'de', français:'fr', español:'es', 日本語:'ja' };
+  const lang = langMap[langRaw] || langRaw.slice(0,2);
+  const entry = TRANSLATIONS[word];
+  const result = entry?.[lang];
+  if (!result) return null;
+  return `<div class="translate-card">
+    <div class="sc-badge"><div class="sc-badge-dot" style="background:var(--teal)"></div>Translation</div>
+    <div class="translate-pair">
+      <div><div class="translate-side-label">English</div><div class="translate-text">${word}</div></div>
+      <div class="translate-arrow">&#8594;</div>
+      <div><div class="translate-side-label">${LANG_NAMES[lang]||lang}</div><div class="translate-text">${result}</div></div>
+    </div>
+  </div>`;
+}
+
+// ── MAP CARD ──────────────────────────────────────────────────
+function maybeMapCard(q) {
+  const m = q.match(/^(?:map of|where is|location of|directions to)\s+(.+)$/i)
+          || (q.toLowerCase().includes('map') ? [null, q.replace(/map/i,'').trim()] : null);
+  if (!m || !m[1]) return null;
+  const loc = m[1].trim();
+  const encoded = encodeURIComponent(loc);
+  const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encoded}`;
+  return `<div class="map-card">
+    <div style="padding:10px 14px 6px;"><div class="sc-badge"><div class="sc-badge-dot" style="background:var(--red)"></div>Location</div></div>
+    <div class="map-placeholder" onclick="window.open('${mapsUrl}','_blank')">
+      <div class="map-placeholder-icon">&#128205;</div>
+      <div class="map-placeholder-label">Open map for ${loc.replace(/&/g,'&amp;')}</div>
+    </div>
+    <div class="map-footer">
+      <div class="map-location">${loc.replace(/&/g,'&amp;')}</div>
+      <a class="map-open" href="${mapsUrl}" target="_blank">Open in Maps &#8599;</a>
+    </div>
+  </div>`;
+}
+
+// ── SPORTS CARD ───────────────────────────────────────────────
+function maybeSportsCard(q) {
+  const ql = q.toLowerCase();
+  if (!/\b(score|scores|vs|v\.|fixture|result|match|game)\b/.test(ql) &&
+      !/\b(premier league|bundesliga|nba|nfl|nhl|la liga|champions league|serie a)\b/.test(ql)) return null;
+  // Placeholder — real sports data would need an API
+  return `<div class="special-card" style="background:var(--bg1);border:1px solid var(--line)">
+    <div class="sc-badge"><div class="sc-badge-dot" style="background:var(--amber)"></div>Sports</div>
+    <div style="font-size:13px;color:var(--t1);line-height:1.7">
+      Live sports scores require a sports data subscription. Results below include latest sports news and match reports.
+    </div>
+  </div>`;
+}
+
+// ── HOOK NEW CARDS INTO RENDERRESULTS ─────────────────────────
+// Store original detectSpecial
+const _origDetectSpecial = detectSpecial;
+detectSpecial = function(q) {
+  const orig = _origDetectSpecial(q);
+  if (orig) return orig;
+  return null; // New cards handled separately in async block
+};
+
+// Hook new async special cards into renderResults
+// We patch the existing render to also call async cards
+const _origRenderResults = renderResults;
+let _stockCardHtml = '';
+renderResults = async function() {
+  _stockCardHtml = '';
+  // Fetch stock card in parallel
+  const stockData = await fetchStockCard(currentQuery);
+  if (stockData && !stockData.error) {
+    _stockCardHtml = renderStockCard(stockData);
+  }
+  await _origRenderResults();
+};
+
+// Inject new cards into renderResults main HTML
+// Override the egg card injection to also include new card types
+const _origEggBlock = `    // Easter egg cards
+    const _restrictedCard = maybeRestrictedCard(q);`;
+
+// We need a different approach — patch after main.innerHTML is set
+// by overriding the async block that sets main.innerHTML
+// Instead: patch the html assembly in the async closure
+
+// Update updateAuthUI to show hub button when signed in
+const _origUpdateAuth = updateAuthUI;
+updateAuthUI = function() {
+  _origUpdateAuth();
+  const signedIn = !!authState;
+  const hubBtn = document.getElementById('home-hub-btn');
+  const authBtn = document.getElementById('home-auth-btn');
+  if (hubBtn) hubBtn.style.display = signedIn ? '' : 'none';
+  if (authBtn) authBtn.style.display = signedIn ? 'none' : '';
+};
+
 </script>
+
+
+<!-- Delete My Data modal (easter egg) -->
+<div id="delete-modal">
+  <div class="delete-box">
+    <div class="delete-title">Request data deletion</div>
+    <div class="delete-sub">Submit a request to delete your Altura Search data. All requests are reviewed by the Altura Data Governance team.</div>
+    <div class="delete-ref" id="delete-ref-no"></div>
+    <div class="delete-form">
+      <input class="delete-field" type="email" placeholder="Email address associated with your account" id="delete-email" />
+      <input class="delete-field" type="text" placeholder="Altura ID (if applicable)" id="delete-aid" />
+      <div class="delete-checkbox-row">
+        <input type="checkbox" id="delete-confirm-cb" />
+        <label for="delete-confirm-cb">I understand this request covers search history, preferences, and session data stored by Altura Technologies on my behalf.</label>
+      </div>
+      <div class="delete-checkbox-row">
+        <input type="checkbox" id="delete-third-cb" />
+        <label for="delete-third-cb">Include data shared with Altura partner services (Altura Fiber, Altura Hub, associated products).</label>
+      </div>
+    </div>
+    <div class="delete-result" id="delete-result">Request received. Processing time: indefinite.</div>
+    <div class="delete-btns" style="margin-top:16px">
+      <button class="delete-btn danger" onclick="submitDeleteEgg()">Confirm deletion request</button>
+      <button class="delete-btn outline" onclick="submitDeleteEgg()">Request partial deletion</button>
+      <button class="delete-btn ghost" onclick="submitDeleteEgg()">Cancel</button>
+    </div>
+    <div style="font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--t3);margin-top:14px;line-height:1.8">
+      Altura Technologies Data Governance · Salt Lake City<br>
+      Response time: 30–90 business days · Reference retained for audit purposes
+    </div>
+  </div>
+</div>
+
+<!-- Hub Overlay -->
+<div id="hub-overlay">
+  <div class="hub-backdrop" onclick="closeHub()"></div>
+  <div class="hub-panel" id="hub-panel">
+    <!-- Populated by renderHub() -->
+  </div>
+</div>
+
+<!-- Date range picker (injected into filters bar) -->
+<div class="date-picker-wrap" id="date-picker">
+  <span class="date-sep">From</span>
+  <input type="date" class="date-input" id="date-from" />
+  <span class="date-sep">to</span>
+  <input type="date" class="date-input" id="date-to" />
+  <button class="date-apply" onclick="applyDateRange()">Apply</button>
+  <button class="date-apply" style="background:var(--bg2);color:var(--t1)" onclick="clearDateRange()">✕</button>
+</div>
+<!-- NRC overlay (easter egg) -->
+<div class="nrc-overlay" id="nrc-overlay">
+  <div class="nrc-watermark">NRC</div>
+</div>
 </body>
 </html>
