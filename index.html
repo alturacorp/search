@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Altura Search</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
 <style>
 :root,[data-theme="dark"]{
   --bg:#05060a;--bg1:#090b10;--bg2:#0d1018;--bg3:#111520;
@@ -213,11 +213,14 @@ body{
   color:var(--t2);cursor:pointer;display:grid;place-items:center;font-size:14px;transition:background .1s;}
 .res-icon-btn:hover{background:var(--bg2);}
 
-/* FIX: Tabs use consistent left padding, not a calculated offset */
+/* Tabs left-aligned to match results body */
 .res-tabs-bar{
   background:var(--bg);border-bottom:1px solid var(--line);
-  padding:0 20px;
+  padding:0 20px 0 160px;
   display:flex;gap:0;overflow-x:auto;scrollbar-width:none;
+}
+@media(max-width:900px){
+  .res-tabs-bar{padding-left:20px;}
 }
 .res-tab{
   font-size:13px;color:var(--t2);padding:10px 12px;
@@ -230,9 +233,12 @@ body{
 
 /* Filters */
 .filters-bar{
-  padding:8px 20px;border-bottom:1px solid var(--line2);
+  padding:8px 20px 8px 160px;border-bottom:1px solid var(--line2);
   display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;
   background:var(--bg1);
+}
+@media(max-width:900px){
+  .filters-bar{padding-left:20px;}
 }
 .filter-chip{
   font-size:12px;color:var(--t2);background:var(--bg1);
@@ -243,10 +249,13 @@ body{
 .filter-chip.active{color:var(--blue);border-color:var(--blue);background:rgba(74,140,204,.08);}
 .filter-sep{width:1px;height:20px;background:var(--line);flex-shrink:0;margin:auto 4px;}
 
-/* Results layout */
+/* Results layout — left-aligned like Google, offset matches navbar logo+search start */
 .res-body{
-  max-width:1300px;margin:0 auto;padding:20px 20px;
+  max-width:1300px;margin:0;padding:20px 20px 20px 160px;
   display:grid;grid-template-columns:652px 1fr;gap:52px;align-items:start;
+}
+@media(max-width:900px){
+  .res-body{padding-left:20px;}
 }
 .res-meta{
   font-size:12px;color:var(--t2);margin-bottom:16px;
@@ -728,6 +737,165 @@ body{
 }
 .date-apply:hover{opacity:.85;}
 
+/* ── SUPPORT CARD ─────────────────────────────────────────── */
+.support-card{
+  background:var(--bg1);
+  border:1px solid rgba(157,219,94,.2);
+  border-left:3px solid var(--g);
+  border-radius:8px;padding:16px 20px;margin-bottom:20px;
+  position:relative;
+}
+.support-card-close{
+  position:absolute;top:12px;right:14px;
+  background:none;border:none;color:var(--t2);
+  cursor:pointer;font-size:14px;padding:2px 6px;
+  border-radius:4px;transition:color .1s;line-height:1;
+}
+.support-card-close:hover{color:var(--t0);}
+.support-card-heading{
+  font-size:14px;font-weight:600;letter-spacing:-.01em;
+  color:var(--t0);margin-bottom:4px;padding-right:24px;
+}
+.support-card-sub{
+  font-size:13px;color:var(--t1);line-height:1.6;margin-bottom:14px;
+}
+.support-resources{display:flex;flex-direction:column;gap:6px;}
+.support-resource{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 12px;border-radius:6px;
+  background:var(--bg2);border:1px solid var(--line2);
+  text-decoration:none;cursor:pointer;transition:border-color .1s;
+}
+.support-resource:hover{border-color:rgba(157,219,94,.3);}
+.support-resource-icon{font-size:16px;flex-shrink:0;}
+.support-resource-body{flex:1;min-width:0;}
+.support-resource-name{font-size:13px;font-weight:600;color:var(--t0);letter-spacing:-.01em;}
+.support-resource-desc{font-size:11px;color:var(--t2);margin-top:1px;}
+.support-resource-action{
+  font-size:11px;color:var(--g);flex-shrink:0;
+  font-family:'Geist Mono',monospace;letter-spacing:.04em;
+}
+.support-footer{
+  font-size:11px;color:var(--t3);margin-top:12px;padding-top:10px;
+  border-top:1px solid var(--line2);line-height:1.6;
+}
+.support-footer a{color:var(--t2);text-decoration:none;}
+.support-footer a:hover{color:var(--t0);text-decoration:underline;}
+
+/* ── GAME PANEL ───────────────────────────────────────────── */
+#game-overlay{position:fixed;inset:0;z-index:9000;pointer-events:none;display:none;}
+#game-overlay.show{display:block;pointer-events:auto;}
+.game-backdrop{position:absolute;inset:0;background:rgba(5,6,10,.5);backdrop-filter:blur(3px);}
+.game-panel{
+  position:absolute;top:0;right:0;bottom:0;width:420px;
+  background:var(--bg1);border-left:1px solid var(--line);
+  display:flex;flex-direction:column;
+  box-shadow:-8px 0 40px rgba(0,0,0,.6);
+  transform:translateX(100%);transition:transform .25s cubic-bezier(.4,0,.2,1);
+}
+#game-overlay.show .game-panel{transform:translateX(0);}
+.game-panel-header{
+  padding:14px 16px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+}
+.game-panel-logo{
+  width:24px;height:24px;background:var(--g);border-radius:5px;
+  display:grid;place-items:center;font-size:11px;flex-shrink:0;
+}
+.game-panel-title{font-size:14px;font-weight:700;letter-spacing:-.02em;color:var(--t0);flex:1;}
+.game-panel-score{
+  font-family:'Geist Mono',monospace;font-size:11px;
+  color:var(--g);letter-spacing:.06em;
+}
+.game-panel-close{
+  background:none;border:none;color:var(--t2);cursor:pointer;
+  font-size:16px;padding:4px 6px;border-radius:4px;transition:color .1s;
+}
+.game-panel-close:hover{color:var(--t0);}
+.game-selector{
+  display:flex;gap:0;border-bottom:1px solid var(--line);flex-shrink:0;overflow-x:auto;scrollbar-width:none;
+}
+.game-tab{
+  flex:1;font-size:11px;color:var(--t2);padding:9px 6px;
+  border:none;background:none;cursor:pointer;
+  border-bottom:2px solid transparent;transition:color .1s;
+  white-space:nowrap;letter-spacing:-.01em;font-family:'Geist',sans-serif;
+}
+.game-tab:hover{color:var(--t0);}
+.game-tab.active{color:var(--g);border-bottom-color:var(--g);}
+.game-area{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:16px;overflow-y:auto;gap:12px;}
+.game-canvas-wrap{position:relative;}
+.game-canvas-wrap canvas{display:block;border-radius:6px;}
+.game-overlay-msg{
+  position:absolute;inset:0;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:8px;
+  background:rgba(5,6,10,.82);border-radius:6px;
+}
+.game-overlay-msg h2{font-size:20px;font-weight:700;color:var(--t0);letter-spacing:-.02em;}
+.game-overlay-msg p{font-size:12px;color:var(--t2);}
+.game-start-btn{
+  background:var(--g);color:var(--bg);border:none;
+  border-radius:5px;padding:8px 20px;font-size:13px;font-weight:700;
+  cursor:pointer;font-family:'Geist',sans-serif;letter-spacing:-.01em;
+  transition:opacity .1s;margin-top:4px;
+}
+.game-start-btn:hover{opacity:.88;}
+.game-controls{
+  font-size:11px;color:var(--t3);text-align:center;line-height:1.8;
+  font-family:'Geist Mono',monospace;letter-spacing:.04em;
+}
+.game-controls kbd{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:3px;padding:1px 5px;font-size:10px;color:var(--t1);
+}
+/* 2048 specific */
+.g2048-board{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;background:var(--bg2);padding:8px;border-radius:8px;width:100%;}
+.g2048-cell{
+  aspect-ratio:1;display:grid;place-items:center;
+  border-radius:5px;font-size:18px;font-weight:800;
+  letter-spacing:-.02em;transition:background .1s;
+  font-family:'Geist',sans-serif;
+}
+/* Minesweeper */
+.gmine-board{display:grid;gap:2px;width:100%;}
+.gmine-cell{
+  aspect-ratio:1;display:grid;place-items:center;
+  font-size:11px;font-weight:700;border-radius:3px;cursor:pointer;
+  background:var(--bg2);border:1px solid var(--line);transition:background .08s;
+  font-family:'Geist Mono',monospace;
+}
+.gmine-cell:hover{background:var(--bg3);}
+.gmine-cell.revealed{background:var(--bg);cursor:default;}
+.gmine-cell.flagged{background:rgba(224,184,74,.12);}
+.gmine-cell.mine-hit{background:rgba(204,74,74,.3);}
+/* Wordle */
+.gword-grid{display:grid;grid-template-rows:repeat(6,1fr);gap:5px;width:100%;}
+.gword-row{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;}
+.gword-tile{
+  aspect-ratio:1;display:grid;place-items:center;
+  font-size:18px;font-weight:800;border-radius:4px;
+  border:2px solid var(--line);color:var(--t0);
+  font-family:'Geist',sans-serif;letter-spacing:-.01em;
+  transition:background .2s,border-color .2s;
+}
+.gword-tile.correct{background:var(--g);color:var(--bg);border-color:var(--g);}
+.gword-tile.present{background:var(--amber);color:var(--bg);border-color:var(--amber);}
+.gword-tile.absent{background:var(--bg3);color:var(--t2);border-color:var(--bg3);}
+.gword-tile.active{border-color:var(--t1);}
+.gword-keyboard{display:flex;flex-direction:column;gap:4px;width:100%;}
+.gword-kb-row{display:flex;gap:3px;justify-content:center;}
+.gword-key{
+  flex:1;max-width:36px;padding:10px 2px;border-radius:4px;
+  font-size:12px;font-weight:700;border:none;cursor:pointer;
+  background:var(--bg2);color:var(--t0);transition:background .1s;
+  font-family:'Geist',sans-serif;
+}
+.gword-key.wide{max-width:52px;font-size:10px;}
+.gword-key:hover{background:var(--bg3);}
+.gword-key.correct{background:var(--g);color:var(--bg);}
+.gword-key.present{background:var(--amber);color:var(--bg);}
+.gword-key.absent{background:var(--bg3);color:var(--t3);}
+
 /* ── STOCK CARD ───────────────────────────────────────────── */
 .stock-card{
   background:var(--bg1);border:1px solid var(--line);
@@ -813,6 +981,22 @@ body{
 }
 .modal-tab.active{color:var(--t0);border-bottom-color:var(--g);}
 
+/* ── SEARCH TAGLINE ───────────────────────────────────────── */
+.search-tagline-wrap{
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:14px;
+}
+.search-tagline{
+  font-family:'Lora',serif;font-style:italic;font-weight:400;
+  font-size:15px;color:var(--t1);letter-spacing:.01em;text-align:center;
+  white-space:nowrap;
+  opacity:0;transform:translateY(8px);
+  transition:opacity .55s ease,transform .55s ease;
+  display:inline-block;min-height:22px;
+}
+.search-tagline.visible{opacity:1;transform:translateY(0);}
+.search-tagline.exit{opacity:0;transform:translateY(-8px);}
+
 </style>
 </head>
 <body>
@@ -833,6 +1017,7 @@ body{
     <span class="home-brand">Altura <span>Search</span></span>
   </div>
 
+  <div class="search-tagline-wrap"><span class="search-tagline" id="search-tagline"></span></div>
   <div class="home-search-wrap">
     <div class="home-search-box">
       <div class="search-icon">
@@ -2464,6 +2649,187 @@ function clearDateRange() {
   _resultsCache = {}; renderResults();
 }
 
+// ── SUPPORT CARD SYSTEM ───────────────────────────────────────
+
+// Query patterns that may indicate someone needs support
+const SUPPORT_PATTERNS = {
+  crisis: [
+    /\b(suicide|suicidal|kill myself|end my life|don'?t want to (be here|live|exist)|want to die|thinking about dying)\b/i,
+    /\b(self[- ]?harm|self[- ]?hurt|cut myself|hurting myself)\b/i,
+    /\b(can'?t (go on|carry on|cope|do this anymore)|no reason to live|nothing to live for)\b/i,
+    /\b(overdose|how many pills|lethal dose)\b/i,
+  ],
+  mentalHealth: [
+    /\b(feeling (hopeless|worthless|empty|numb|lost|alone|isolated|depressed|anxious|overwhelmed))\b/i,
+    /\b(can'?t (sleep|eat|function|get out of bed)|panic attack|having a breakdown)\b/i,
+    /\b(depression|anxiety|mental health help|therapy|counselling|counseling)\b/i,
+    /\b(no one cares|nobody cares|nobody listens|i'?m invisible|i don'?t matter)\b/i,
+  ],
+  abuse: [
+    /\b(domestic (violence|abuse)|being (hit|beaten|abused)|partner (hits|hurts|abuses) me)\b/i,
+    /\b(escape (abusive|violent) (partner|relationship|home))\b/i,
+    /\b(sexual (assault|abuse|violence)|rape|harassed)\b/i,
+  ],
+  addiction: [
+    /\b(how to stop (drinking|using|taking) drugs?|i'?m addicted|drug addiction|alcohol addiction)\b/i,
+    /\b(rehab|detox|withdrawal|substance (abuse|use disorder))\b/i,
+  ],
+  hardship: [
+    /\b(homeless|can'?t afford (food|rent|bills)|facing eviction|in debt|debt crisis)\b/i,
+    /\b(food bank|emergency (housing|shelter)|nowhere to (sleep|go|live))\b/i,
+  ],
+};
+
+function detectSupportCategory(q) {
+  for (const [cat, patterns] of Object.entries(SUPPORT_PATTERNS)) {
+    for (const rx of patterns) {
+      if (rx.test(q)) return cat;
+    }
+  }
+  return null;
+}
+
+// Country → resource data
+// Each entry: { name, desc, contact, url, type: 'phone'|'text'|'chat'|'web' }
+const SUPPORT_DB = {
+  // ── Crisis resources by country code ──
+  crisis: {
+    GB: [{ name:'Samaritans', desc:'Free, confidential, 24/7', contact:'116 123', url:'https://www.samaritans.org', type:'phone' },
+         { name:'Crisis Text Line UK', desc:'Text SHOUT to 85258', contact:'85258', url:'https://giveusashout.org', type:'text' }],
+    US: [{ name:'988 Suicide & Crisis Lifeline', desc:'Call or text 988, 24/7', contact:'988', url:'https://988lifeline.org', type:'phone' },
+         { name:'Crisis Text Line', desc:'Text HOME to 741741', contact:'741741', url:'https://www.crisistextline.org', type:'text' }],
+    CA: [{ name:'Crisis Services Canada', desc:'24/7 bilingual support', contact:'1-833-456-4566', url:'https://www.crisisservicescanada.ca', type:'phone' },
+         { name:'Kids Help Phone', desc:'Text CONNECT to 686868', contact:'686868', url:'https://kidshelpphone.ca', type:'text' }],
+    AU: [{ name:'Lifeline Australia', desc:'24/7 crisis support', contact:'13 11 14', url:'https://www.lifeline.org.au', type:'phone' },
+         { name:'Beyond Blue', desc:'24/7 mental health support', contact:'1300 22 4636', url:'https://www.beyondblue.org.au', type:'phone' }],
+    NZ: [{ name:'Lifeline Aotearoa', desc:'24/7 crisis support', contact:'0800 543 354', url:'https://www.lifeline.org.nz', type:'phone' }],
+    IE: [{ name:'Samaritans Ireland', desc:'Free, confidential, 24/7', contact:'116 123', url:'https://www.samaritans.org/ireland', type:'phone' },
+         { name:'Pieta House', desc:'Suicide & self-harm crisis', contact:'1800 247 247', url:'https://www.pieta.ie', type:'phone' }],
+    DE: [{ name:'Telefonseelsorge', desc:'Kostenlos, anonym, 24/7', contact:'0800 111 0 111', url:'https://www.telefonseelsorge.de', type:'phone' }],
+    FR: [{ name:'Numéro National Prévention Suicide', desc:'Gratuit, 24h/24', contact:'3114', url:'https://www.3114.fr', type:'phone' }],
+    ES: [{ name:'Teléfono de la Esperanza', desc:'Atención en crisis, 24h', contact:'717 003 717', url:'https://telefonodelaesperanza.org', type:'phone' }],
+    IT: [{ name:'Telefono Amico', desc:'Ascolto e supporto', contact:'02 2327 2327', url:'https://www.telefonoamico.it', type:'phone' }],
+    NL: [{ name:'Stichting 113', desc:'Zelfmoordpreventie, 24/7', contact:'0800 0113', url:'https://www.113.nl', type:'phone' }],
+    BE: [{ name:'Centre de Prévention du Suicide', desc:'Gratuit, 24h/24', contact:'0800 32 123', url:'https://www.preventionsuicide.be', type:'phone' }],
+    PT: [{ name:'SOS Voz Amiga', desc:'Apoio emocional, 24h', contact:'213 544 545', url:'https://www.sosvozamiga.org', type:'phone' }],
+    SE: [{ name:'Mind Självmordslinjen', desc:'Dygnet runt stöd', contact:'90101', url:'https://mind.se', type:'phone' }],
+    NO: [{ name:'Mental Helse Hjelpetelefonen', desc:'24/7 gratis', contact:'116 123', url:'https://mentalhelse.no', type:'phone' }],
+    DK: [{ name:'Livslinien', desc:'24/7 gratis', contact:'70 201 201', url:'https://www.livslinien.dk', type:'phone' }],
+    FI: [{ name:'Mieli ry', desc:'Kriisipuhelin 24/7', contact:'09 2525 0111', url:'https://mieli.fi', type:'phone' }],
+    CH: [{ name:'Die Dargebotene Hand', desc:'24/7, kostenlos', contact:'143', url:'https://www.143.ch', type:'phone' }],
+    AT: [{ name:'Telefonseelsorge Österreich', desc:'Kostenlos, 24/7', contact:'142', url:'https://www.telefonseelsorge.at', type:'phone' }],
+    IN: [{ name:'iCall', desc:'Psychological support helpline', contact:'9152987821', url:'https://icallhelpline.org', type:'phone' },
+         { name:'Vandrevala Foundation', desc:'24/7 crisis support', contact:'1860-2662-345', url:'https://www.vandrevalafoundation.com', type:'phone' }],
+    JP: [{ name:'Inochi no Denwa', desc:'24時間、無料', contact:'0120-783-556', url:'https://www.inochi.or.jp', type:'phone' }],
+    KR: [{ name:'한국자살예방상담전화', desc:'24시간 무료 상담', contact:'1393', url:'https://spckorea.or.kr', type:'phone' }],
+    CN: [{ name:'北京心理危机研究与干预中心', desc:'24小时', contact:'010-82951332', url:'https://www.crisis.org.cn', type:'phone' }],
+    BR: [{ name:'CVV — Centro de Valorização da Vida', desc:'24h, gratuito', contact:'188', url:'https://www.cvv.org.br', type:'phone' }],
+    MX: [{ name:'SAPTEL', desc:'24 horas, gratuito', contact:'55 5259-8121', url:'https://www.saptel.org.mx', type:'phone' }],
+    AR: [{ name:'Centro de Asistencia al Suicida', desc:'24hs', contact:'135', url:'https://www.cas.org.ar', type:'phone' }],
+    ZA: [{ name:'SADAG', desc:'24/7 crisis line', contact:'0800 567 567', url:'https://www.sadag.org', type:'phone' }],
+    NG: [{ name:'Mentally Aware Nigeria', desc:'Support & resources', contact:null, url:'https://www.mani.ng', type:'web' }],
+    KE: [{ name:'Befrienders Kenya', desc:'Emotional support helpline', contact:'0722 178 177', url:'https://befrienderskenya.org', type:'phone' }],
+    _global: [{ name:'Find A Helpline', desc:'Crisis lines in 80+ countries', contact:null, url:'https://findahelpline.com', type:'web' },
+              { name:'Befrienders Worldwide', desc:'Global emotional support network', contact:null, url:'https://www.befrienders.org', type:'web' }],
+  },
+  mentalHealth: {
+    GB: [{ name:'Mind', desc:'Mental health support & info', contact:null, url:'https://www.mind.org.uk', type:'web' },
+         { name:'NHS Talking Therapies', desc:'Free psychological therapies', contact:null, url:'https://www.nhs.uk/mental-health/talking-therapies-medicine-treatments/talking-therapies-and-counselling/nhs-talking-therapies/', type:'web' }],
+    US: [{ name:'NAMI Helpline', desc:'Mental health information & support', contact:'1-800-950-6264', url:'https://www.nami.org/help', type:'phone' }],
+    AU: [{ name:'Beyond Blue', desc:'Mental health support', contact:'1300 22 4636', url:'https://www.beyondblue.org.au', type:'phone' }],
+    _global: [{ name:'Find A Helpline', desc:'Mental health lines in 80+ countries', contact:null, url:'https://findahelpline.com', type:'web' }],
+  },
+  abuse: {
+    GB: [{ name:'National Domestic Abuse Helpline', desc:'Free, 24/7', contact:'0808 2000 247', url:'https://www.nationaldahelpline.org.uk', type:'phone' },
+         { name:'Refuge', desc:'Support for domestic abuse', contact:'0808 2000 247', url:'https://www.refuge.org.uk', type:'phone' }],
+    US: [{ name:'National DV Hotline', desc:'24/7, confidential', contact:'1-800-799-7233', url:'https://www.thehotline.org', type:'phone' }],
+    AU: [{ name:'1800RESPECT', desc:'DV & sexual assault support', contact:'1800 737 732', url:'https://www.1800respect.org.au', type:'phone' }],
+    _global: [{ name:'UN Women — Safe Cities', desc:'Global DV resources', contact:null, url:'https://www.unwomen.org', type:'web' }],
+  },
+  addiction: {
+    GB: [{ name:'Frank', desc:'Drug & alcohol advice, 24/7', contact:'0300 123 6600', url:'https://www.talktofrank.com', type:'phone' },
+         { name:'Alcoholics Anonymous UK', desc:'Recovery support', contact:'0800 9177 650', url:'https://www.alcoholics-anonymous.org.uk', type:'phone' }],
+    US: [{ name:'SAMHSA Helpline', desc:'Free, confidential, 24/7', contact:'1-800-662-4357', url:'https://www.samhsa.gov/find-help/national-helpline', type:'phone' }],
+    AU: [{ name:'DirectLine', desc:'Alcohol & drug support', contact:'1800 888 236', url:'https://www.directline.org.au', type:'phone' }],
+    _global: [{ name:'Alcoholics Anonymous', desc:'Find meetings worldwide', contact:null, url:'https://www.aa.org', type:'web' }],
+  },
+  hardship: {
+    GB: [{ name:'Citizens Advice', desc:'Free advice on benefits, debt, housing', contact:null, url:'https://www.citizensadvice.org.uk', type:'web' },
+         { name:'Trussell Trust', desc:'Find your nearest food bank', contact:null, url:'https://www.trusselltrust.org/get-help/find-a-foodbank/', type:'web' },
+         { name:'StepChange', desc:'Free debt advice', contact:'0800 138 1111', url:'https://www.stepchange.org', type:'phone' }],
+    US: [{ name:'211.org', desc:'Local social services finder', contact:'211', url:'https://www.211.org', type:'phone' },
+         { name:'Feeding America', desc:'Find your nearest food bank', contact:null, url:'https://www.feedingamerica.org/find-your-local-foodbank', type:'web' }],
+    AU: [{ name:'Salvos Connect', desc:'Emergency relief & support', contact:null, url:'https://salvosconnect.salvationarmy.org.au', type:'web' }],
+    _global: [{ name:'UNHCR', desc:'Refugee & displacement support', contact:null, url:'https://www.unhcr.org', type:'web' }],
+  },
+};
+
+const SUPPORT_COPY = {
+  crisis:      { heading: "You don't have to face this alone", sub: "If you're having thoughts of suicide or self-harm, trained people are ready to listen — no judgement, completely confidential." },
+  mentalHealth:{ heading: "Help is available", sub: "If you're struggling with your mental health, talking to someone can make a real difference. These services are free and confidential." },
+  abuse:       { heading: "You deserve to be safe", sub: "If you're experiencing abuse, free and confidential support is available. You don't have to handle this alone." },
+  addiction:   { heading: "Support is available", sub: "If you're struggling with alcohol or drugs, these services offer free, non-judgmental help whenever you're ready." },
+  hardship:    { heading: "Practical help is out there", sub: "If you're facing financial hardship, debt, or housing issues, these services offer free advice and practical support." },
+};
+
+let _supportCountryCode = null;
+
+async function detectCountry() {
+  if (_supportCountryCode) return _supportCountryCode;
+  // Try browser language as a rough first pass
+  const lang = navigator.language || '';
+  const langMap = { 'en-GB':'GB','en-AU':'AU','en-NZ':'NZ','en-IE':'IE','en-CA':'CA','de':'DE','fr':'FR','es':'ES','it':'IT','nl':'NL','pt-BR':'BR','ja':'JP','ko':'KR','zh':'CN','sv':'SE','nb':'NO','da':'DK','fi':'FI' };
+  let code = langMap[lang] || langMap[lang.split('-')[0]] || null;
+  try {
+    const r = await fetch('https://ipapi.co/json/', { signal: AbortSignal.timeout(3000) });
+    if (r.ok) { const d = await r.json(); if (d.country_code) code = d.country_code; }
+  } catch {}
+  _supportCountryCode = code || 'GB'; // default to GB
+  return _supportCountryCode;
+}
+
+function resourcesForCountry(category, countryCode) {
+  const db = SUPPORT_DB[category] || {};
+  const local = db[countryCode] || [];
+  const global = db['_global'] || [];
+  // Show up to 2 local, pad with global if needed, max 3 total
+  const combined = [...local, ...global].slice(0, local.length ? 3 : 2);
+  return combined;
+}
+
+function renderSupportResource(r) {
+  const iconMap = { phone:'📞', text:'💬', chat:'💬', web:'🔗' };
+  const actionMap = { phone: r.contact, text: `Text ${r.contact}`, chat:'Open chat', web:'Visit →' };
+  return `<a class="support-resource" href="${r.url}" target="_blank" rel="noopener">
+    <div class="support-resource-icon">${iconMap[r.type] || '🔗'}</div>
+    <div class="support-resource-body">
+      <div class="support-resource-name">${r.name}</div>
+      <div class="support-resource-desc">${r.desc}</div>
+    </div>
+    <div class="support-resource-action">${actionMap[r.type] || 'Visit →'}</div>
+  </a>`;
+}
+
+async function maybeSupportCard(q) {
+  const category = detectSupportCategory(q);
+  if (!category) return null;
+  const country = await detectCountry();
+  const resources = resourcesForCountry(category, country);
+  if (!resources.length) return null;
+  const copy = SUPPORT_COPY[category];
+  return `<div class="support-card" id="support-card">
+    <button class="support-card-close" onclick="document.getElementById('support-card').remove()" aria-label="Dismiss">✕</button>
+    <div class="sc-badge"><div class="sc-badge-dot" style="background:var(--g)"></div>Support</div>
+    <div class="support-card-heading">${copy.heading}</div>
+    <div class="support-card-sub">${copy.sub}</div>
+    <div class="support-resources">${resources.map(renderSupportResource).join('')}</div>
+    <div class="support-footer">
+      These results are shown because your search may relate to a difficult time.
+      Search results continue below. · <a href="https://findahelpline.com" target="_blank" rel="noopener">Find more help worldwide</a>
+    </div>
+  </div>`;
+}
+
 // ── SPECIAL CARD TYPES ────────────────────────────────────────
 const RECIPES = {
   'pasta': { name:'Pasta', time:'20 min', serves:'2', ingredients:['200g pasta','2 cloves garlic','3 tbsp olive oil','Salt and pepper','Parmesan to serve'] },
@@ -2577,13 +2943,329 @@ function renderStockCard(data) {
   </div>`;
 }
 
-// Override renderResults to fetch stock card first
+// Override renderResults to fetch stock + support cards first
 const _origRenderResults = renderResults;
 renderResults = async function() {
   _stockCardHtml = '';
-  const stockData = await fetchStockCard(currentQuery);
+
+  // Run stock and support detection in parallel
+  const [stockData, supportHtml] = await Promise.all([
+    fetchStockCard(currentQuery),
+    maybeSupportCard(currentQuery),
+  ]);
+
   if (stockData && !stockData.error) _stockCardHtml = renderStockCard(stockData);
   await _origRenderResults();
+
+  // Inject support card at the very top of results, above everything else
+  if (supportHtml) {
+    const main = document.getElementById('res-main');
+    if (main) {
+      const existing = document.getElementById('support-card');
+      if (existing) existing.remove();
+      const el = document.createElement('div');
+      el.innerHTML = supportHtml;
+      const card = el.firstElementChild;
+      main.insertBefore(card, main.firstChild);
+    }
+  }
+};
+
+// ── GAME PANEL SYSTEM ─────────────────────────────────────────
+
+const GAMES = [
+  { id:'snake',       label:'Snake' },
+  { id:'tetris',      label:'Tetris' },
+  { id:'2048',        label:'2048' },
+  { id:'minesweeper', label:'Mines' },
+  { id:'wordle',      label:'Wordle' },
+];
+
+const GAME_TRIGGERS = {
+  snake:       /^play snake$|^snake$/i,
+  tetris:      /^play tetris$|^tetris$/i,
+  g2048:       /^play 2048$|^2048$/i,
+  minesweeper: /^play (minesweeper|mines)$|^minesweeper$|^mines$/i,
+  wordle:      /^play wordle$|^wordle$/i,
+  any:         /^play (games?|arcade)$|^games?$/i,
+};
+
+let _gameOpen = false;
+let _activeGame = null;
+let _gameScore = 0;
+let _gameLoop = null;
+let _gameKeyHandler = null;
+
+function detectGameTrigger(q) {
+  for (const [id, rx] of Object.entries(GAME_TRIGGERS)) {
+    if (id === 'any') continue;
+    if (rx.test(q.trim())) return id;
+  }
+  if (GAME_TRIGGERS.any.test(q.trim())) return 'snake';
+  return null;
+}
+
+function openGamePanel(gameId) {
+  _gameOpen = true;
+  document.getElementById('game-overlay').classList.add('show');
+  buildGameSelector(gameId);
+  switchGame(gameId);
+}
+
+function closeGamePanel() {
+  _gameOpen = false;
+  stopGame();
+  document.getElementById('game-overlay').classList.remove('show');
+}
+
+function buildGameSelector(activeId) {
+  const sel = document.getElementById('game-selector');
+  sel.innerHTML = GAMES.map(g =>
+    '<button class="game-tab' + (g.id===activeId?' active':'') + '" onclick="switchGame(\'' + g.id + '\')">' + g.label + '</button>'
+  ).join('');
+}
+
+function switchGame(id) {
+  _activeGame = id;
+  stopGame();
+  _gameScore = 0;
+  const gobj = GAMES.find(g=>g.id===id);
+  document.getElementById('game-panel-title').textContent = gobj ? gobj.label : 'Game';
+  document.getElementById('game-panel-score').textContent = '';
+  document.querySelectorAll('.game-tab').forEach(t => t.classList.toggle('active', t.textContent === (gobj ? gobj.label : '')));
+  const area = document.getElementById('game-area');
+  area.innerHTML = '';
+  if (id === 'snake')            initSnake(area);
+  else if (id === 'tetris')      initTetris(area);
+  else if (id === 'g2048')       init2048(area);
+  else if (id === 'minesweeper') initMinesweeper(area);
+  else if (id === 'wordle')      initWordle(area);
+}
+
+function stopGame() {
+  if (_gameLoop) { clearInterval(_gameLoop); _gameLoop = null; }
+  if (_gameKeyHandler) { document.removeEventListener('keydown', _gameKeyHandler); _gameKeyHandler = null; }
+}
+
+function setScore(n) {
+  _gameScore = n;
+  document.getElementById('game-panel-score').textContent = n > 0 ? n + ' pts' : '';
+}
+
+// ── SNAKE
+function initSnake(area) {
+  const W=20,H=20,SZ=17;
+  const canvas=document.createElement('canvas');
+  canvas.width=W*SZ; canvas.height=H*SZ; canvas.style.background='var(--bg)';
+  const wrap=document.createElement('div'); wrap.className='game-canvas-wrap';
+  const msg=document.createElement('div'); msg.className='game-overlay-msg';
+  msg.innerHTML='<h2>Snake</h2><p>Eat the dots. Don\'t crash.</p><button class="game-start-btn" id="snake-start">Start</button>';
+  wrap.appendChild(canvas); wrap.appendChild(msg); area.appendChild(wrap);
+  area.insertAdjacentHTML('beforeend','<div class="game-controls"><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> move &nbsp;·&nbsp; <kbd>P</kbd> pause</div>');
+  const ctx=canvas.getContext('2d');
+  let snake,dir,food,running,paused,score;
+
+  function reset(){snake=[{x:10,y:10},{x:9,y:10},{x:8,y:10}];dir={x:1,y:0};score=0;running=false;paused=false;placeFood();draw();}
+  function placeFood(){do{food={x:Math.floor(Math.random()*W),y:Math.floor(Math.random()*H)};}while(snake.some(function(s){return s.x===food.x&&s.y===food.y;}));}
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle='rgba(157,219,94,.18)';
+    ctx.beginPath();ctx.arc((food.x+.5)*SZ,(food.y+.5)*SZ,SZ*.38,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle='#9ddb5e';
+    snake.forEach(function(s,i){ctx.globalAlpha=i===0?1:Math.max(0.15,0.75-i*0.03);ctx.fillRect(s.x*SZ+1,s.y*SZ+1,SZ-2,SZ-2);});
+    ctx.globalAlpha=1;
+  }
+  function tick(){
+    if(!running||paused)return;
+    const head={x:snake[0].x+dir.x,y:snake[0].y+dir.y};
+    if(head.x<0||head.x>=W||head.y<0||head.y>=H||snake.some(function(s){return s.x===head.x&&s.y===head.y;})){
+      running=false;
+      msg.innerHTML='<h2>Game Over</h2><p>Score: '+score+'</p><button class="game-start-btn" id="snake-start">Play Again</button>';
+      msg.style.display='flex';
+      document.getElementById('snake-start').onclick=startSnake;
+      return;
+    }
+    snake.unshift(head);
+    if(head.x===food.x&&head.y===food.y){score+=10;setScore(score);placeFood();}else snake.pop();
+    draw();
+  }
+  function startSnake(){msg.style.display='none';reset();running=true;}
+  document.getElementById('snake-start').onclick=startSnake;
+  _gameKeyHandler=function(e){
+    if(!_gameOpen||_activeGame!=='snake')return;
+    const map={ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0}};
+    if(map[e.key]&&!(map[e.key].x===-dir.x&&map[e.key].y===-dir.y)){dir=map[e.key];e.preventDefault();}
+    if(e.key==='p'||e.key==='P')paused=!paused;
+  };
+  document.addEventListener('keydown',_gameKeyHandler);
+  _gameLoop=setInterval(tick,130);
+  reset();
+}
+
+// ── TETRIS
+function initTetris(area) {
+  const W=10,H=20,SZ=16;
+  const canvas=document.createElement('canvas');
+  canvas.width=W*SZ; canvas.height=H*SZ; canvas.style.background='var(--bg)';
+  const wrap=document.createElement('div'); wrap.className='game-canvas-wrap';
+  const msg=document.createElement('div'); msg.className='game-overlay-msg';
+  msg.innerHTML='<h2>Tetris</h2><p>Clear lines to score.</p><button class="game-start-btn" id="tetris-start">Start</button>';
+  wrap.appendChild(canvas); wrap.appendChild(msg); area.appendChild(wrap);
+  area.insertAdjacentHTML('beforeend','<div class="game-controls"><kbd>←</kbd><kbd>→</kbd> move &nbsp;·&nbsp; <kbd>↑</kbd> rotate &nbsp;·&nbsp; <kbd>↓</kbd> drop &nbsp;·&nbsp; <kbd>Space</kbd> slam</div>');
+  const ctx=canvas.getContext('2d');
+  const PIECES=[
+    {shape:[[1,1,1,1]],color:'#4ac8cc'},
+    {shape:[[1,1],[1,1]],color:'#9ddb5e'},
+    {shape:[[1,1,1],[0,1,0]],color:'#e0b84a'},
+    {shape:[[1,1,1],[1,0,0]],color:'#4a8ccc'},
+    {shape:[[1,1,1],[0,0,1]],color:'#cc4a4a'},
+    {shape:[[1,1,0],[0,1,1]],color:'#9d5edb'},
+    {shape:[[0,1,1],[1,1,0]],color:'#db9d5e'},
+  ];
+  let board,piece,pos,score,running,paused;
+  function newBoard(){return Array.from({length:H},function(){return Array(W).fill(null);});}
+  function randomPiece(){const p=PIECES[Math.floor(Math.random()*PIECES.length)];return{shape:p.shape.map(function(r){return r.slice();}),color:p.color};}
+  function rotate(m){return m[0].map(function(_,i){return m.map(function(r){return r[i];}).reverse();});}
+  function valid(sh,px,py){return sh.every(function(row,dy){return row.every(function(v,dx){return !v||(px+dx>=0&&px+dx<W&&py+dy>=0&&py+dy<H&&!board[py+dy][px+dx]);});});}
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    board.forEach(function(row,y){row.forEach(function(c,x){if(c){ctx.fillStyle=c;ctx.globalAlpha=.85;ctx.fillRect(x*SZ+1,y*SZ+1,SZ-2,SZ-2);ctx.globalAlpha=1;}});});
+    if(piece){piece.shape.forEach(function(row,dy){row.forEach(function(v,dx){if(v){ctx.fillStyle=piece.color;ctx.fillRect((pos.x+dx)*SZ+1,(pos.y+dy)*SZ+1,SZ-2,SZ-2);}});});}
+  }
+  function lock(){
+    piece.shape.forEach(function(row,dy){row.forEach(function(v,dx){if(v&&board[pos.y+dy])board[pos.y+dy][pos.x+dx]=piece.color;});});
+    let cleared=0;
+    for(let y=H-1;y>=0;){if(board[y].every(function(c){return c;})){board.splice(y,1);board.unshift(Array(W).fill(null));cleared++;}else y--;}
+    score+=[0,100,300,500,800][cleared]||0;setScore(score);
+    piece=randomPiece();pos={x:3,y:0};
+    if(!valid(piece.shape,pos.x,pos.y)){running=false;msg.innerHTML='<h2>Game Over</h2><p>Score: '+score+'</p><button class="game-start-btn" id="tetris-start">Play Again</button>';msg.style.display='flex';document.getElementById('tetris-start').onclick=startTetris;}
+  }
+  function tick(){if(!running||paused)return;pos.y++;if(!valid(piece.shape,pos.x,pos.y)){pos.y--;lock();}draw();}
+  function startTetris(){msg.style.display='none';board=newBoard();piece=randomPiece();pos={x:3,y:0};score=0;running=true;paused=false;draw();}
+  document.getElementById('tetris-start').onclick=startTetris;
+  _gameKeyHandler=function(e){
+    if(!_gameOpen||_activeGame!=='tetris'||!running||paused)return;
+    if(e.key==='ArrowLeft'&&valid(piece.shape,pos.x-1,pos.y)){pos.x--;draw();e.preventDefault();}
+    else if(e.key==='ArrowRight'&&valid(piece.shape,pos.x+1,pos.y)){pos.x++;draw();e.preventDefault();}
+    else if(e.key==='ArrowDown'){pos.y++;if(!valid(piece.shape,pos.x,pos.y)){pos.y--;lock();}draw();e.preventDefault();}
+    else if(e.key==='ArrowUp'){const r=rotate(piece.shape);if(valid(r,pos.x,pos.y))piece.shape=r;draw();e.preventDefault();}
+    else if(e.key===' '){while(valid(piece.shape,pos.x,pos.y+1))pos.y++;lock();draw();e.preventDefault();}
+    else if(e.key==='p'||e.key==='P')paused=!paused;
+  };
+  document.addEventListener('keydown',_gameKeyHandler);
+  _gameLoop=setInterval(tick,500);
+  draw();
+}
+
+// ── 2048
+function init2048(area) {
+  let grid,score;
+  const COLORS={'0':'var(--bg2)','2':'#2e3340','4':'#3a4050','8':'#9ddb5e','16':'#7dbb3e','32':'#e0b84a','64':'#c89830','128':'#4ac8cc','256':'#3ab8bc','512':'#4a8ccc','1024':'#9d5edb','2048':'#cc4a4a'};
+  const TXCOL={'0':'transparent','2':'var(--t1)','4':'var(--t1)'};
+  function newGrid(){return Array.from({length:4},function(){return Array(4).fill(0);});}
+  function addTile(g){const empty=[];g.forEach(function(r,y){r.forEach(function(v,x){if(!v)empty.push({x:x,y:y});});});if(!empty.length)return;const t=empty[Math.floor(Math.random()*empty.length)];g[t.y][t.x]=Math.random()<.9?2:4;}
+  function canMove(g){for(let y=0;y<4;y++)for(let x=0;x<4;x++){if(!g[y][x])return true;if(x<3&&g[y][x]===g[y][x+1])return true;if(y<3&&g[y][x]===g[y+1][x])return true;}return false;}
+  function slideRow(row){let r=row.filter(function(v){return v;});for(let i=0;i<r.length-1;i++){if(r[i]===r[i+1]){score+=r[i]*2;r[i]*=2;r[i+1]=0;}}r=r.filter(function(v){return v;});while(r.length<4)r.push(0);return r;}
+  function move(dx,dy){
+    let moved=false;
+    if(dx){for(let y=0;y<4;y++){const row=dx>0?grid[y].slice().reverse():grid[y].slice();const s=slideRow(row);const res=dx>0?s.reverse():s;if(res.join()!==grid[y].join()){grid[y]=res;moved=true;}}}
+    else{for(let x=0;x<4;x++){const col=grid.map(function(r){return r[x];});if(dy<0)col.reverse();const s=slideRow(col);if(dy<0)s.reverse();s.forEach(function(v,y){if(grid[y][x]!==v){grid[y][x]=v;moved=true;}});}}
+    if(moved){addTile(grid);setScore(score);render();}
+    if(!canMove(grid)){const ov=document.getElementById('g2048-over');if(ov){ov.style.display='flex';ov.querySelector('h2').textContent='Game Over';ov.querySelector('p').textContent='Score: '+score;}}
+  }
+  function render(){
+    const el=document.getElementById('g2048');if(!el)return;
+    el.innerHTML=grid.reduce(function(a,r){return a.concat(r);},[]).map(function(v){
+      const bg=COLORS[String(v)]||'#cc4a4a';const tx=TXCOL[String(v)]||'#fff';
+      const fs=v>=1000?'13px':v>=100?'16px':'20px';
+      return '<div class="g2048-cell" style="background:'+bg+';color:'+tx+';font-size:'+fs+'">'+(v||'')+'</div>';
+    }).join('');
+  }
+  area.innerHTML='<div style="width:100%;display:flex;justify-content:space-between;align-items:center"><span style="font-family:\'Geist Mono\',monospace;font-size:11px;color:var(--t2)">Reach <strong style="color:var(--amber)">2048</strong></span><button class="game-start-btn" style="padding:5px 14px;font-size:11px" onclick="_g2048Start()">New Game</button></div><div class="game-canvas-wrap" style="width:100%;position:relative"><div class="g2048-board" id="g2048"></div><div class="game-overlay-msg" id="g2048-over" style="display:none"><h2></h2><p></p><button class="game-start-btn" onclick="_g2048Start()">Play Again</button></div></div><div class="game-controls"><kbd>↑</kbd><kbd>↓</kbd><kbd>←</kbd><kbd>→</kbd> to merge tiles</div>';
+  window._g2048Start=function(){grid=newGrid();score=0;addTile(grid);addTile(grid);const ov=document.getElementById('g2048-over');if(ov)ov.style.display='none';render();setScore(0);};
+  _g2048Start();
+  _gameKeyHandler=function(e){
+    if(!_gameOpen||_activeGame!=='g2048')return;
+    const map={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]};
+    if(map[e.key]){move(map[e.key][0],map[e.key][1]);e.preventDefault();}
+  };
+  document.addEventListener('keydown',_gameKeyHandler);
+}
+
+// ── MINESWEEPER
+function initMinesweeper(area) {
+  const COLS=9,ROWS=9,MINES=10;
+  let board,revealed,flagged,gameOver,firstClick;
+  const NUM_COLORS=['','#4a8ccc','#9ddb5e','#cc4a4a','#4ac8cc','#e0b84a','#9d5edb','#db9d5e','var(--t2)'];
+  function newBoard(){board=Array.from({length:ROWS},function(){return Array(COLS).fill(0);});revealed=Array.from({length:ROWS},function(){return Array(COLS).fill(false);});flagged=Array.from({length:ROWS},function(){return Array(COLS).fill(false);});gameOver=false;firstClick=true;}
+  function placeMines(sx,sy){let placed=0;while(placed<MINES){const r=Math.floor(Math.random()*ROWS),c=Math.floor(Math.random()*COLS);if(board[r][c]!=='M'&&!(Math.abs(r-sy)<=1&&Math.abs(c-sx)<=1)){board[r][c]='M';placed++;}}for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){if(board[r][c]==='M')continue;let n=0;for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++){if(board[r+dr]&&board[r+dr][c+dc]==='M')n++;}board[r][c]=n;}}
+  function reveal(r,c){if(r<0||r>=ROWS||c<0||c>=COLS||revealed[r][c]||flagged[r][c])return;revealed[r][c]=true;if(board[r][c]===0)for(let dr=-1;dr<=1;dr++)for(let dc=-1;dc<=1;dc++)reveal(r+dr,c+dc);}
+  function render(){
+    const el=document.getElementById('gmine');if(!el)return;el.innerHTML='';
+    for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+      const cell=document.createElement('div');cell.className='gmine-cell';
+      if(revealed[r][c]){cell.classList.add('revealed');if(board[r][c]==='M')cell.textContent='💣';else if(board[r][c]>0){cell.textContent=board[r][c];cell.style.color=NUM_COLORS[board[r][c]];}}
+      else if(flagged[r][c]){cell.classList.add('flagged');cell.textContent='🚩';}
+      (function(rr,cc){
+        cell.onclick=function(){
+          if(gameOver||revealed[rr][cc]||flagged[rr][cc])return;
+          if(firstClick){placeMines(cc,rr);firstClick=false;}
+          if(board[rr][cc]==='M'){revealed[rr][cc]=true;gameOver=true;for(let i=0;i<ROWS;i++)for(let j=0;j<COLS;j++)if(board[i][j]==='M')revealed[i][j]=true;render();const m=document.getElementById('gmine-msg');if(m){m.style.display='flex';m.querySelector('h2').textContent='💣 Boom!';m.querySelector('p').textContent='You hit a mine.';}return;}
+          reveal(rr,cc);
+          const unrevealed=revealed.reduce(function(a,row){return a+row.filter(function(v){return !v;}).length;},0);
+          if(unrevealed===MINES){gameOver=true;const m=document.getElementById('gmine-msg');if(m){m.style.display='flex';m.querySelector('h2').textContent='🎉 Clear!';m.querySelector('p').textContent='All mines avoided!';}}
+          render();
+        };
+        cell.oncontextmenu=function(e){e.preventDefault();if(gameOver||revealed[rr][cc])return;flagged[rr][cc]=!flagged[rr][cc];render();};
+      })(r,c);
+      el.appendChild(cell);
+    }
+  }
+  area.innerHTML='<div style="width:100%;display:flex;justify-content:space-between;align-items:center"><span style="font-family:\'Geist Mono\',monospace;font-size:10px;color:var(--t2)">'+MINES+' mines · 9×9</span><button class="game-start-btn" style="padding:5px 14px;font-size:11px" onclick="_mineReset()">New Game</button></div><div class="game-canvas-wrap" style="width:100%;position:relative"><div class="gmine-board" id="gmine" style="grid-template-columns:repeat('+COLS+',1fr)"></div><div class="game-overlay-msg" id="gmine-msg" style="display:none"><h2></h2><p></p><button class="game-start-btn" onclick="_mineReset()">Play Again</button></div></div><div class="game-controls"><kbd>Click</kbd> reveal &nbsp;·&nbsp; <kbd>Right-click</kbd> flag</div>';
+  window._mineReset=function(){newBoard();const m=document.getElementById('gmine-msg');if(m)m.style.display='none';render();};
+  _mineReset();
+}
+
+// ── WORDLE
+function initWordle(area) {
+  const WORDS=['CRANE','SLATE','TRACE','AUDIO','RAISE','LIGHT','STORM','PLANT','BLEND','CRISP','FROST','GRIND','PLUMB','SNACK','DRINK','FLAME','GLOBE','SWIFT','PIXEL','GRASP','BOXER','DWARF','QUILL','VIVID','WALTZ','BLINK','FLICK','STOMP','CROWN','GLYPH'];
+  const answer=WORDS[Math.floor(Math.random()*WORDS.length)];
+  let guesses=[],current='',gameOver=false,keyStates={};
+  const KEYS=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['ENTER','Z','X','C','V','B','N','M','DEL']];
+  area.innerHTML='<div class="gword-grid" id="gword-grid">'+Array(6).fill('<div class="gword-row">'+Array(5).fill('<div class="gword-tile"></div>').join('')+'</div>').join('')+'</div><div class="gword-keyboard" id="gword-kb">'+KEYS.map(function(row){return '<div class="gword-kb-row">'+row.map(function(k){return '<button class="gword-key'+(k.length>1?' wide':'')+'" data-key="'+k+'">'+k+'</button>';}).join('')+'</div>';}).join('')+'</div><div class="game-overlay-msg" id="gword-msg" style="display:none"><h2></h2><p>The word was <strong>'+answer+'</strong></p><button class="game-start-btn" onclick="switchGame(\'wordle\')">Play Again</button></div>';
+  function renderGrid(){
+    const rows=document.querySelectorAll('#gword-grid .gword-row');
+    guesses.forEach(function(g,ri){g.split('').forEach(function(ch,ci){const t=rows[ri]&&rows[ri].children[ci];if(!t)return;t.textContent=ch;t.className='gword-tile '+(ch===answer[ci]?'correct':answer.indexOf(ch)>=0?'present':'absent');});});
+    if(!gameOver&&rows[guesses.length]){Array.from(rows[guesses.length].children).forEach(function(t,ci){t.textContent=current[ci]||'';t.className='gword-tile'+(current[ci]?' active':'');});}
+  }
+  function updateKeys(){document.querySelectorAll('#gword-kb .gword-key').forEach(function(btn){const k=btn.dataset.key,state=keyStates[k];btn.className='gword-key'+(k.length>1?' wide':'')+(state?' '+state:'');});}
+  function submit(){
+    if(current.length!==5)return;
+    guesses.push(current);
+    current.split('').forEach(function(ch,ci){const state=ch===answer[ci]?'correct':answer.indexOf(ch)>=0?'present':'absent';const prev=keyStates[ch];if(prev==='correct')return;if(prev==='present'&&state==='absent')return;keyStates[ch]=state;});
+    const won=guesses[guesses.length-1]===answer;
+    current='';renderGrid();updateKeys();
+    if(won){gameOver=true;setScore([100,90,70,50,30,10][guesses.length-1]||10);const m=document.getElementById('gword-msg');m.style.display='flex';m.querySelector('h2').textContent='Got it!';}
+    else if(guesses.length===6){gameOver=true;const m=document.getElementById('gword-msg');m.style.display='flex';m.querySelector('h2').textContent='Out of guesses';}
+  }
+  function input(k){
+    if(gameOver)return;
+    if(k==='ENTER')submit();
+    else if(k==='DEL'||k==='BACKSPACE'){current=current.slice(0,-1);renderGrid();}
+    else if(/^[A-Z]$/.test(k)&&current.length<5){current+=k;renderGrid();}
+  }
+  document.querySelectorAll('#gword-kb .gword-key').forEach(function(btn){btn.addEventListener('click',function(){input(btn.dataset.key);});});
+  _gameKeyHandler=function(e){if(!_gameOpen||_activeGame!=='wordle')return;input(e.key==='Backspace'?'BACKSPACE':e.key.toUpperCase());};
+  document.addEventListener('keydown',_gameKeyHandler);
+  renderGrid();
+}
+
+// ── HOOK INTO SEARCH
+const _origRenderResultsGames = renderResults;
+renderResults = async function() {
+  await _origRenderResultsGames();
+  const gameId = detectGameTrigger(currentQuery);
+  if (gameId) setTimeout(function(){ openGamePanel(gameId); }, 150);
 };
 
 </script>
@@ -2639,5 +3321,81 @@ renderResults = async function() {
 <div class="nrc-overlay" id="nrc-overlay">
   <div class="nrc-watermark">NRC</div>
 </div>
+
+<!-- Game Panel -->
+<div id="game-overlay">
+  <div class="game-backdrop" onclick="closeGamePanel()"></div>
+  <div class="game-panel">
+    <div class="game-panel-header">
+      <div class="game-panel-logo">🎮</div>
+      <div class="game-panel-title" id="game-panel-title">Games</div>
+      <div class="game-panel-score" id="game-panel-score"></div>
+      <button class="game-panel-close" onclick="closeGamePanel()">✕</button>
+    </div>
+    <div class="game-selector" id="game-selector"></div>
+    <div class="game-area" id="game-area"></div>
+  </div>
+</div>
+<script>
+(function(){
+  var messages=[
+    "What are you wondering about?",
+    "Every answer begins with a question.",
+    "Somewhere out there, someone wrote this down.",
+    "The web is listening\u2026",
+    "Curiosity starts here.",
+    "Good to see you. What\u2019s on your mind?",
+    "We\u2019ll find it together.",
+    "No question is too small.",
+    "Go on, ask the obvious one.",
+    "We won\u2019t judge. Promise.",
+    "Type first, overthink later.",
+    "The rabbit hole awaits.",
+    "The world is full of things to find.",
+    "Knowledge, just a few keystrokes away.",
+    "Something is waiting to be found.",
+    "Search with intention.",
+    "Find what matters.",
+    "Ask better. Find better.",
+    "Less scroll, more discovery.",
+    "Every search is a new beginning.",
+    "A question for every answer.",
+    "Your search, your terms.",
+    "Even the silly ones count.",
+    "Answers are closer than you think.",
+    "Take your time.",
+  ];
+  function initTagline(){
+    var el=document.getElementById('search-tagline');
+    if(!el) return;
+    var idx=Math.floor(Math.random()*messages.length);
+    el.textContent=messages[idx];
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){
+        el.classList.add('visible');
+      });
+    });
+    setInterval(function(){
+      el.classList.remove('visible');
+      el.classList.add('exit');
+      setTimeout(function(){
+        idx=(idx+1)%messages.length;
+        el.textContent=messages[idx];
+        el.classList.remove('exit');
+        requestAnimationFrame(function(){
+          requestAnimationFrame(function(){
+            el.classList.add('visible');
+          });
+        });
+      },450);
+    },4000);
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',initTagline);
+  } else {
+    initTagline();
+  }
+})();
+</script>
 </body>
 </html>
