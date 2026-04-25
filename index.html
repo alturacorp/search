@@ -24,14 +24,25 @@
   --shadow:rgba(0,0,0,.1);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;margin:0;padding:0;}
 html{font-size:16px;}
-body{background:var(--bg);color:var(--t0);font-family:'Geist',sans-serif;
-  line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased;}
-.page{display:none;}.page.active{display:block;}
+body{
+  background:var(--bg);color:var(--t0);font-family:'Geist',sans-serif;
+  line-height:1.6;-webkit-font-smoothing:antialiased;
+  overflow:hidden; /* prevent body scroll — each page scrolls independently */
+}
+.page{
+  display:none;
+  position:fixed;inset:0;
+  overflow-y:auto;
+  overflow-x:hidden;
+  background:var(--bg);
+}
+.page.active{display:block;}
 
 /* ── HOME ────────────────────────────────────────────────── */
 #home{
-  min-height:100vh;display:flex;flex-direction:column;
+  height:100%;display:flex;flex-direction:column;
   align-items:center;justify-content:center;padding:40px 20px;
   position:relative;
 }
@@ -169,7 +180,7 @@ body{background:var(--bg);color:var(--t0);font-family:'Geist',sans-serif;
 .di-remove:hover{color:var(--red);}
 
 /* ── RESULTS NAV (Google-style) ──────────────────────────── */
-#results{min-height:100vh;}
+#results{}
 .res-nav{
   position:sticky;top:0;z-index:100;
   background:rgba(5,6,10,.94);backdrop-filter:blur(12px);
@@ -430,7 +441,7 @@ body{background:var(--bg);color:var(--t0);font-family:'Geist',sans-serif;
 .oracle-response-meta{font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--t3);}
 
 /* ── SETTINGS ────────────────────────────────────────────── */
-#settings{min-height:100vh;padding:60px 24px;}
+#settings{padding:60px 24px;}
 .settings-wrap{max-width:600px;margin:0 auto;}
 .settings-header{display:flex;align-items:center;gap:12px;margin-bottom:32px;}
 .settings-back{background:none;border:1px solid var(--line);border-radius:4px;
@@ -463,7 +474,7 @@ body{background:var(--bg);color:var(--t0);font-family:'Geist',sans-serif;
 .btn-group-item.active{background:var(--g3);border-color:rgba(157,219,94,.3);color:var(--t0);}
 
 /* ── HISTORY ─────────────────────────────────────────────── */
-#history{min-height:100vh;padding:60px 24px;}
+#history{padding:60px 24px;}
 .hist-page-item{display:flex;align-items:center;gap:12px;padding:9px 10px;border-radius:4px;cursor:pointer;transition:background .1s;}
 .hist-page-item:hover{background:var(--bg1);}
 .hist-page-item-text{flex:1;font-size:14px;color:var(--t1);}
@@ -731,8 +742,8 @@ body{background:var(--bg);color:var(--t0);font-family:'Geist',sans-serif;
 <script>
 
 // ── CONFIG & STATE ────────────────────────────────────────────
-const SEARCH_WORKER_URL = 'https://search.graggle9901.workers.dev';
-const ALTURA_FIBER_URL  = '';
+const SEARCH_WORKER_URL = '';
+const ALTURA_FIBER_URL  = 'https://uptime.altura.int';
 const SETTINGS_KEY = 'altura_search_settings';
 const HISTORY_KEY  = 'altura_search_history';
 const AUTH_KEY     = 'altura_auth';
