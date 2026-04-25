@@ -997,6 +997,70 @@ body{
 .search-tagline.visible{opacity:1;transform:translateY(0);}
 .search-tagline.exit{opacity:0;transform:translateY(-8px);}
 
+/* ── ACCOUNT CENTER ──────────────────────────────────────── */
+#account{padding:60px 24px;}
+.ac-tabs{display:flex;gap:4px;margin-bottom:28px;border-bottom:1px solid var(--line2);padding-bottom:0;}
+.ac-tab{font-size:13px;color:var(--t2);padding:8px 16px;background:none;border:none;cursor:pointer;
+  border-bottom:2px solid transparent;margin-bottom:-1px;letter-spacing:-.01em;transition:color .1s;}
+.ac-tab:hover{color:var(--t0);}
+.ac-tab.active{color:var(--g);border-bottom-color:var(--g);}
+.ac-panel{}
+.ac-avatar-row{display:flex;align-items:center;gap:18px;margin-bottom:28px;
+  background:var(--bg1);border:1px solid var(--line);border-radius:8px;padding:20px 22px;}
+.ac-avatar-big{width:54px;height:54px;border-radius:50%;background:var(--g3);
+  border:2px solid rgba(157,219,94,.3);display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:700;color:var(--g);flex-shrink:0;}
+.ac-name{font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--t0);}
+.ac-email-label{font-size:13px;color:var(--t2);margin-top:2px;}
+.ac-badge{display:inline-flex;align-items:center;gap:5px;margin-top:8px;
+  font-size:11px;color:var(--g);background:var(--g3);border:1px solid rgba(157,219,94,.2);
+  padding:3px 9px;border-radius:20px;}
+.ac-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:4px;}
+.ac-stat{background:var(--bg2);border-radius:6px;padding:14px 12px;text-align:center;}
+.ac-stat-n{font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--t0);line-height:1;}
+.ac-stat-l{font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--t3);margin-top:4px;}
+.ac-inline-input{background:var(--bg1);border:1px solid var(--line);border-radius:4px;
+  padding:7px 10px;font-family:'Geist',sans-serif;font-size:13px;color:var(--t0);
+  outline:none;transition:border-color .1s;text-align:right;width:180px;}
+.ac-inline-input:focus{border-color:rgba(157,219,94,.3);}
+.ac-search-input{background:var(--bg1);border:1px solid var(--line);border-radius:4px;
+  padding:8px 12px;font-family:'Geist',sans-serif;font-size:13px;color:var(--t0);
+  outline:none;transition:border-color .1s;width:100%;}
+.ac-search-input:focus{border-color:rgba(157,219,94,.3);}
+.ac-search-input::placeholder{color:var(--t3);}
+.ac-saves-toolbar{display:flex;gap:10px;align-items:center;margin-bottom:16px;}
+.ac-save-item{display:flex;align-items:flex-start;gap:12px;padding:10px 12px;
+  border-radius:6px;border:1px solid var(--line2);margin-bottom:8px;background:var(--bg1);}
+.ac-save-icon{width:32px;height:32px;border-radius:4px;background:var(--bg2);
+  display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;
+  color:var(--t2);flex-shrink:0;font-family:'Geist Mono',monospace;}
+.ac-save-body{flex:1;min-width:0;}
+.ac-save-title{font-size:13px;font-weight:500;color:var(--t0);letter-spacing:-.01em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;cursor:pointer;}
+.ac-save-title:hover{color:var(--blue);}
+.ac-save-url{font-size:11px;color:var(--t2);margin-top:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ac-save-date{font-size:10px;color:var(--t3);margin-top:2px;}
+.ac-save-del{background:none;border:none;color:var(--t3);cursor:pointer;font-size:12px;
+  padding:2px 6px;border-radius:3px;flex-shrink:0;transition:color .1s;}
+.ac-save-del:hover{color:var(--red);}
+.ac-block-item{display:flex;align-items:center;gap:10px;padding:9px 12px;
+  border-radius:4px;border-bottom:1px solid var(--line2);}
+.ac-block-item:last-child{border-bottom:none;}
+.ac-block-domain{flex:1;font-size:13px;color:var(--t1);font-family:'Geist Mono',monospace;}
+.ac-block-del{background:none;border:none;color:var(--t3);cursor:pointer;font-size:12px;
+  padding:2px 8px;border-radius:3px;transition:color .1s;}
+.ac-block-del:hover{color:var(--red);}
+.ac-alert-item{display:flex;align-items:center;gap:10px;padding:10px 12px;
+  border-radius:4px;border-bottom:1px solid var(--line2);}
+.ac-alert-item:last-child{border-bottom:none;}
+.ac-alert-query{flex:1;font-size:13px;color:var(--t0);letter-spacing:-.01em;}
+.ac-alert-freq-label{font-size:11px;color:var(--t2);font-family:'Geist Mono',monospace;
+  background:var(--bg2);padding:2px 8px;border-radius:3px;}
+.ac-alert-del{background:none;border:none;color:var(--t3);cursor:pointer;font-size:12px;
+  padding:2px 8px;border-radius:3px;transition:color .1s;}
+.ac-alert-del:hover{color:var(--red);}
+
 </style>
 </head>
 <body>
@@ -1216,6 +1280,161 @@ body{
   </div>
 </div>
 
+<!-- ACCOUNT CENTER -->
+<div class="page" id="account">
+  <div class="settings-wrap" style="max-width:680px">
+    <div class="settings-header">
+      <button class="settings-back" onclick="goBack()">&#8592; Back</button>
+      <div class="settings-title">Altura ID</div>
+    </div>
+    <div class="ac-tabs">
+      <button class="ac-tab active" onclick="acTab('profile',this)">Profile</button>
+      <button class="ac-tab" onclick="acTab('privacy',this)">Privacy</button>
+      <button class="ac-tab" onclick="acTab('saves',this)">Saves</button>
+      <button class="ac-tab" onclick="acTab('blocked',this)">Blocked sites</button>
+      <button class="ac-tab" onclick="acTab('alerts',this)">Alerts</button>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="ac-panel" id="ac-profile">
+      <div class="ac-avatar-row">
+        <div class="ac-avatar-big" id="ac-avatar-big">?</div>
+        <div>
+          <div class="ac-name" id="ac-display-name">—</div>
+          <div class="ac-email-label" id="ac-display-email">—</div>
+          <div class="ac-badge"><span>&#10003;</span> Altura ID member</div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Edit profile</div>
+        <div class="settings-row">
+          <div><div class="settings-label">Display name</div></div>
+          <input class="ac-inline-input" id="ac-name-input" type="text" placeholder="Your name" onchange="acSaveName(this.value)" />
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label">Email</div><div class="settings-desc" id="ac-email-disp">—</div></div>
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label">Member since</div><div class="settings-desc" id="ac-since">—</div></div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Your stats</div>
+        <div class="ac-stat-grid">
+          <div class="ac-stat"><div class="ac-stat-n" id="ac-stat-searches">0</div><div class="ac-stat-l">Searches</div></div>
+          <div class="ac-stat"><div class="ac-stat-n" id="ac-stat-saves">0</div><div class="ac-stat-l">Saved results</div></div>
+          <div class="ac-stat"><div class="ac-stat-n" id="ac-stat-blocked">0</div><div class="ac-stat-l">Blocked sites</div></div>
+          <div class="ac-stat"><div class="ac-stat-n" id="ac-stat-alerts">0</div><div class="ac-stat-l">Active alerts</div></div>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Account</div>
+        <div class="settings-row">
+          <div><div class="settings-label">Export my data</div><div class="settings-desc">Download all your Altura data as JSON</div></div>
+          <button class="settings-back" onclick="acExportData()">Export</button>
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label" style="color:var(--red)">Sign out</div></div>
+          <button class="settings-back" style="color:var(--red);border-color:rgba(204,74,74,.3)" onclick="doSignOut()">Sign out</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRIVACY -->
+    <div class="ac-panel" id="ac-privacy" style="display:none">
+      <div class="settings-section">
+        <div class="settings-section-title">History</div>
+        <div class="settings-row">
+          <div><div class="settings-label">Search history</div><div class="settings-desc" id="ac-hist-count">Loading…</div></div>
+          <div style="display:flex;gap:8px">
+            <button class="settings-back" onclick="goHistory()">View all</button>
+            <button class="settings-back" style="color:var(--red)" onclick="clearHistory();acRefreshPrivacy()">Clear</button>
+          </div>
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label">Auto-delete history after</div></div>
+          <select class="settings-select" id="ac-autodel" onchange="acSaveSetting('autodel',this.value)">
+            <option value="never">Never</option>
+            <option value="7">7 days</option>
+            <option value="30">30 days</option>
+            <option value="90">90 days</option>
+          </select>
+        </div>
+        <div class="settings-row">
+          <div><div class="settings-label">Pause history recording</div><div class="settings-desc">New searches won't be saved until re-enabled</div></div>
+          <button class="toggle" id="ac-toggle-pause" onclick="acToggle('pauseHistory',this)"></button>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Session privacy</div>
+        <div class="settings-row">
+          <div><div class="settings-label">Ghost mode</div><div class="settings-desc">Searches in this session leave no trace in your account</div></div>
+          <button class="toggle" id="ac-toggle-ghost" onclick="acToggle('ghostMode',this)"></button>
+        </div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Safe search</div>
+        <div class="settings-row">
+          <div><div class="settings-label">Safe search level</div></div>
+          <div class="btn-group">
+            <button class="btn-group-item" onclick="acSafeLevel('off',this)">Off</button>
+            <button class="btn-group-item" onclick="acSafeLevel('moderate',this)">Moderate</button>
+            <button class="btn-group-item active" onclick="acSafeLevel('strict',this)">Strict</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAVES -->
+    <div class="ac-panel" id="ac-saves" style="display:none">
+      <div class="ac-saves-toolbar">
+        <input class="ac-search-input" type="text" placeholder="Search saves…" id="ac-saves-search" oninput="acRenderSaves()" />
+        <button class="settings-back" onclick="acClearSaves()" style="color:var(--red);flex-shrink:0">Clear all</button>
+      </div>
+      <div id="ac-saves-list"><div class="hist-empty">No saved results yet.<br>Bookmark any result with the &#9734; icon.</div></div>
+    </div>
+
+    <!-- BLOCKED SITES -->
+    <div class="ac-panel" id="ac-blocked" style="display:none">
+      <div class="settings-section">
+        <div class="settings-section-title">Add site to block list</div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <input class="ac-search-input" type="text" id="ac-block-input" placeholder="e.g. pinterest.com" style="flex:1"
+            onkeydown="if(event.key==='Enter')acAddBlock()" />
+          <button class="modal-btn" style="width:auto;padding:8px 18px;margin:0" onclick="acAddBlock()">Block</button>
+        </div>
+        <div class="settings-desc" style="margin-top:8px">Blocked domains are hidden from all your search results.</div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Blocked sites <span id="ac-block-count" style="font-weight:400;color:var(--t2)"></span></div>
+        <div id="ac-block-list"><div class="hist-empty">No blocked sites yet.</div></div>
+      </div>
+    </div>
+
+    <!-- ALERTS -->
+    <div class="ac-panel" id="ac-alerts" style="display:none">
+      <div class="settings-section">
+        <div class="settings-section-title">Create alert</div>
+        <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
+          <input class="ac-search-input" type="text" id="ac-alert-input" placeholder="Topic or keyword…" style="flex:1;min-width:160px"
+            onkeydown="if(event.key==='Enter')acAddAlert()" />
+          <select class="settings-select" id="ac-alert-freq">
+            <option value="daily">Daily</option>
+            <option value="weekly" selected>Weekly</option>
+          </select>
+          <button class="modal-btn" style="width:auto;padding:8px 18px;margin:0" onclick="acAddAlert()">Create</button>
+        </div>
+        <div class="settings-desc" style="margin-top:8px">Get notified when new results appear for your saved topics.</div>
+      </div>
+      <div class="settings-section">
+        <div class="settings-section-title">Your alerts <span id="ac-alert-count" style="font-weight:400;color:var(--t2)"></span></div>
+        <div id="ac-alert-list"><div class="hist-empty">No alerts yet.</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <!-- SIGN IN MODAL -->
 <div id="signin-modal">
   <div class="modal-box">
@@ -1399,19 +1618,54 @@ function doQuickSearch(q){
 }
 
 async function doLucky(){
-  const q=(document.getElementById('home-input')?.value||'').trim();
-  if(!q) return;
+  const inp=document.getElementById('home-input');
+  let q=(inp?.value||'').trim();
+
+  const luckyTopics=[
+    'the history of the internet','how black holes form','the tallest buildings in the world',
+    'deep sea creatures','abandoned places around the world','the science of sleep',
+    'ancient Roman daily life','how chess computers work','the world oldest languages',
+    'bioluminescent organisms','the history of pizza','how satellites stay in orbit',
+    'the largest deserts on Earth','optical illusions explained','unsolved mathematical problems',
+    'the history of cryptography','deep ocean trenches','the science of colour',
+    'how volcanoes erupt','the worlds most remote islands','extremophiles in nature',
+    'the history of maps','how birds navigate','ancient trade routes',
+    'the science of memory','world record holders','strange geological formations',
+  ];
+
+  if(!q){
+    q=luckyTopics[Math.floor(Math.random()*luckyTopics.length)];
+    if(inp) inp.value=q;
+  }
+
   currentQuery=q; addHistory(q);
+
+  const btn=document.querySelector('.hbtn[onclick="doLucky()"]');
+  const orig=btn?btn.textContent:'';
+  const frames=['✦  Searching…','✦✦  Searching…','✦✦✦  Searching…'];
+  let fi=0;
+  const anim=btn?setInterval(()=>{ btn.textContent=frames[fi++%frames.length]; },220):null;
+  const done=()=>{ if(anim) clearInterval(anim); if(btn) btn.textContent=orig; };
+
   if(SEARCH_WORKER_URL){
     try{
       const res=await fetch(SEARCH_WORKER_URL+'/search',{
         method:'POST', headers:{'Content-Type':'application/json'},
         body:JSON.stringify({q,type:'web',count:1})
       });
-      if(res.ok){ const d=await res.json(); if(d.results?.[0]?.url){ window.open(d.results[0].url,'_blank'); return; } }
+      if(res.ok){
+        const d=await res.json();
+        if(d.results?.[0]?.url){
+          let u=d.results[0].url;
+          if(!/^https?:\/\//i.test(u)) u='https://'+u;
+          done(); window.open(u,'_blank'); return;
+        }
+      }
     }catch{}
   }
-  window.open('https://'+FALLBACK_RESULTS(q)[0].url,'_blank');
+  done();
+  const fb=FALLBACK_RESULTS(q);
+  if(fb&&fb[0]?.url){ let u=fb[0].url; if(!/^https?:\/\//i.test(u)) u='https://'+u; window.open(u,'_blank'); }
 }
 
 // ── TABS / FILTERS ────────────────────────────────────────────
@@ -1555,7 +1809,7 @@ function handleResultKey(ev,el){
   if(ev.key==='ArrowDown'){ ev.preventDefault(); items[Math.min(idx+1,items.length-1)]?.focus(); }
   if(ev.key==='ArrowUp'){ ev.preventDefault(); if(idx===0) document.getElementById('res-input')?.focus(); else items[Math.max(idx-1,0)]?.focus(); }
 }
-function openResult(el){ const url=el?.dataset?.url; if(url) window.open(url,'_blank'); }
+function openResult(el){ let url=el?.dataset?.url; if(!url) return; if(!/^https?:\/\//i.test(url)) url='https://'+url; window.open(url,'_blank'); }
 
 // ── HISTORY PAGE ──────────────────────────────────────────────
 function renderHistoryPage(){
