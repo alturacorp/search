@@ -2109,15 +2109,15 @@ body{
         <button class="toggle on" id="toggle-history" onclick="toggleSetting('history',this)"></button>
       </div>
       <div class="settings-row">
-        <div><div class="settings-label">Region</div></div>
+        <div><div class="settings-label">Continent</div></div>
         <select class="settings-select" id="sel-region" onchange="saveSetting('region',this.value)">
           <option value="global">Global</option>
-          <option value="gb">Great Britain</option>
-          <option value="de">Germany</option>
-          <option value="us">United States</option>
-          <option value="jp">Japan / Akebono</option>
-          <option value="fr">France</option>
-          <option value="au">Australia</option>
+          <option value="na">North America</option>
+          <option value="eu">Europe</option>
+          <option value="as">Asia</option>
+          <option value="oc">Oceania</option>
+          <option value="sa">South America</option>
+          <option value="af">Africa</option>
         </select>
       </div>
       <div class="settings-row">
@@ -2545,21 +2545,21 @@ body{
           <button class="aid-avatar-btn" data-emoji="⚡" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg2);font-size:20px;cursor:pointer">⚡</button>
           <button class="aid-avatar-btn" data-emoji="🌌" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg2);font-size:20px;cursor:pointer">🌌</button>
         </div>
-        <!-- Region -->
-        <label class="aid-label">Your region</label>
+        <!-- Continent -->
+        <label class="aid-label">Your continent</label>
         <select class="settings-select" id="aid-region" style="width:100%;margin-bottom:14px;padding:10px 12px">
           <option value="global">Global</option>
-          <option value="gb">Great Britain</option>
-          <option value="us">United States</option>
-          <option value="de">Germany</option>
-          <option value="fr">France</option>
-          <option value="jp">Japan / Akebono</option>
-          <option value="au">Australia</option>
+          <option value="na">North America</option>
+          <option value="eu">Europe</option>
+          <option value="as">Asia</option>
+          <option value="oc">Oceania</option>
+          <option value="sa">South America</option>
+          <option value="af">Africa</option>
         </select>
         <!-- Consent -->
         <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:10px">
           <input type="checkbox" id="aid-consent" style="margin-top:2px;accent-color:var(--g)" onchange="aidValidateStep(4)" />
-          <span style="font-size:12px;color:var(--t2);line-height:1.6">I agree to the <span style="color:var(--g);cursor:pointer" onclick="aidShowTerms()">Altura Civilian Service Agreement</span> and acknowledge that this is a fictional interface.</span>
+          <span style="font-size:12px;color:var(--t2);line-height:1.6">I agree to the <span style="color:var(--g);cursor:pointer" onclick="aidShowTerms()">Altura Service Agreement</span>.</span>
         </label>
         <div id="aid-err-4" class="aid-err"></div>
         <button class="modal-btn" id="aid-next-4" onclick="aidSubmit()" disabled style="opacity:.4">Create my Altura ID</button>
@@ -2571,7 +2571,7 @@ body{
     <div class="aid-step" id="aid-step-5" style="display:none;text-align:center;padding:40px 32px">
       <div id="aid-success-avatar" style="font-size:48px;margin-bottom:12px">🔭</div>
       <div style="font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--t0);margin-bottom:6px">Welcome to Altura, <span id="aid-success-name">Agent</span>.</div>
-      <div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:8px">Your Altura ID has been created. Civilian clearance issued.</div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:8px">Your Altura ID has been created. You're all set.</div>
       <div id="aid-success-ref" style="font-family:'Geist Mono',monospace;font-size:10px;color:var(--t3);margin-bottom:24px"></div>
       <!-- Feature pills -->
       <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px;text-align:left">
@@ -2836,15 +2836,15 @@ function aidTogglePass(id, btn) {
 function aidShowTerms() {
   _showModal(`<div class="am-header"><div class="am-icon">📋</div>
     <div class="am-header-text">
-      <div class="am-title">Civilian Service Agreement</div>
+      <div class="am-title">Altura Service Agreement</div>
       <div class="am-sub">Altura Technologies · Effective Jan 2015</div>
     </div></div>
     <div class="am-body" style="font-size:12px;color:var(--t1);line-height:1.9">
-      <p style="margin-bottom:10px"><strong style="color:var(--t0)">1. Nature of service.</strong> Altura Search is a civilian-facing interface operated by Altura Technologies. All searches are processed via the SLC-01 cluster. Ghost Mode suppresses history logging but does not affect upstream network analysis.</p>
-      <p style="margin-bottom:10px"><strong style="color:var(--t0)">2. Data retention.</strong> Search history is stored locally unless you enable cloud sync. Altura Technologies retains anonymised query telemetry for a period not exceeding 90 days.</p>
-      <p style="margin-bottom:10px"><strong style="color:var(--t0)">3. Oracle Standard.</strong> Oracle Standard (AT-CIV-2015) is a restricted AI. Civilian users are granted Tier 0 access. Querying restricted pattern classes will result in an automatic incident log.</p>
-      <p style="margin-bottom:10px"><strong style="color:var(--t0)">4. Fictional nature.</strong> This is a creative fictional interface. No real data collection occurs. No real account is created. All Halonesia references are works of fiction.</p>
-      <p><strong style="color:var(--t0)">5. Clearance.</strong> Creating an Altura ID grants Civilian Clearance Tier 0. Clearance upgrades require in-person verification at an Altura district office.</p>
+      <p style="margin-bottom:10px"><strong style="color:var(--t0)">1. Nature of service.</strong> Altura Search is a search platform operated by Altura Technologies. By creating an Altura ID, you agree to use the service in accordance with these terms.</p>
+      <p style="margin-bottom:10px"><strong style="color:var(--t0)">2. Data retention.</strong> Search history is stored locally on your device unless you enable cloud sync. Where cloud sync is enabled, data is stored on Altura servers. Altura Technologies retains anonymised query telemetry for a period not exceeding 90 days.</p>
+      <p style="margin-bottom:10px"><strong style="color:var(--t0)">3. Oracle Standard.</strong> Oracle Standard is an AI-powered feature. Responses are generated automatically and may be inaccurate or incomplete. Oracle Standard does not constitute professional advice of any kind.</p>
+      <p style="margin-bottom:10px"><strong style="color:var(--t0)">4. Ghost Mode.</strong> Ghost Mode disables local history logging within Altura Search. It does not guarantee anonymity at the network level and should not be relied upon as a privacy or security tool.</p>
+      <p><strong style="color:var(--t0)">5. Account.</strong> You are responsible for maintaining the security of your Altura ID credentials. Altura Technologies reserves the right to suspend or terminate accounts that violate these terms.</p>
     </div>
     <div class="am-footer"><button class="am-btn primary" onclick="closeModal();document.getElementById('aid-consent').checked=true;aidValidateStep(4)">I agree</button></div>`);
 }
@@ -2899,7 +2899,7 @@ function aidShowSuccess(name) {
   const refEl = document.getElementById('aid-success-ref');
   if (nameEl) nameEl.textContent = name;
   if (avatarEl) avatarEl.textContent = _aidAvatar;
-  if (refEl) refEl.textContent = 'Clearance ref: AID-' + Math.random().toString(36).slice(2,8).toUpperCase() + '-' + new Date().getFullYear();
+  if (refEl) refEl.textContent = 'Member ref: AID-' + Math.random().toString(36).slice(2,8).toUpperCase() + '-' + new Date().getFullYear();
 }
 
 function aidFinish() {
@@ -8560,7 +8560,7 @@ const ARCADE_PROMOS = [
   {
     tag: 'Altura recommendation',
     title: 'Wordle',
-    body: 'Five letters. Six guesses. Cleared for civilian access.',
+    body: 'Five letters. Six guesses. Same word for everyone today.',
     cta: 'Play now →',
     game: 'wordle',
   },
@@ -10861,10 +10861,10 @@ function renderOnThisDaySidebar() {
 // ── ALTURA STATUS PAGE (search "altura status") ───────────────
 // ══════════════════════════════════════════════════════════════
 const STATUS_INCIDENTS = [
-  { date: '14 Jan 2015', title: 'Elevated latency on Oracle Standard', status: 'resolved', dur: '42 min', region: 'All regions', detail: 'A misconfigured rate-limiter on the inference gateway caused p99 latency to spike to 8.4 s. Rolled back at 14:12 UTC. No data loss.' },
+  { date: '14 Jan 2015', title: 'Elevated latency on Oracle Standard', status: 'resolved', dur: '42 min', region: 'All continents', detail: 'A misconfigured rate-limiter on the inference gateway caused p99 latency to spike to 8.4 s. Rolled back at 14:12 UTC. No data loss.' },
   { date: '09 Jan 2015', title: 'Search index partial unavailability', status: 'resolved', dur: '18 min', region: 'SLC-01 / SLC-02', detail: 'Routine index compaction consumed unexpected I/O headroom. Queries fell back to secondary index. Results quality temporarily degraded.' },
   { date: '02 Jan 2015', title: 'Altura Fiber provisioning delays', status: 'resolved', dur: '3 h 12 min', region: 'District III — The Range', detail: 'A paperwork backlog at the District III relay exchange delayed new line activation. Existing customers unaffected. 47 activations deferred.' },
-  { date: '29 Dec 2014', title: 'Scheduled maintenance — auth system', status: 'completed', dur: '25 min', region: 'All regions', detail: 'Planned rotation of authentication signing keys. Altura IDs required re-authentication on next login. Advance notice issued 72 h prior.' },
+  { date: '29 Dec 2014', title: 'Scheduled maintenance — auth system', status: 'completed', dur: '25 min', region: 'All continents', detail: 'Planned rotation of authentication signing keys. Altura IDs required re-authentication on next login. Advance notice issued 72 h prior.' },
   { date: '17 Dec 2014', title: 'Search autocomplete service restart', status: 'resolved', dur: '6 min', region: 'SLC-01', detail: 'Memory pressure caused the suggestion daemon to OOM-exit. Systemd restarted the service automatically. No user action required.' },
 ];
 
@@ -10922,7 +10922,7 @@ function maybeStatusPage(q) {
       <div style="font-size:12px;color:var(--t2);margin-top:6px">Last checked: ${new Date().toLocaleTimeString('en-GB', {hour:'2-digit',minute:'2-digit'})} local · Updates every 60 seconds · SLA: 99.97% uptime</div>
     </div>
     <div style="padding:16px 24px;border-bottom:1px solid var(--line)">
-      <div style="font-family:'Geist Mono',monospace;font-size:8px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:4px">Region / Service health</div>
+      <div style="font-family:'Geist Mono',monospace;font-size:8px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:4px">Continent / Service health</div>
       ${regionRows}
     </div>
     <div style="padding:16px 24px">
