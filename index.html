@@ -1061,6 +1061,167 @@ body{
   padding:2px 8px;border-radius:3px;transition:color .1s;}
 .ac-alert-del:hover{color:var(--red);}
 
+
+/* ── GHOST MODE ───────────────────────────────────────────── */
+.ghost-indicator{
+  display:none;align-items:center;gap:6px;
+  padding:3px 10px;border-radius:999px;
+  background:rgba(156,124,224,.1);border:1px solid rgba(156,124,224,.25);
+  font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.14em;
+  color:#9c7ce0;position:absolute;right:52px;top:50%;transform:translateY(-50%);
+  pointer-events:none;
+}
+.ghost-indicator.show{display:flex;}
+.ghost-dot{width:5px;height:5px;border-radius:50%;background:#9c7ce0;
+  animation:pulse 2s ease-in-out infinite;}
+
+/* ── SAVED FILTER CHIPS ───────────────────────────────────── */
+.saved-filter-chip{
+  font-size:11px;color:#9c7ce0;background:rgba(156,124,224,.07);
+  border:1px solid rgba(156,124,224,.2);border-radius:16px;
+  padding:5px 10px 5px 14px;cursor:pointer;transition:all .1s;
+  white-space:nowrap;display:flex;align-items:center;gap:6px;
+}
+.saved-filter-chip:hover{background:rgba(156,124,224,.14);}
+.sfc-del{background:none;border:none;color:rgba(156,124,224,.5);cursor:pointer;
+  font-size:11px;padding:0;transition:color .1s;line-height:1;}
+.sfc-del:hover{color:#9c7ce0;}
+
+/* ── SAVED SEARCHES / BOOKMARKS ───────────────────────────── */
+.save-btn{
+  background:none;border:none;color:var(--t3);cursor:pointer;
+  font-size:14px;padding:4px;border-radius:4px;
+  transition:color .1s;line-height:1;
+}
+.save-btn:hover,.save-btn.saved{color:var(--amber);}
+.save-btn.saved{color:var(--amber);}
+
+/* ── COLLECTIONS ──────────────────────────────────────────── */
+.ac-collection{
+  background:var(--bg2);border:1px solid var(--line);
+  border-radius:8px;padding:14px 16px;margin-bottom:8px;
+}
+.ac-coll-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.ac-coll-name{font-size:14px;font-weight:600;letter-spacing:-.01em;color:var(--t0);}
+.ac-coll-count{font-family:'Geist Mono',monospace;font-size:10px;color:var(--t3);}
+.ac-coll-items{display:flex;flex-direction:column;gap:4px;}
+.ac-coll-item{font-size:12px;color:var(--t2);padding:3px 0;
+  display:flex;align-items:center;gap:6px;cursor:pointer;}
+.ac-coll-item:hover{color:var(--t0);}
+.ac-coll-actions{display:flex;gap:6px;margin-top:8px;padding-top:8px;
+  border-top:1px solid var(--line2);}
+.ac-coll-btn{font-size:11px;color:var(--t2);background:none;border:1px solid var(--line2);
+  border-radius:4px;padding:3px 10px;cursor:pointer;transition:all .1s;}
+.ac-coll-btn:hover{color:var(--t0);border-color:var(--line);}
+
+/* ── EXPORT DATA ──────────────────────────────────────────── */
+.export-options{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.export-btn-big{
+  background:var(--bg2);border:1px solid var(--line);border-radius:8px;
+  padding:14px;cursor:pointer;text-align:left;transition:all .1s;
+}
+.export-btn-big:hover{background:var(--bg3);border-color:rgba(255,255,255,.1);}
+.export-btn-big-icon{font-size:20px;margin-bottom:6px;}
+.export-btn-big-label{font-size:13px;font-weight:600;color:var(--t0);
+  letter-spacing:-.01em;margin-bottom:2px;}
+.export-btn-big-sub{font-size:11px;color:var(--t2);}
+
+/* ── HUB MINI ADDITIONS ───────────────────────────────────── */
+.hub-ghost-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 18px;border-top:1px solid var(--line2);
+  background:rgba(156,124,224,.04);
+}
+.hub-ghost-label{font-size:12px;color:#9c7ce0;display:flex;align-items:center;gap:7px;}
+
+
+/* ── CUSTOM MODAL SYSTEM ─────────────────────────────────── */
+#altura-modal-overlay{
+  position:fixed;inset:0;z-index:9900;
+  background:rgba(5,6,10,.82);backdrop-filter:blur(6px);
+  display:none;align-items:center;justify-content:center;padding:24px;
+}
+#altura-modal-overlay.show{display:flex;}
+.am-box{
+  background:var(--bg1);border:1px solid var(--line);
+  border-radius:10px;padding:0;max-width:480px;width:100%;
+  box-shadow:0 16px 48px rgba(0,0,0,.6);
+  display:flex;flex-direction:column;overflow:hidden;
+  animation:amIn .18s ease;
+}
+@keyframes amIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.am-header{
+  padding:18px 20px 14px;border-bottom:1px solid var(--line2);
+  display:flex;align-items:flex-start;gap:12px;
+}
+.am-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.am-header-text{flex:1;min-width:0;}
+.am-title{font-size:15px;font-weight:700;letter-spacing:-.01em;color:var(--t0);margin-bottom:3px;}
+.am-sub{font-size:12px;color:var(--t2);line-height:1.6;}
+.am-body{padding:16px 20px;display:flex;flex-direction:column;gap:10px;}
+.am-field{display:flex;flex-direction:column;gap:5px;}
+.am-label{font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.16em;
+  color:var(--t3);text-transform:uppercase;}
+.am-input{background:var(--bg2);border:1px solid var(--line);border-radius:6px;
+  padding:9px 12px;font-family:"Geist",sans-serif;font-size:13px;color:var(--t0);
+  outline:none;transition:border-color .1s;width:100%;}
+.am-input:focus{border-color:rgba(157,219,94,.35);}
+.am-input::placeholder{color:var(--t3);}
+.am-select{background:var(--bg2);border:1px solid var(--line);border-radius:6px;
+  padding:9px 12px;font-family:"Geist",sans-serif;font-size:13px;color:var(--t0);
+  outline:none;width:100%;cursor:pointer;appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%233e4452'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 12px center;}
+.am-select option{background:var(--bg1);}
+.am-textarea{background:var(--bg2);border:1px solid var(--line);border-radius:6px;
+  padding:9px 12px;font-family:"Geist",sans-serif;font-size:13px;color:var(--t0);
+  outline:none;width:100%;min-height:80px;resize:vertical;
+  transition:border-color .1s;line-height:1.6;}
+.am-textarea:focus{border-color:rgba(157,219,94,.35);}
+.am-checkbox-row{display:flex;align-items:flex-start;gap:10px;font-size:12px;color:var(--t2);line-height:1.5;}
+.am-checkbox-row input{margin-top:2px;flex-shrink:0;accent-color:var(--g);}
+.am-info-box{background:var(--bg2);border:1px solid var(--line2);border-radius:6px;
+  padding:10px 12px;font-size:12px;color:var(--t2);line-height:1.7;}
+.am-info-row{display:flex;justify-content:space-between;padding:4px 0;
+  border-bottom:1px solid var(--line2);font-size:12px;}
+.am-info-row:last-child{border-bottom:none;}
+.am-info-k{color:var(--t3);}
+.am-info-v{font-family:"Geist Mono",monospace;font-size:11px;color:var(--t1);}
+.am-footer{
+  padding:12px 20px;border-top:1px solid var(--line2);
+  display:flex;gap:8px;justify-content:flex-end;
+}
+.am-btn{
+  font-family:"Geist",sans-serif;font-size:13px;font-weight:600;
+  padding:9px 18px;border-radius:6px;cursor:pointer;
+  transition:all .1s;letter-spacing:-.01em;
+}
+.am-btn.primary{background:var(--g);color:var(--bg);border:none;}
+.am-btn.primary:hover{opacity:.88;}
+.am-btn.danger{background:var(--red);color:#fff;border:none;}
+.am-btn.danger:hover{opacity:.88;}
+.am-btn.ghost{background:none;border:1px solid var(--line);color:var(--t1);}
+.am-btn.ghost:hover{color:var(--t0);border-color:rgba(255,255,255,.15);}
+.am-btn.amber{background:var(--amber);color:var(--bg);border:none;}
+.am-btn.amber:hover{opacity:.88;}
+.am-btn:disabled{opacity:.35;cursor:not-allowed;}
+.am-progress{height:3px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-top:6px;}
+.am-progress-fill{height:100%;background:var(--g);border-radius:2px;
+  transition:width .4s ease;}
+.am-step-dots{display:flex;gap:5px;margin-bottom:4px;}
+.am-step-dot{width:6px;height:6px;border-radius:50%;background:var(--t3);}
+.am-step-dot.active{background:var(--g);}
+.am-step-dot.done{background:var(--g);opacity:.4;}
+.am-tag{font-family:"Geist Mono",monospace;font-size:8px;letter-spacing:.2em;
+  color:var(--t3);text-transform:uppercase;margin-bottom:6px;}
+.am-result-line{
+  font-family:"Geist Mono",monospace;font-size:11px;letter-spacing:.06em;
+  color:var(--t2);padding:6px 0;border-bottom:1px solid var(--line2);
+}
+.am-result-line:last-child{border-bottom:none;}
+.am-result-line.ok{color:var(--g);}
+.am-result-line.pending{color:var(--amber);}
+
 </style>
 </head>
 <body>
@@ -1095,6 +1256,7 @@ body{
         oninput="handleHomeInput()"
         onkeydown="handleHomeKey(event)"
         onfocus="onSearchFocus('home')" />
+      <div class="ghost-indicator" id="ghost-indicator"><div class="ghost-dot"></div>Ghost</div>
       <button class="voice-btn" id="voice-btn" onclick="startVoice()" title="Voice search">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
           <rect x="6" y="1" width="4" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/>
@@ -1180,6 +1342,8 @@ body{
     <button class="filter-chip" onclick="setFilter('past-week',this)">Past week</button>
     <button class="filter-chip" onclick="setFilter('past-month',this)">Past month</button>
     <button class="filter-chip" id="filter-custom-date" onclick="toggleDatePicker(this)">Custom date</button>
+    <div class="filter-sep"></div>
+    <button class="filter-chip" style="color:var(--g);border-color:rgba(157,219,94,.2)" onclick="saveCurrentFilter()">+ Save filter</button>
     <div class="filter-sep"></div>
     <button class="filter-chip" onclick="setFilter('verified',this)">Verified sources</button>
     <button class="filter-chip" onclick="setFilter('news',this)">News only</button>
@@ -1293,6 +1457,9 @@ body{
       <button class="ac-tab" onclick="acTab('saves',this)">Saves</button>
       <button class="ac-tab" onclick="acTab('blocked',this)">Blocked sites</button>
       <button class="ac-tab" onclick="acTab('alerts',this)">Alerts</button>
+      <button class="ac-tab" onclick="acTab('collections',this)">Collections</button>
+      <button class="ac-tab" onclick="acTab('history',this)">History</button>
+      <button class="ac-tab" onclick="acTab('exports',this)">Export</button>
     </div>
 
     <!-- PROFILE -->
@@ -1432,6 +1599,28 @@ body{
       </div>
     </div>
 
+  <!-- Collections panel -->
+  <div class="ac-panel" id="ac-collections" style="display:none">
+    <div class="settings-section">
+      <div class="settings-section-title">Collections</div>
+      <div id="ac-collections-list"></div>
+      <button onclick="createCollectionPrompt()" style="margin-top:12px;background:var(--g3);border:1px solid rgba(157,219,94,.2);color:var(--g);border-radius:6px;padding:8px 18px;font-size:13px;font-weight:600;cursor:pointer">+ New collection</button>
+    </div>
+  </div>
+
+  <!-- History panel -->
+  <div class="ac-panel" id="ac-history-panel-wrap" style="display:none">
+    <div class="settings-section">
+      <div class="settings-section-title" style="display:flex;justify-content:space-between;align-items:center">Search history<button onclick="clearHistory()" style="background:none;border:1px solid var(--line);border-radius:4px;padding:4px 10px;font-size:11px;color:var(--t2);cursor:pointer;font-weight:400">Clear all</button></div>
+      <div id="ac-history-panel"></div>
+    </div>
+  </div>
+
+  <!-- Exports panel -->
+  <div class="ac-panel" id="ac-exports" style="display:none">
+    <div id="ac-exports-panel"></div>
+  </div>
+
   </div>
 </div>
 
@@ -1540,7 +1729,7 @@ function showSignIn(){ document.getElementById('signin-modal').classList.add('sh
 function closeSignIn(){ document.getElementById('signin-modal').classList.remove('show'); }
 function doSignIn(){
   const email=(document.getElementById('modal-email')?.value||'').trim();
-  if(!email||!email.includes('@')){ alert('Please enter a valid email.'); return; }
+  if(!email||!email.includes('@')){ showAuthError('Please enter a valid email address.'); return; }
   authState = { email, name:email.split('@')[0], ts:Date.now() };
   localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
   updateAuthUI(); closeSignIn();
@@ -1780,7 +1969,7 @@ document.addEventListener('keydown',e=>{
 
 // ── VOICE ─────────────────────────────────────────────────────
 function startVoice(){
-  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){ alert('Voice search not supported.'); return; }
+  if(!('webkitSpeechRecognition' in window||'SpeechRecognition' in window)){ voiceNotSupported(); return; }
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
   const r=new SR(); r.lang='en-US'; r.interimResults=false;
   const btn=document.getElementById('voice-btn'); if(btn) btn.classList.add('listening');
@@ -2867,6 +3056,9 @@ function renderHub() {
       }).join('')}
     </div>` : ''}
     <div class="hub-section">
+      <button class="hub-action" onclick="closeHub();goAccount()">
+        <span class="hub-action-icon">&#128100;</span>Account center
+      </button>
       <button class="hub-action" onclick="closeHub();goSettings()"><span class="hub-action-icon">&#9881;</span>Settings</button>
       <button class="hub-action" onclick="closeHub();goHistory()"><span class="hub-action-icon">&#128336;</span>Search history</button>
       <button class="hub-action" onclick="syncUserData(true);closeHub()"><span class="hub-action-icon">&#8645;</span>Sync data</button>
@@ -3522,38 +3714,1454 @@ renderResults = async function() {
   if (gameId) setTimeout(function(){ openGamePanel(gameId); }, 150);
 };
 
-</script>
 
-<!-- Delete My Data modal -->
-<div id="delete-modal">
-  <div class="delete-box">
-    <div class="delete-title">Request data deletion</div>
-    <div class="delete-sub">Submit a request to delete your Altura Search data. All requests are reviewed by the Altura Data Governance team.</div>
-    <div class="delete-ref" id="delete-ref-no"></div>
-    <div class="delete-form">
-      <input class="delete-field" type="email" placeholder="Email address associated with your account" id="delete-email" />
-      <input class="delete-field" type="text" placeholder="Altura ID (if applicable)" id="delete-aid" />
-      <div class="delete-checkbox-row">
-        <input type="checkbox" id="delete-confirm-cb" />
-        <label for="delete-confirm-cb">I understand this request covers search history, preferences, and session data stored by Altura Technologies on my behalf.</label>
+// ── STORAGE KEYS ──────────────────────────────────────────────
+const SAVES_KEY          = 'altura_saved_searches';
+const FILTERS_KEY        = 'altura_saved_filters';
+const BLOCKED_KEY        = 'altura_blocked_sites';
+const ALERTS_KEY         = 'altura_search_alerts';
+const COLLECTIONS_KEY    = 'altura_collections';
+const GHOST_KEY          = 'altura_ghost_mode';
+
+// ── STATE ─────────────────────────────────────────────────────
+let savedSearches  = JSON.parse(localStorage.getItem(SAVES_KEY)     || '[]');
+let savedFilters   = JSON.parse(localStorage.getItem(FILTERS_KEY)   || '[]');
+let blockedSites   = JSON.parse(localStorage.getItem(BLOCKED_KEY)   || '[]');
+let searchAlerts   = JSON.parse(localStorage.getItem(ALERTS_KEY)    || '[]');
+let collections    = JSON.parse(localStorage.getItem(COLLECTIONS_KEY)|| '[]');
+let ghostMode      = JSON.parse(localStorage.getItem(GHOST_KEY)     || 'false');
+
+// ── GHOST MODE ────────────────────────────────────────────────
+function initGhostMode() {
+  applyGhostMode();
+}
+
+function toggleGhostMode() {
+  ghostMode = !ghostMode;
+  localStorage.setItem(GHOST_KEY, JSON.stringify(ghostMode));
+  applyGhostMode();
+  renderHub();
+}
+
+function applyGhostMode(){
+  ['ghost-indicator','ghost-indicator-res'].forEach(function(id){
+    var ind=document.getElementById(id);
+    if(ind) ind.classList.toggle('show',ghostMode);
+  });
+  window._ghostActive=!!ghostMode;
+}
+
+// Patch addHistory to respect ghost mode
+const _origAddHistory = addHistory;
+addHistory = function(q) {
+  if (window._ghostActive) return; // no logging
+  _origAddHistory(q);
+};
+
+// ── SAVED SEARCHES / BOOKMARKS ────────────────────────────────
+function isSaved(q) {
+  return savedSearches.some(s => s.query === q);
+}
+
+function toggleSave(q, url, title) {
+  const idx = savedSearches.findIndex(s => s.query === q);
+  if (idx !== -1) {
+    savedSearches.splice(idx, 1);
+  } else {
+    savedSearches.unshift({
+      id: Date.now(),
+      query: q,
+      url: url || '',
+      title: title || q,
+      ts: new Date().toISOString(),
+      collection: null,
+    });
+  }
+  localStorage.setItem(SAVES_KEY, JSON.stringify(savedSearches));
+  // Refresh save buttons
+  document.querySelectorAll('.save-btn[data-q]').forEach(btn => {
+    if (btn.dataset.q === q) {
+      btn.classList.toggle('saved', isSaved(q));
+      btn.title = isSaved(q) ? 'Remove from saves' : 'Save this search';
+      btn.textContent = isSaved(q) ? '★' : '☆';
+    }
+  });
+  if (_hubOpen) renderHub();
+}
+
+function saveResult(url, title, q) {
+  const idx = savedSearches.findIndex(s => s.url === url);
+  if (idx !== -1) {
+    savedSearches.splice(idx, 1);
+  } else {
+    savedSearches.unshift({
+      id: Date.now(),
+      query: q || currentQuery,
+      url, title,
+      ts: new Date().toISOString(),
+      collection: null,
+    });
+  }
+  localStorage.setItem(SAVES_KEY, JSON.stringify(savedSearches));
+  if (_hubOpen) renderHub();
+}
+
+// ── SAVED FILTERS ─────────────────────────────────────────────
+function saveCurrentFilter() {
+  // prompt replaced by alturaPrompt in async version above
+  if (!window.alturaPrompt) return;
+  savedFilters.push({
+    id: Date.now(),
+    name,
+    filter: currentFilter,
+    dateRange: _dateRange ? { ..._dateRange } : null,
+  });
+  localStorage.setItem(FILTERS_KEY, JSON.stringify(savedFilters));
+  renderSavedFilterChips();
+  if (_hubOpen) renderHub();
+}
+
+function deleteSavedFilter(id) {
+  savedFilters = savedFilters.filter(f => f.id !== id);
+  localStorage.setItem(FILTERS_KEY, JSON.stringify(savedFilters));
+  renderSavedFilterChips();
+  if (_hubOpen) renderHub();
+}
+
+function applySavedFilter(f) {
+  currentFilter = f.filter;
+  document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
+  if (f.dateRange) {
+    _dateRange = f.dateRange;
+    if (f.dateRange.start) {
+      const df = document.getElementById('date-from');
+      const dt = document.getElementById('date-to');
+      if (df) df.value = f.dateRange.start;
+      if (dt) dt.value = f.dateRange.end || '';
+    }
+  }
+  _resultsCache = {};
+  renderResults();
+}
+
+function renderSavedFilterChips() {
+  const bar = document.querySelector('.filters-bar');
+  if (!bar) return;
+  document.querySelectorAll('.saved-filter-chip').forEach(el => el.remove());
+  const sep = document.querySelector('.filter-sep');
+  savedFilters.forEach(f => {
+    const chip = document.createElement('div');
+    chip.className = 'saved-filter-chip';
+    chip.innerHTML = `<span onclick="applySavedFilter(${JSON.stringify(f).replace(/"/g,'&quot;')})">${f.name.replace(/&/g,'&amp;')}</span><button class="sfc-del" onclick="deleteSavedFilter(${f.id})" title="Remove">✕</button>`;
+    if (sep) sep.insertAdjacentElement('afterend', chip);
+    else bar.appendChild(chip);
+  });
+}
+
+// ── BLOCKED SITES ─────────────────────────────────────────────
+function blockSite(domain) {
+  const clean = domain.replace(/^https?:\/\//, '').split('/')[0].toLowerCase();
+  if (!blockedSites.includes(clean)) {
+    blockedSites.push(clean);
+    localStorage.setItem(BLOCKED_KEY, JSON.stringify(blockedSites));
+    _resultsCache = {};
+    renderResults();
+    if (_hubOpen) renderHub();
+  }
+}
+
+function unblockSite(domain) {
+  blockedSites = blockedSites.filter(d => d !== domain);
+  localStorage.setItem(BLOCKED_KEY, JSON.stringify(blockedSites));
+  _resultsCache = {};
+  renderResults();
+}
+
+function isBlocked(url) {
+  try {
+    const domain = url.replace(/^https?:\/\//,'').split('/')[0].toLowerCase();
+    return blockedSites.some(b => domain === b || domain.endsWith('.' + b));
+  } catch { return false; }
+}
+
+// ── SEARCH ALERTS ─────────────────────────────────────────────
+function addAlert(query) {
+  if (searchAlerts.some(a => a.query.toLowerCase() === query.toLowerCase())) return;
+  searchAlerts.push({
+    id: Date.now(),
+    query,
+    created: new Date().toISOString(),
+    lastChecked: new Date().toISOString(),
+    frequency: 'daily',
+    active: true,
+  });
+  localStorage.setItem(ALERTS_KEY, JSON.stringify(searchAlerts));
+  if (_hubOpen) renderHub();
+}
+
+function deleteAlert(id) {
+  searchAlerts = searchAlerts.filter(a => a.id !== id);
+  localStorage.setItem(ALERTS_KEY, JSON.stringify(searchAlerts));
+  renderAccountAlerts();
+  if (_hubOpen) renderHub();
+}
+
+function toggleAlert(id) {
+  const a = searchAlerts.find(a => a.id === id);
+  if (a) { a.active = !a.active; localStorage.setItem(ALERTS_KEY, JSON.stringify(searchAlerts)); }
+  renderAccountAlerts();
+}
+
+// ── COLLECTIONS ───────────────────────────────────────────────
+function createCollection(name) {
+  collections.push({ id: Date.now(), name, items: [], created: new Date().toISOString() });
+  localStorage.setItem(COLLECTIONS_KEY, JSON.stringify(collections));
+  renderAccountSaves();
+  if (_hubOpen) renderHub();
+}
+
+function addToCollection(collId, saveId) {
+  const save = savedSearches.find(s => s.id === saveId);
+  const coll = collections.find(c => c.id === collId);
+  if (save && coll) {
+    save.collection = collId;
+    coll.items = [...new Set([...(coll.items||[]), saveId])];
+    localStorage.setItem(SAVES_KEY, JSON.stringify(savedSearches));
+    localStorage.setItem(COLLECTIONS_KEY, JSON.stringify(collections));
+    renderAccountSaves();
+  }
+}
+
+function deleteCollection(id) {
+  collections = collections.filter(c => c.id !== id);
+  savedSearches.forEach(s => { if (s.collection === id) s.collection = null; });
+  localStorage.setItem(COLLECTIONS_KEY, JSON.stringify(collections));
+  localStorage.setItem(SAVES_KEY, JSON.stringify(savedSearches));
+  renderAccountSaves();
+  if (_hubOpen) renderHub();
+}
+
+// ── EXPORT DATA ───────────────────────────────────────────────
+function exportData(format) {
+  const data = {
+    exportDate: new Date().toISOString(),
+    account: authState ? { email: authState.email, name: authState.name } : null,
+    searchHistory,
+    savedSearches,
+    collections,
+    savedFilters,
+    blockedSites,
+    searchAlerts,
+    settings,
+  };
+
+  if (format === 'json') {
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `altura-data-${Date.now()}.json`;
+    a.click(); URL.revokeObjectURL(a.href);
+  } else if (format === 'csv') {
+    const lines = ['Type,Query,URL,Title,Date'];
+    searchHistory.forEach(q => lines.push(`history,${JSON.stringify(q)},,,"${new Date().toLocaleDateString()}"`));
+    savedSearches.forEach(s => lines.push(`saved,${JSON.stringify(s.query)},${s.url},${JSON.stringify(s.title)},${s.ts}`));
+    const blob = new Blob([lines.join('\n')], { type: 'text/csv' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `altura-data-${Date.now()}.csv`;
+    a.click(); URL.revokeObjectURL(a.href);
+  }
+}
+
+// ── ACCOUNT CENTER RENDER FUNCTIONS ───────────────────────────
+function acTab(tab,btn){
+  document.querySelectorAll('.ac-tab').forEach(function(b){b.classList.remove('active');});
+  document.querySelectorAll('.ac-panel').forEach(function(p){p.classList.remove('active');p.style.display='none';});
+  btn.classList.add('active');
+  var panelMap={profile:'ac-profile',privacy:'ac-privacy',saves:'ac-saves',
+    blocked:'ac-blocked',alerts:'ac-alerts',
+    collections:'ac-collections',history:'ac-history-panel-wrap',exports:'ac-exports'};
+  var panelId=panelMap[tab]||('ac-'+tab);
+  var panel=document.getElementById(panelId);
+  if(panel){panel.style.display='';panel.classList.add('active');}
+  if(tab==='saves')        renderAccountSaves();
+  if(tab==='blocked')      renderAccountBlocked();
+  if(tab==='alerts')       renderAccountAlerts();
+  if(tab==='exports')      renderAccountExports();
+  if(tab==='profile')      renderAccountProfile();
+  if(tab==='privacy')      renderAccountPrivacy();
+  if(tab==='history')      renderAccountHistory();
+  if(tab==='collections')  renderAccountCollections();
+}
+
+function renderAccountProfile() {
+  const el = document.getElementById('ac-display-name');
+  const em = document.getElementById('ac-display-email');
+  const ni = document.getElementById('ac-name-input');
+  const ed = document.getElementById('ac-email-disp');
+  const si = document.getElementById('ac-since');
+  const av = document.getElementById('ac-avatar-big');
+  if (!authState) return;
+  const name = authState.name || authState.email?.split('@')[0] || '—';
+  if (el) el.textContent = name;
+  if (em) em.textContent = authState.email || '—';
+  if (ni) ni.value = name;
+  if (ed) ed.textContent = authState.email || '—';
+  if (si) si.textContent = authState.ts ? new Date(authState.ts).toLocaleDateString('en-GB', {day:'numeric',month:'long',year:'numeric'}) : '—';
+  if (av) av.textContent = name.charAt(0).toUpperCase();
+  // Stats
+  const stats = { searches: searchHistory.length, saves: savedSearches.length, alerts: searchAlerts.length, collections: collections.length };
+  Object.entries(stats).forEach(([k,v]) => { const el = document.getElementById('ac-stat-'+k); if (el) el.textContent = v; });
+}
+
+function renderAccountSaves() {
+  const el = document.getElementById('ac-saves-list');
+  if (!el) return;
+  if (!savedSearches.length) { el.innerHTML = '<div style="font-size:13px;color:var(--t2);padding:12px 0">No saved searches yet. Click ☆ on any search result to save it.</div>'; return; }
+  el.innerHTML = savedSearches.map(s => {
+    const safe = (s.title||s.query).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const url = s.url ? s.url.replace(/^https?:\/\//,'').split('/')[0] : '';
+    const date = new Date(s.ts).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+    const collName = s.collection ? (collections.find(c=>c.id===s.collection)?.name||'') : '';
+    return `<div class="ac-save-item" style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;color:var(--t0);letter-spacing:-.01em;cursor:pointer;margin-bottom:2px" onclick="doQuickSearch(decodeURIComponent('${encodeURIComponent(s.query)}'))">${safe}</div>
+        <div style="font-size:11px;color:var(--t2);display:flex;gap:8px;align-items:center">
+          ${url ? `<span>${url}</span>` : ''}
+          <span style="color:var(--t3)">${date}</span>
+          ${collName ? `<span style="color:#9c7ce0;font-size:10px">📁 ${collName}</span>` : ''}
+        </div>
       </div>
-      <div class="delete-checkbox-row">
-        <input type="checkbox" id="delete-third-cb" />
-        <label for="delete-third-cb">Include data shared with Altura partner services.</label>
+      <div style="display:flex;gap:4px;flex-shrink:0">
+        <button onclick="addSaveToCollectionPrompt(${s.id})" style="background:none;border:1px solid var(--line2);color:var(--t3);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer" title="Add to collection">📁</button>
+        <button onclick="removeSave(${s.id})" style="background:none;border:1px solid var(--line2);color:var(--t3);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer;transition:color .1s" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--t3)'" title="Remove">✕</button>
       </div>
+    </div>`;
+  }).join('');
+}
+
+function removeSave(id) {
+  savedSearches = savedSearches.filter(s => s.id !== id);
+  localStorage.setItem(SAVES_KEY, JSON.stringify(savedSearches));
+  renderAccountSaves();
+  if (_hubOpen) renderHub();
+}
+
+function addSaveToCollectionPrompt(saveId) {
+  if(!collections.length){
+    alturaPrompt('No collections yet. Create one to organise your saves.',{
+      title:'Create first collection',icon:'📁',label:'Collection name',
+    }).then(function(name){ if(name){ createCollection(name); addToCollection(collections[collections.length-1].id,saveId); }});
+    return;
+  }
+  var options=collections.map(function(c){
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:8px;border-radius:5px;cursor:pointer;transition:background .1s" onmouseover="this.style.background=\'rgba(255,255,255,.04)\'" onmouseout="this.style.background=\'\'" onclick="closeModal('+c.id+')">'
+      +'<span style="font-size:13px;color:var(--t0)">'+c.name.replace(/&/g,'&amp;')+'</span>'
+      +'<span style="font-size:11px;color:var(--t3)">'+savedSearches.filter(function(s){return s.collection===c.id;}).length+' items</span>'
+      +'</div>';
+  }).join('');
+  new Promise(function(resolve){
+    _showModal('<div class="am-header"><div class="am-icon">📁</div>'
+      +'<div class="am-header-text"><div class="am-title">Add to collection</div>'
+      +'<div class="am-sub">Choose a collection for this save.</div></div></div>'
+      +'<div class="am-body">'+options
+      +'<button class="am-btn ghost" style="width:100%;margin-top:8px" onclick="closeModal(&quot;new&quot;)">+ New collection</button>'
+      +'</div><div class="am-footer"><button class="am-btn ghost" onclick="closeModal(null)">Cancel</button></div>',
+      resolve);
+  }).then(function(collId){
+    if(collId==='new'){
+      alturaPrompt('Name your new collection:',{title:'New collection',icon:'📁'}).then(function(name){
+        if(name){ createCollection(name); addToCollection(collections[collections.length-1].id,saveId); }
+      });
+    } else if(collId){ addToCollection(collId,saveId); }
+  });
+}
+
+function renderAccountCollections() {
+  const el = document.getElementById('ac-collections-list');
+  if (!el) return;
+  if (!collections.length) {
+    el.innerHTML = '<div style="font-size:13px;color:var(--t2);padding:12px 0">No collections yet.</div>';
+    return;
+  }
+  el.innerHTML = collections.map(c => {
+    const items = savedSearches.filter(s => s.collection === c.id);
+    return `<div class="ac-collection">
+      <div class="ac-coll-header">
+        <div class="ac-coll-name">${c.name.replace(/&/g,'&amp;')}</div>
+        <div class="ac-coll-count">${items.length} item${items.length !== 1 ? 's' : ''}</div>
+      </div>
+      <div class="ac-coll-items">
+        ${items.slice(0,4).map(s => `<div class="ac-coll-item" onclick="doQuickSearch(decodeURIComponent('${encodeURIComponent(s.query)}'))">
+          <span style="color:var(--t3);font-size:11px">↗</span>${(s.title||s.query).replace(/&/g,'&amp;').replace(/</g,'&lt;')}
+        </div>`).join('')}
+        ${items.length > 4 ? `<div style="font-size:11px;color:var(--t3)">+${items.length-4} more</div>` : ''}
+      </div>
+      <div class="ac-coll-actions">
+        <button class="ac-coll-btn" onclick="shareCollection(${c.id})">Share link</button>
+        <button class="ac-coll-btn" onclick="deleteCollectionConfirm(${c.id})" style="color:var(--red);border-color:rgba(204,74,74,.2)">Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function shareCollection(id) {
+  const c = collections.find(c => c.id === id);
+  if (!c) return;
+  const shareUrl = location.origin + location.pathname + '?collection=' + btoa(JSON.stringify({ name: c.name, items: savedSearches.filter(s => s.collection === id).map(s => s.query) }));
+  shareCollection.call(this, id); return;  // handled by new shareCollection
+}
+
+function acSaveName(name) {
+  if (!authState || !name.trim()) return;
+  authState.name = name.trim();
+  localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
+  updateAuthUI();
+  renderAccountProfile();
+}
+
+function renderAccountBlocked() {
+  const el = document.getElementById('ac-blocked-list');
+  if (!el) return;
+  if (!blockedSites.length) { el.innerHTML = '<div style="font-size:13px;color:var(--t2);padding:12px 0">No blocked sites. Right-click any search result to block its domain.</div>'; return; }
+  el.innerHTML = blockedSites.map(d => `<div style="display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--line2);font-size:13px">
+    <span style="color:var(--t1);font-family:'Geist Mono',monospace;font-size:12px">${d}</span>
+    <button onclick="unblockSite('${d}')" style="background:none;border:1px solid rgba(204,74,74,.2);color:var(--red);border-radius:4px;padding:3px 10px;font-size:11px;cursor:pointer">Unblock</button>
+  </div>`).join('');
+}
+
+function renderAccountAlerts() {
+  const el = document.getElementById('ac-alerts-list');
+  if (!el) return;
+  if (!searchAlerts.length) { el.innerHTML = '<div style="font-size:13px;color:var(--t2);padding:12px 0">No alerts. Add an alert from any results page to monitor a topic.</div>'; return; }
+  el.innerHTML = searchAlerts.map(a => `<div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)">
+    <div style="flex:1;min-width:0">
+      <div style="font-size:13px;font-weight:600;color:var(--t0);letter-spacing:-.01em;margin-bottom:2px">${a.query.replace(/&/g,'&amp;')}</div>
+      <div style="font-size:11px;color:var(--t3)">${a.frequency} · Last checked: ${new Date(a.lastChecked).toLocaleDateString('en-GB')}</div>
     </div>
-    <div class="delete-result" id="delete-result">Request received. Please check your Altura Mailbox for more information.</div>
-    <div class="delete-btns" style="margin-top:16px">
-      <button class="delete-btn danger" onclick="submitDeleteEgg()">Confirm deletion request</button>
-      <button class="delete-btn outline" onclick="submitDeleteEgg()">Request partial deletion</button>
-      <button class="delete-btn ghost" onclick="submitDeleteEgg()">Cancel</button>
+    <button onclick="toggleAlert(${a.id})" style="background:${a.active?'var(--g3)':'var(--bg2)'};border:1px solid ${a.active?'rgba(157,219,94,.2)':'var(--line)'};color:${a.active?'var(--g)':'var(--t2)'};border-radius:4px;padding:4px 10px;font-size:11px;cursor:pointer">${a.active?'Active':'Paused'}</button>
+    <button class="ac-alert-del" onclick="deleteAlert(${a.id})">✕</button>
+  </div>`).join('');
+}
+
+function renderAccountExports() {
+  const el = document.getElementById('ac-exports-panel');
+  if (!el) return;
+  const totalItems = searchHistory.length + savedSearches.length + collections.reduce((n,c)=>n+c.items.length,0);
+  el.innerHTML = `<div class="settings-section">
+    <div class="settings-section-title">Export your data</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:16px;line-height:1.7">
+      Your data includes ${searchHistory.length} searches, ${savedSearches.length} saved items, ${collections.length} collections, ${searchAlerts.length} alerts, and ${blockedSites.length} blocked sites.
     </div>
-    <div style="font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.1em;color:var(--t3);margin-top:14px;line-height:1.8">
-      Altura Technologies Data Governance · Salt Lake City<br>
-      Response time: 30–90 business days
+    <div class="export-options">
+      <button class="export-btn-big" onclick="exportData('json')">
+        <div class="export-btn-big-icon">{ }</div>
+        <div class="export-btn-big-label">Export as JSON</div>
+        <div class="export-btn-big-sub">Complete data, all fields</div>
+      </button>
+      <button class="export-btn-big" onclick="exportData('csv')">
+        <div class="export-btn-big-icon">⊞</div>
+        <div class="export-btn-big-label">Export as CSV</div>
+        <div class="export-btn-big-sub">History and saves, tabular</div>
+      </button>
     </div>
   </div>
-</div>
+  <div class="settings-section">
+    <div class="settings-section-title">Delete all data</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:12px;line-height:1.7">
+      Permanently delete all local Altura Search data. This cannot be undone.
+    </div>
+    <button onclick="deleteAllData()" style="background:rgba(204,74,74,.08);border:1px solid rgba(204,74,74,.25);color:var(--red);border-radius:6px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;width:100%">Delete all Altura Search data</button>
+  </div>`;
+}
+
+function deleteAllData() {
+  deleteAllDataConfirm(); return;  // handled by modal
+  [SAVES_KEY, FILTERS_KEY, BLOCKED_KEY, ALERTS_KEY, COLLECTIONS_KEY,
+   GHOST_KEY, HISTORY_KEY, ORACLE_HISTORY_KEY, AUTH_KEY].forEach(k => localStorage.removeItem(k));
+  savedSearches=[]; savedFilters=[]; blockedSites=[]; searchAlerts=[]; collections=[];
+  searchHistory=[]; ghostMode=false; authState=null;
+  updateAuthUI(); applyGhostMode(); renderSavedFilterChips(); goHome();
+  // alert handled by deleteAllDataConfirm
+}
+
+function renderAccountHistory() {
+  const el = document.getElementById('ac-history-panel');
+  if (!el) return;
+  if (!searchHistory.length) { el.innerHTML = '<div style="font-size:13px;color:var(--t2);padding:12px 0">No history.</div>'; return; }
+  el.innerHTML = searchHistory.map((q,i) => {
+    const safe = q.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+    const enc = encodeURIComponent(q);
+    return `<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--line2)">
+      <span style="color:var(--t3);font-size:12px">↗</span>
+      <span style="flex:1;font-size:13px;color:var(--t1);cursor:pointer" onclick="doQuickSearch(decodeURIComponent('${enc}'))">${safe}</span>
+      <button onclick="removeHistIdx(${i})" style="background:none;border:none;color:var(--t3);cursor:pointer;font-size:12px;transition:color .1s" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--t3)'">✕</button>
+    </div>`;
+  }).join('');
+}
+
+function renderAccountPrivacy() {
+  // Privacy panel already rendered in HTML — just populate dynamic bits
+  const gEl = document.getElementById('ac-ghost-toggle');
+  if (gEl) gEl.classList.toggle('on', ghostMode);
+}
+
+// ── UPDATED RENDERRESULTS — filter blocked sites ──────────────
+const _origRenderResultsWrapped = renderResults;
+renderResults = async function() {
+  // After render, inject save buttons and filter blocked domains
+  await _origRenderResultsWrapped();
+  // Inject save buttons + filter blocked
+  setTimeout(() => {
+    // Filter blocked sites from results
+    document.querySelectorAll('.result-item').forEach(item => {
+      const url = item.dataset.url || '';
+      if (isBlocked(url)) {
+        item.style.display = 'none';
+        const blockedMsg = document.createElement('div');
+        blockedMsg.style.cssText = 'font-size:11px;color:var(--t3);padding:8px 14px;font-family:"Geist Mono",monospace;letter-spacing:.06em;display:flex;align-items:center;gap:8px';
+        const domain = url.replace(/^https?:\/\//,'').split('/')[0];
+        blockedMsg.innerHTML = `Result from ${domain} hidden · <span onclick="unblockSite('${domain}')" style="cursor:pointer;text-decoration:underline;color:var(--t2)">Unblock</span>`;
+        item.insertAdjacentElement('afterend', blockedMsg);
+      } else {
+        // Add save button to each result
+        const meta = item.querySelector('.result-meta');
+        if (meta && !item.querySelector('.save-btn')) {
+          const url2 = item.dataset.url || '';
+          const title = item.querySelector('.result-title')?.textContent || '';
+          const btn = document.createElement('button');
+          btn.className = 'save-btn';
+          btn.dataset.q = currentQuery;
+          const alreadySaved = savedSearches.some(s => s.url === url2);
+          btn.textContent = alreadySaved ? '★' : '☆';
+          btn.title = alreadySaved ? 'Remove from saves' : 'Save this result';
+          if (alreadySaved) btn.classList.add('saved');
+          btn.style.marginLeft = 'auto';
+          btn.onclick = () => saveResult(url2, title, currentQuery);
+          meta.appendChild(btn);
+        }
+      }
+    });
+    // Add context menu for blocking
+    // Context menu handled by capture listener in modal system
+    document.querySelectorAll('.result-item:not([data-ctx])').forEach(item => {
+      item.dataset.ctx = '1';
+    });
+  }, 400);
+};
+
+// ── UPDATED RENDERRESULTS — alert button ──────────────────────
+// Add "Create alert" button to Oracle bar
+const _origOracleBar = 'showOracle()';
+// Override via result render — add alert button to res-meta after render
+// (handled in the setTimeout above)
+
+// ── HUB RENDER PATCH ─────────────────────────────────────────
+const _origRenderHub = renderHub;
+renderHub = function() {
+  _origRenderHub();
+  if (!authState) return;
+
+  const panel = document.getElementById('hub-panel');
+  if (!panel) return;
+
+  // Append ghost mode row and create alert button
+  const ghostRow = document.createElement('div');
+  ghostRow.className = 'hub-ghost-row';
+  ghostRow.innerHTML = `<div class="hub-ghost-label"><span>&#128065;</span> Ghost mode</div>
+    <button class="toggle ${ghostMode ? 'on' : ''}" onclick="toggleGhostMode()"></button>`;
+  panel.appendChild(ghostRow);
+
+  // Inject save current search button if on results page
+  if (currentQuery && document.getElementById('results')?.classList.contains('active')) {
+    const sections = panel.querySelectorAll('.hub-section');
+    if (sections.length > 0) {
+      const saveRow = document.createElement('div');
+      saveRow.style.cssText = 'padding:8px 18px;border-bottom:1px solid var(--line2)';
+      const saved = isSaved(currentQuery);
+      saveRow.innerHTML = `<button class="hub-action" onclick="toggleSave('${currentQuery.replace(/'/g,'\\\'').replace(/&/g,'&amp;')}');renderHub()">
+        <span class="hub-action-icon">${saved ? '★' : '☆'}</span>${saved ? 'Unsave this search' : 'Save this search'}
+      </button>
+      <button class="hub-action" onclick="addAlert('${currentQuery.replace(/'/g,'\\\'').replace(/&/g,'&amp;')}');renderHub()">
+        <span class="hub-action-icon">&#128276;</span>Alert for &ldquo;${currentQuery.slice(0,30).replace(/&/g,'&amp;')}${currentQuery.length>30?'…':''}&rdquo;
+      </button>`;
+      sections[0].insertAdjacentElement('beforebegin', saveRow);
+    }
+  }
+};
+
+// ── ACCOUNT CENTER NAV ────────────────────────────────────────
+function goAccount() {
+  _prevPage = document.querySelector('.page.active')?.id || 'home';
+  goPage('account');
+  renderAccountProfile();
+}
+
+// ── INIT ─────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  initGhostMode();
+  renderSavedFilterChips();
+
+  // Check for shared collection in URL
+  const collParam = new URLSearchParams(location.search).get('collection');
+  if (collParam) {
+    try {
+      const shared = JSON.parse(atob(collParam));
+      if (shared.name && shared.items) importSharedCollection(shared);
+    } catch {}
+  }
+});
+
+
+
+// ══════════════════════════════════════════════════════════════
+// ── ALTURA CUSTOM MODAL SYSTEM ────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+
+let _modalStack = [];
+let _modalCallback = null;
+
+function _showModal(html, onClose) {
+  const box = document.getElementById('altura-modal-box');
+  const overlay = document.getElementById('altura-modal-overlay');
+  if (!box || !overlay) return;
+  box.innerHTML = html;
+  overlay.classList.add('show');
+  _modalCallback = onClose || null;
+  // Focus first input
+  setTimeout(() => box.querySelector('input,textarea,button')?.focus(), 80);
+  // Close on backdrop
+  overlay.onclick = e => { if (e.target === overlay) closeModal(); };
+}
+
+function closeModal(result) {
+  const overlay = document.getElementById('altura-modal-overlay');
+  if (overlay) overlay.classList.remove('show');
+  if (_modalCallback) { _modalCallback(result); _modalCallback = null; }
+}
+
+// ── alert(msg) replacement ────────────────────────────────────
+function alturaAlert(msg, opts = {}) {
+  return new Promise(resolve => {
+    _showModal(`
+      <div class="am-header">
+        <div class="am-icon">${opts.icon || 'ℹ'}</div>
+        <div class="am-header-text">
+          <div class="am-title">${opts.title || 'Notice'}</div>
+          <div class="am-sub">${msg}</div>
+        </div>
+      </div>
+      <div class="am-footer">
+        <button class="am-btn primary" onclick="closeModal(true)">OK</button>
+      </div>`, resolve);
+  });
+}
+
+// ── confirm(msg) replacement ──────────────────────────────────
+function alturaConfirm(msg, opts = {}) {
+  return new Promise(resolve => {
+    _showModal(`
+      <div class="am-header">
+        <div class="am-icon">${opts.icon || '⚠'}</div>
+        <div class="am-header-text">
+          <div class="am-title">${opts.title || 'Confirm'}</div>
+          <div class="am-sub">${msg}</div>
+        </div>
+      </div>
+      <div class="am-footer">
+        <button class="am-btn ghost" onclick="closeModal(false)">${opts.cancel || 'Cancel'}</button>
+        <button class="am-btn ${opts.danger ? 'danger' : 'primary'}" onclick="closeModal(true)">${opts.confirm || 'Confirm'}</button>
+      </div>`, resolve);
+  });
+}
+
+// ── prompt(msg) replacement ───────────────────────────────────
+function alturaPrompt(msg, opts = {}) {
+  return new Promise(resolve => {
+    const inputId = 'am-prompt-input-' + Date.now();
+    _showModal(`
+      <div class="am-header">
+        <div class="am-icon">${opts.icon || '✏'}</div>
+        <div class="am-header-text">
+          <div class="am-title">${opts.title || 'Enter a value'}</div>
+          <div class="am-sub">${msg}</div>
+        </div>
+      </div>
+      <div class="am-body">
+        ${opts.label ? `<div class="am-label">${opts.label}</div>` : ''}
+        <input class="am-input" id="${inputId}" type="${opts.type || 'text'}"
+          placeholder="${opts.placeholder || ''}" value="${opts.default || ''}"
+          onkeydown="if(event.key==='Enter'){var v=document.getElementById('${inputId}').value.trim();if(v||${opts.allowEmpty ? 'true' : 'false'})closeModal(v||null);}" />
+        ${opts.hint ? `<div style="font-size:11px;color:var(--t3)">${opts.hint}</div>` : ''}
+      </div>
+      <div class="am-footer">
+        <button class="am-btn ghost" onclick="closeModal(null)">Cancel</button>
+        <button class="am-btn primary" onclick="var v=document.getElementById('${inputId}').value.trim();if(v||${opts.allowEmpty ? 'true' : 'false'})closeModal(v||null);">OK</button>
+      </div>`, resolve);
+    setTimeout(() => document.getElementById(inputId)?.focus(), 80);
+  });
+}
+
+// ══════════════════════════════════════════════════════════════
+// ── DELETE DATA MODAL (full) ──────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+
+function showDeleteModal() {
+  const ref = 'DGR-2015-' + Math.floor(Math.random()*90000+10000) + '-' + String.fromCharCode(65+Math.floor(Math.random()*26));
+  const counts = {
+    history: searchHistory.length,
+    saves: savedSearches.length,
+    collections: collections.length,
+    alerts: searchAlerts.length,
+    blocked: blockedSites.length,
+    oracle: _persistedOracleHistory ? _persistedOracleHistory.length : 0,
+  };
+
+  _showModal(`
+    <div class="am-header">
+      <div class="am-icon">🗑</div>
+      <div class="am-header-text">
+        <div class="am-tag">Altura Data Governance · ${ref}</div>
+        <div class="am-title">Request data deletion</div>
+        <div class="am-sub">Submit a request to delete your Altura Search data. All requests are reviewed and logged.</div>
+      </div>
+    </div>
+    <div class="am-body">
+      <div class="am-info-box">
+        <div class="am-info-row"><span class="am-info-k">Search history</span><span class="am-info-v">${counts.history} queries</span></div>
+        <div class="am-info-row"><span class="am-info-k">Saved searches</span><span class="am-info-v">${counts.saves} items</span></div>
+        <div class="am-info-row"><span class="am-info-k">Collections</span><span class="am-info-v">${counts.collections}</span></div>
+        <div class="am-info-row"><span class="am-info-k">Oracle sessions</span><span class="am-info-v">${counts.oracle}</span></div>
+        <div class="am-info-row"><span class="am-info-k">Search alerts</span><span class="am-info-v">${counts.alerts}</span></div>
+        <div class="am-info-row"><span class="am-info-k">Blocked sites</span><span class="am-info-v">${counts.blocked}</span></div>
+      </div>
+      <div class="am-field">
+        <label class="am-label">Email address</label>
+        <input class="am-input" id="del-email" type="email" placeholder="Account email address" />
+      </div>
+      <div class="am-field">
+        <label class="am-label">Reason (optional)</label>
+        <select class="am-select" id="del-reason">
+          <option value="">Select a reason</option>
+          <option>No longer using Altura Search</option>
+          <option>Privacy concerns</option>
+          <option>Data accuracy concerns</option>
+          <option>Legal requirement</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="am-checkbox-row">
+        <input type="checkbox" id="del-local-cb" checked />
+        <label for="del-local-cb">Delete all data stored locally on this device</label>
+      </div>
+      <div class="am-checkbox-row">
+        <input type="checkbox" id="del-account-cb" />
+        <label for="del-account-cb">Submit deletion request for server-side account data (Altura ID, synced history)</label>
+      </div>
+      <div class="am-checkbox-row">
+        <input type="checkbox" id="del-partner-cb" />
+        <label for="del-partner-cb">Include data shared with Altura partner services (Fiber, Hub)</label>
+      </div>
+    </div>
+    <div class="am-footer">
+      <button class="am-btn ghost" onclick="closeModal()">Cancel</button>
+      <button class="am-btn ghost" onclick="showPartialDeleteModal()">Partial deletion</button>
+      <button class="am-btn danger" onclick="submitDeleteRequest()">Submit request</button>
+    </div>`);
+}
+
+function showPartialDeleteModal() {
+  _showModal(`
+    <div class="am-header">
+      <div class="am-icon">⚙</div>
+      <div class="am-header-text">
+        <div class="am-title">Partial data deletion</div>
+        <div class="am-sub">Select which data to delete. This action is immediate and cannot be undone.</div>
+      </div>
+    </div>
+    <div class="am-body">
+      <div class="am-checkbox-row">
+        <input type="checkbox" id="pd-history" checked />
+        <label for="pd-history">Search history (${searchHistory.length} queries)</label>
+      </div>
+      <div class="am-checkbox-row">
+        <input type="checkbox" id="pd-saves" />
+        <label for="pd-saves">Saved searches (${savedSearches.length} items)</label>
+      </div>
+      <div class="am-checkbox-row">
+        <input type="checkbox" id="pd-oracle" />
+        <label for="pd-oracle">Oracle conversations (${_persistedOracleHistory ? _persistedOracleHistory.length : 0} sessions)</label>
+      </div>
+      <div class="am-checkbox-row">
+        <input type="checkbox" id="pd-alerts" />
+        <label for="pd-alerts">Search alerts (${searchAlerts.length})</label>
+      </div>
+      <div class="am-checkbox-row">
+        <input type="checkbox" id="pd-filters" />
+        <label for="pd-filters">Saved filters (${savedFilters.length})</label>
+      </div>
+      <div class="am-checkbox-row">
+        <input type="checkbox" id="pd-blocked" />
+        <label for="pd-blocked">Blocked sites (${blockedSites.length})</label>
+      </div>
+      <div class="am-checkbox-row">
+        <input type="checkbox" id="pd-settings" />
+        <label for="pd-settings">Settings and preferences</label>
+      </div>
+    </div>
+    <div class="am-footer">
+      <button class="am-btn ghost" onclick="showDeleteModal()">← Back</button>
+      <button class="am-btn danger" onclick="executePartialDelete()">Delete selected</button>
+    </div>`);
+}
+
+async function submitDeleteRequest() {
+  const email = document.getElementById('del-email')?.value.trim();
+  const local = document.getElementById('del-local-cb')?.checked;
+  const account = document.getElementById('del-account-cb')?.checked;
+  const reason = document.getElementById('del-reason')?.value;
+
+  if (!email) {
+    document.getElementById('del-email')?.focus();
+    document.getElementById('del-email').style.borderColor = 'var(--red)';
+    return;
+  }
+
+  // Show processing
+  const ref = 'DGR-2015-' + Math.floor(Math.random()*90000+10000);
+  _showModal(`
+    <div class="am-header">
+      <div class="am-icon">⏳</div>
+      <div class="am-header-text">
+        <div class="am-title">Processing request</div>
+        <div class="am-sub">Reference: ${ref}</div>
+      </div>
+    </div>
+    <div class="am-body">
+      <div class="am-progress"><div class="am-progress-fill" id="del-progress" style="width:0%"></div></div>
+      <div id="del-log"></div>
+    </div>`);
+
+  const log = document.getElementById('del-log');
+  const prog = document.getElementById('del-progress');
+
+  const steps = [
+    [400,  20, 'Verifying identity…'],
+    [900,  45, 'Contacting alta-dg-slc-01.altura.int…'],
+    [1500, 65, 'Logging deletion request…'],
+    [2100, 80, local ? 'Clearing local storage…' : 'Skipping local data…'],
+    [2700, 95, account ? 'Submitting server-side request…' : 'Server-side request omitted…'],
+    [3200, 100, 'Request received.'],
+  ];
+
+  for (const [delay, pct, msg] of steps) {
+    await new Promise(r => setTimeout(r, delay - (steps[0][0] - 400)));
+    if (log) { const line = document.createElement('div'); line.className = 'am-result-line' + (pct === 100 ? ' ok' : ' pending'); line.textContent = msg; log.appendChild(line); }
+    if (prog) prog.style.width = pct + '%';
+  }
+
+  // Actually delete local data if checked
+  if (local) {
+    [SAVES_KEY, FILTERS_KEY, BLOCKED_KEY, ALERTS_KEY, COLLECTIONS_KEY,
+     GHOST_KEY, HISTORY_KEY].forEach(k => localStorage.removeItem(k));
+    savedSearches=[]; savedFilters=[]; blockedSites=[]; searchAlerts=[];
+    collections=[]; searchHistory=[]; ghostMode=false;
+  }
+
+  await new Promise(r => setTimeout(r, 600));
+  _showModal(`
+    <div class="am-header">
+      <div class="am-icon">✓</div>
+      <div class="am-header-text">
+        <div class="am-title">Request submitted</div>
+        <div class="am-sub">Your deletion request has been logged.</div>
+      </div>
+    </div>
+    <div class="am-body">
+      <div class="am-info-box">
+        <div class="am-info-row"><span class="am-info-k">Reference</span><span class="am-info-v" style="color:var(--g)">${ref}</span></div>
+        <div class="am-info-row"><span class="am-info-k">Submitted to</span><span class="am-info-v">alta-dg-slc-01.altura.int</span></div>
+        <div class="am-info-row"><span class="am-info-k">Processing time</span><span class="am-info-v">Indefinite</span></div>
+        <div class="am-info-row"><span class="am-info-k">Response method</span><span class="am-info-v">Email · ${email.slice(0,3)}***</span></div>
+        <div class="am-info-row"><span class="am-info-k">Local data</span><span class="am-info-v">${local ? 'Deleted' : 'Retained'}</span></div>
+      </div>
+      <div style="font-size:11px;color:var(--t3);line-height:1.8;">
+        Altura Technologies Data Governance · Salt Lake City<br>
+        Retain this reference number for any follow-up enquiries.<br>
+        Response within 30–90 business days.
+      </div>
+    </div>
+    <div class="am-footer">
+      <button class="am-btn primary" onclick="closeModal()">Close</button>
+    </div>`);
+}
+
+function executePartialDelete() {
+  const map = {
+    'pd-history':  () => { searchHistory=[]; localStorage.removeItem(HISTORY_KEY); },
+    'pd-saves':    () => { savedSearches=[]; localStorage.removeItem(SAVES_KEY); },
+    'pd-oracle':   () => { if(typeof _persistedOracleHistory!=='undefined'){_persistedOracleHistory=[];} localStorage.removeItem(ORACLE_HISTORY_KEY||'altura_oracle_history'); },
+    'pd-alerts':   () => { searchAlerts=[]; localStorage.removeItem(ALERTS_KEY); },
+    'pd-filters':  () => { savedFilters=[]; localStorage.removeItem(FILTERS_KEY); renderSavedFilterChips(); },
+    'pd-blocked':  () => { blockedSites=[]; localStorage.removeItem(BLOCKED_KEY); },
+    'pd-settings': () => { localStorage.removeItem(SETTINGS_KEY); settings={theme:'dark',safe:true,instant:true,history:true,region:'global',lang:'en',perPage:8}; applyTheme('dark'); },
+  };
+  const deleted = [];
+  Object.entries(map).forEach(([id,fn]) => {
+    const cb = document.getElementById(id);
+    if (cb?.checked) { fn(); deleted.push(cb.nextElementSibling?.textContent || id); }
+  });
+  if (!deleted.length) { closeModal(); return; }
+  _showModal(`
+    <div class="am-header">
+      <div class="am-icon">✓</div>
+      <div class="am-header-text">
+        <div class="am-title">Data deleted</div>
+        <div class="am-sub">The following data has been permanently removed from this device.</div>
+      </div>
+    </div>
+    <div class="am-body">
+      ${deleted.map(d => `<div class="am-result-line ok">✓ ${d}</div>`).join('')}
+    </div>
+    <div class="am-footer">
+      <button class="am-btn primary" onclick="closeModal()">Done</button>
+    </div>`);
+}
+
+// ══════════════════════════════════════════════════════════════
+// ── REQUEST DATA MODAL (full) ─────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+
+function showRequestDataModal() {
+  const ref = 'DRA-2015-' + Math.floor(Math.random()*90000+10000) + '-' + String.fromCharCode(65+Math.floor(Math.random()*26));
+  _showModal(`
+    <div class="am-header">
+      <div class="am-icon">📋</div>
+      <div class="am-header-text">
+        <div class="am-tag">Altura Data Access · ${ref}</div>
+        <div class="am-title">Request your data</div>
+        <div class="am-sub">Submit a subject access request under applicable data protection frameworks.</div>
+      </div>
+    </div>
+    <div class="am-body">
+      <div class="am-field">
+        <label class="am-label">Full name</label>
+        <input class="am-input" id="dr-name" type="text" placeholder="Legal name as registered" />
+      </div>
+      <div class="am-field">
+        <label class="am-label">Email address</label>
+        <input class="am-input" id="dr-email" type="email" placeholder="Account email address" />
+      </div>
+      <div class="am-field">
+        <label class="am-label">Jurisdiction</label>
+        <select class="am-select" id="dr-jurisdiction">
+          <option value="">Select jurisdiction</option>
+          <option>Halonesia — HCT Framework Article 18</option>
+          <option>Commonwealth of Great Britain — UK GDPR</option>
+          <option>Federal Republic of Germany — DSGVO</option>
+          <option>Mandate of Chicago — CCA Data Rights Act</option>
+          <option>Akebono — Personal Information Protection Act</option>
+          <option>Other / Unknown</option>
+        </select>
+      </div>
+      <div class="am-field">
+        <label class="am-label">Data categories requested</label>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-top:2px">
+          <div class="am-checkbox-row"><input type="checkbox" id="dr-search" checked /><label for="dr-search">Search queries and history</label></div>
+          <div class="am-checkbox-row"><input type="checkbox" id="dr-profile" checked /><label for="dr-profile">Account profile and authentication records</label></div>
+          <div class="am-checkbox-row"><input type="checkbox" id="dr-oracle" /><label for="dr-oracle">Oracle Standard conversation logs</label></div>
+          <div class="am-checkbox-row"><input type="checkbox" id="dr-inferred" /><label for="dr-inferred">Inferred interests and behavioural data</label></div>
+          <div class="am-checkbox-row"><input type="checkbox" id="dr-third" /><label for="dr-third">Data shared with Altura partner services</label></div>
+        </div>
+      </div>
+      <div class="am-field">
+        <label class="am-label">Additional notes (optional)</label>
+        <textarea class="am-textarea" id="dr-notes" placeholder="Any specific scope, date ranges, or context…"></textarea>
+      </div>
+    </div>
+    <div class="am-footer">
+      <button class="am-btn ghost" onclick="closeModal()">Cancel</button>
+      <button class="am-btn primary" onclick="submitDataRequest('${ref}')">Submit SAR</button>
+    </div>`);
+}
+
+async function submitDataRequest(ref) {
+  const name  = document.getElementById('dr-name')?.value.trim();
+  const email = document.getElementById('dr-email')?.value.trim();
+  const jur   = document.getElementById('dr-jurisdiction')?.value;
+
+  if (!name) { document.getElementById('dr-name').style.borderColor='var(--red)'; document.getElementById('dr-name').focus(); return; }
+  if (!email || !email.includes('@')) { document.getElementById('dr-email').style.borderColor='var(--red)'; document.getElementById('dr-email').focus(); return; }
+
+  const categories = ['dr-search','dr-profile','dr-oracle','dr-inferred','dr-third']
+    .filter(id => document.getElementById(id)?.checked)
+    .map(id => document.getElementById(id)?.nextElementSibling?.textContent || id);
+
+  // Processing screen
+  _showModal(`
+    <div class="am-header">
+      <div class="am-icon">⏳</div>
+      <div class="am-header-text">
+        <div class="am-title">Submitting request</div>
+        <div class="am-sub">Reference: ${ref}</div>
+      </div>
+    </div>
+    <div class="am-body">
+      <div class="am-progress"><div class="am-progress-fill" id="dr-prog" style="width:0%"></div></div>
+      <div id="dr-log"></div>
+    </div>`);
+
+  const steps = [
+    [300,  20, 'Validating identity details…'],
+    [800,  45, 'Contacting alta-dg-slc-01.altura.int…'],
+    [1400, 70, `Logging SAR under ${jur || 'applicable framework'}…`],
+    [1900, 90, 'Notifying Data Governance team…'],
+    [2400, 100, 'Request received.'],
+  ];
+  for (const [delay, pct, msg] of steps) {
+    await new Promise(r => setTimeout(r, delay));
+    const log = document.getElementById('dr-log');
+    const prog = document.getElementById('dr-prog');
+    if (log) { const line = document.createElement('div'); line.className = 'am-result-line pending'; line.textContent = msg; if (pct===100) line.className='am-result-line ok'; log.appendChild(line); }
+    if (prog) prog.style.width = pct + '%';
+  }
+
+  await new Promise(r => setTimeout(r, 500));
+
+  // Also export local data immediately
+  const localData = {
+    exportDate: new Date().toISOString(),
+    reference: ref,
+    requestedBy: { name, email, jurisdiction: jur },
+    searchHistory,
+    savedSearches: savedSearches.length,
+    oracleSessions: (_persistedOracleHistory||[]).length,
+    searchAlerts: searchAlerts.length,
+    settings: { ...settings, note: 'Partial view' },
+  };
+
+  _showModal(`
+    <div class="am-header">
+      <div class="am-icon">✓</div>
+      <div class="am-header-text">
+        <div class="am-title">Request submitted</div>
+        <div class="am-sub">Your subject access request has been logged with Altura Data Governance.</div>
+      </div>
+    </div>
+    <div class="am-body">
+      <div class="am-info-box">
+        <div class="am-info-row"><span class="am-info-k">Reference</span><span class="am-info-v" style="color:var(--g)">${ref}</span></div>
+        <div class="am-info-row"><span class="am-info-k">Framework</span><span class="am-info-v">${jur || 'General'}</span></div>
+        <div class="am-info-row"><span class="am-info-k">Categories</span><span class="am-info-v">${categories.length}</span></div>
+        <div class="am-info-row"><span class="am-info-k">Response to</span><span class="am-info-v">${email.slice(0,3)}***</span></div>
+        <div class="am-info-row"><span class="am-info-k">Expected</span><span class="am-info-v">30 business days</span></div>
+        <div class="am-info-row"><span class="am-info-k">Escalation</span><span class="am-info-v">data@altura.int</span></div>
+      </div>
+      <div style="margin-top:6px">
+        <div style="font-size:11px;color:var(--t2);margin-bottom:8px">Your local data is available immediately:</div>
+        <button onclick="exportData('json')" class="am-btn ghost" style="font-size:12px;padding:7px 14px;width:100%">⬇ Download local data as JSON</button>
+      </div>
+    </div>
+    <div class="am-footer">
+      <button class="am-btn primary" onclick="closeModal()">Done</button>
+    </div>`);
+}
+
+// ══════════════════════════════════════════════════════════════
+// ── REPLACE ALL NATIVE POPUPS ─────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+
+// Collection name prompt
+async function createCollectionPrompt() {
+  const name = await alturaPrompt('Name your collection. It will appear in your account and can be shared.', {
+    title: 'New collection',
+    icon: '📁',
+    label: 'Collection name',
+    placeholder: 'e.g. Research, News, Saved for later',
+  });
+  if (name) createCollection(name);
+}
+
+// Add to collection
+async function addSaveToCollectionPrompt(saveId) {
+  if (!collections.length) {
+    const name = await alturaPrompt('No collections yet. Create one to organise your saves.', {
+      title: 'Create first collection',
+      icon: '📁',
+      label: 'Collection name',
+    });
+    if (name) { createCollection(name); addToCollection(collections[collections.length-1].id, saveId); }
+    return;
+  }
+  const options = collections.map((c,i) => `<div class="am-checkbox-row" style="cursor:pointer;padding:4px 0" onclick="closeModal(${c.id})">
+    <span style="font-size:13px;color:var(--t0)">${c.name.replace(/&/g,'&amp;')}</span>
+    <span style="font-size:11px;color:var(--t3);margin-left:auto">${savedSearches.filter(s=>s.collection===c.id).length} items</span>
+  </div>`).join('');
+  const collId = await new Promise(resolve => {
+    _showModal(`
+      <div class="am-header">
+        <div class="am-icon">📁</div>
+        <div class="am-header-text">
+          <div class="am-title">Add to collection</div>
+          <div class="am-sub">Choose a collection for this save.</div>
+        </div>
+      </div>
+      <div class="am-body">${options}
+        <button class="am-btn ghost" style="width:100%;margin-top:6px" onclick="closeModal('new')">+ New collection</button>
+      </div>
+      <div class="am-footer">
+        <button class="am-btn ghost" onclick="closeModal(null)">Cancel</button>
+      </div>`, resolve);
+  });
+  if (collId === 'new') {
+    const name = await alturaPrompt('Name your new collection:', { title:'New collection', icon:'📁' });
+    if (name) { createCollection(name); addToCollection(collections[collections.length-1].id, saveId); }
+  } else if (collId) {
+    addToCollection(collId, saveId);
+  }
+}
+
+// Save filter prompt
+async function saveCurrentFilter() {
+  const name = await alturaPrompt('Name this filter preset to save it to your filter bar.', {
+    title: 'Save filter preset',
+    icon: '🔖',
+    label: 'Preset name',
+    placeholder: 'e.g. Verified sources this week',
+  });
+  if (!name) return;
+  savedFilters.push({
+    id: Date.now(),
+    name,
+    filter: currentFilter,
+    dateRange: _dateRange ? { ..._dateRange } : null,
+  });
+  localStorage.setItem(FILTERS_KEY, JSON.stringify(savedFilters));
+  renderSavedFilterChips();
+  if (typeof _hubOpen !== 'undefined' && _hubOpen) renderHub();
+}
+
+// Block site confirm
+async function blockSiteConfirm(domain) {
+  const ok = await alturaConfirm(
+    `Hide all results from <strong>${domain}</strong>? This can be reversed in Account → Blocked sites.`,
+    { title: 'Block site', icon: '🚫', confirm: 'Block', danger: true }
+  );
+  if (ok) blockSite(domain);
+}
+
+// Delete collection confirm
+async function deleteCollectionConfirm(id) {
+  const c = collections.find(c => c.id === id);
+  if (!c) return;
+  const ok = await alturaConfirm(
+    `Delete collection "<strong>${c.name.replace(/&/g,'&amp;')}</strong>"? The ${savedSearches.filter(s=>s.collection===id).length} saved items will be moved to Uncollected.`,
+    { title: 'Delete collection', icon: '🗑', confirm: 'Delete', danger: true }
+  );
+  if (ok) deleteCollection(id);
+}
+
+// Delete all data
+async function deleteAllDataConfirm() {
+  const ok = await alturaConfirm(
+    'This will permanently delete all Altura Search data on this device — history, saves, collections, alerts, and settings. <strong>This cannot be undone.</strong>',
+    { title: 'Delete all data', icon: '⚠', confirm: 'Delete everything', danger: true }
+  );
+  if (!ok) return;
+  [SAVES_KEY, FILTERS_KEY, BLOCKED_KEY, ALERTS_KEY, COLLECTIONS_KEY,
+   GHOST_KEY, HISTORY_KEY, 'altura_oracle_history', AUTH_KEY].forEach(k => localStorage.removeItem(k));
+  savedSearches=[]; savedFilters=[]; blockedSites=[]; searchAlerts=[]; collections=[];
+  searchHistory=[]; ghostMode=false; authState=null;
+  updateAuthUI(); applyGhostMode(); renderSavedFilterChips();
+  await alturaAlert('All data deleted from this device.', { title: 'Data deleted', icon: '✓' });
+  goHome();
+}
+
+// Share collection
+async function shareCollection(id) {
+  const c = collections.find(c => c.id === id);
+  if (!c) return;
+  const shareUrl = location.origin + location.pathname + '?collection='
+    + btoa(JSON.stringify({ name: c.name, items: savedSearches.filter(s=>s.collection===id).map(s=>s.query) }));
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    await alturaAlert('Collection link copied to clipboard.', { title: 'Link copied', icon: '🔗' });
+  } catch {
+    _showModal(`
+      <div class="am-header"><div class="am-icon">🔗</div>
+        <div class="am-header-text"><div class="am-title">Share link</div><div class="am-sub">Copy this link to share your collection.</div></div>
+      </div>
+      <div class="am-body">
+        <input class="am-input" value="${shareUrl}" readonly onclick="this.select()" />
+      </div>
+      <div class="am-footer"><button class="am-btn primary" onclick="closeModal()">Done</button></div>`);
+  }
+}
+
+// Import shared collection
+async function importSharedCollection(shared) {
+  const ok = await alturaConfirm(
+    `Import collection "<strong>${shared.name.replace(/&/g,'&amp;')}</strong>" with ${shared.items.length} saved search${shared.items.length!==1?'es':''}?`,
+    { title: 'Import collection', icon: '📥', confirm: 'Import' }
+  );
+  if (!ok) return;
+  const newColl = { id: Date.now(), name: shared.name, items: [], created: new Date().toISOString() };
+  shared.items.forEach(q => {
+    const id = Date.now() + Math.random();
+    savedSearches.unshift({ id, query: q, url: '', title: q, ts: new Date().toISOString(), collection: newColl.id });
+    newColl.items.push(id);
+  });
+  collections.push(newColl);
+  localStorage.setItem(SAVES_KEY, JSON.stringify(savedSearches));
+  localStorage.setItem(COLLECTIONS_KEY, JSON.stringify(collections));
+  history.replaceState({}, '', location.pathname);
+  await alturaAlert(`Collection "${shared.name.replace(/&/g,'&amp;')}" imported with ${shared.items.length} items.`, { title: 'Imported', icon: '✓' });
+}
+
+// Auth error
+function showAuthError(msg) {
+  const el = document.getElementById('auth-error');
+  if (el) { el.textContent = msg; el.style.display = 'block'; }
+}
+
+// Voice search not supported
+function voiceNotSupported() {
+  alturaAlert('Voice search is not supported in this browser.', { title: 'Not supported', icon: '🎤' });
+}
+
+// ── PATCH INIT to handle shared collection ────────────────────
+window.addEventListener('load', function() {
+  const collParam = new URLSearchParams(location.search).get('collection');
+  if (collParam) {
+    try {
+      const shared = JSON.parse(atob(collParam));
+      if (shared.name && shared.items) importSharedCollection(shared);
+    } catch {}
+  }
+});
+
+// ── PATCH renderAccountExports to use new modals ──────────────
+const _origRenderAccountExports2 = renderAccountExports;
+renderAccountExports = function() {
+  const el = document.getElementById('ac-exports-panel');
+  if (!el) return;
+  const totalItems = searchHistory.length + savedSearches.length + (collections||[]).reduce((n,c)=>n+(c.items||[]).length,0);
+  el.innerHTML = `<div class="settings-section">
+    <div class="settings-section-title">Export your data</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:16px;line-height:1.7">
+      Your data includes <strong style="color:var(--t0)">${searchHistory.length}</strong> searches,
+      <strong style="color:var(--t0)">${savedSearches.length}</strong> saved items,
+      <strong style="color:var(--t0)">${(collections||[]).length}</strong> collections,
+      <strong style="color:var(--t0)">${(searchAlerts||[]).length}</strong> alerts,
+      and <strong style="color:var(--t0)">${(blockedSites||[]).length}</strong> blocked sites.
+    </div>
+    <div class="export-options">
+      <button class="export-btn-big" onclick="exportData('json')">
+        <div class="export-btn-big-icon">{ }</div>
+        <div class="export-btn-big-label">Export as JSON</div>
+        <div class="export-btn-big-sub">Complete data, all fields</div>
+      </button>
+      <button class="export-btn-big" onclick="exportData('csv')">
+        <div class="export-btn-big-icon">⊞</div>
+        <div class="export-btn-big-label">Export as CSV</div>
+        <div class="export-btn-big-sub">History and saves, tabular</div>
+      </button>
+    </div>
+  </div>
+  <div class="settings-section">
+    <div class="settings-section-title">Request your data</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:12px;line-height:1.7">
+      Submit a subject access request under applicable data protection law. Altura will compile all data held about your account and deliver it to your registered email within 30 business days.
+    </div>
+    <button onclick="showRequestDataModal()" style="background:var(--g3);border:1px solid rgba(157,219,94,.2);color:var(--g);border-radius:6px;padding:10px 20px;font-size:13px;font-weight:600;cursor:pointer;width:100%;margin-bottom:10px">Request my data (SAR)</button>
+  </div>
+  <div class="settings-section">
+    <div class="settings-section-title">Delete your data</div>
+    <div style="font-size:13px;color:var(--t2);margin-bottom:12px;line-height:1.7">
+      Delete specific data categories or submit a formal deletion request. Some records may be retained for legal compliance purposes.
+    </div>
+    <div style="display:flex;gap:8px">
+      <button onclick="showPartialDeleteModal()" style="flex:1;background:var(--bg2);border:1px solid var(--line);color:var(--t1);border-radius:6px;padding:10px;font-size:13px;font-weight:600;cursor:pointer">Partial deletion</button>
+      <button onclick="showDeleteModal()" style="flex:1;background:rgba(204,74,74,.08);border:1px solid rgba(204,74,74,.25);color:var(--red);border-radius:6px;padding:10px;font-size:13px;font-weight:600;cursor:pointer">Submit deletion request</button>
+    </div>
+    <button onclick="deleteAllDataConfirm()" style="margin-top:8px;background:none;border:none;color:var(--t3);font-size:12px;cursor:pointer;width:100%;text-align:left;padding:4px 0;transition:color .1s" onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--t3)'">Delete all local data immediately →</button>
+  </div>`;
+};
+
+// ── PATCH context menu block site to use custom confirm ────────
+// Override the contextmenu handler added in renderResults
+document.addEventListener('contextmenu', function(e) {
+  const item = e.target.closest('.result-item');
+  if (item) {
+    e.preventDefault();
+    const domain = (item.dataset.url || '').replace(/^https?:\/\//, '').split('/')[0];
+    if (domain) blockSiteConfirm(domain);
+  }
+}, true); // capture phase
+
+
+
+// ── ACCOUNT CENTER — MISSING FUNCTION IMPLEMENTATIONS ────────
+
+// acToggle — generic toggle for account settings
+function acToggle(key, btn) {
+  if (key === 'pauseHistory') {
+    settings.history = !settings.history;
+    btn.classList.toggle('on', !settings.history);  // on = paused
+    saveSettings();
+  } else if (key === 'ghostMode') {
+    ghostMode = !ghostMode;
+    localStorage.setItem(GHOST_KEY, JSON.stringify(ghostMode));
+    applyGhostMode();
+    btn.classList.toggle('on', ghostMode);
+    if (typeof renderAccountPrivacy === 'function') renderAccountPrivacy();
+  }
+}
+
+// acSafeLevel — set safe search level
+function acSafeLevel(level, btn) {
+  settings.safe = level !== 'off';
+  settings.safeLevel = level;
+  saveSettings();
+  document.querySelectorAll('.btn-group-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  _resultsCache = {};
+}
+
+// acRenderSaves — render saves list in account panel with search filter
+function acRenderSaves() {
+  const filter = (document.getElementById('ac-saves-search')?.value || '').toLowerCase().trim();
+  const list = document.getElementById('ac-saves-list');
+  if (!list) return;
+  const items = savedSearches.filter(s =>
+    !filter || (s.title || s.query || '').toLowerCase().includes(filter) || (s.url || '').toLowerCase().includes(filter)
+  );
+  if (!items.length) {
+    list.innerHTML = '<div class="hist-empty">' + (filter ? 'No matches.' : 'No saved results yet.<br>Bookmark any result with the &#9734; icon.') + '</div>';
+    return;
+  }
+  list.innerHTML = items.map((s, i) => {
+    const safe = (s.title || s.query || '').replace(/&/g, '&amp;').replace(/</g, '&lt;');
+    const url = (s.url || '').replace(/^https?:\/\//, '').split('/')[0];
+    const date = s.ts ? new Date(s.ts).toLocaleDateString('en-GB', {day:'numeric',month:'short'}) : '';
+    const collName = s.collection ? (collections.find(c => c.id === s.collection)?.name || '') : '';
+    return `<div style="display:flex;align-items:flex-start;gap:10px;padding:10px 0;border-bottom:1px solid var(--line2)">
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;color:var(--t0);cursor:pointer;margin-bottom:2px;letter-spacing:-.01em"
+          onclick="doQuickSearch(decodeURIComponent('${encodeURIComponent(s.query || '')}'))">${safe}</div>
+        <div style="font-size:11px;color:var(--t2);display:flex;gap:8px;flex-wrap:wrap">
+          ${url ? `<span>${url}</span>` : ''}
+          ${date ? `<span style="color:var(--t3)">${date}</span>` : ''}
+          ${collName ? `<span style="color:#9c7ce0">📁 ${collName.replace(/&/g,'&amp;')}</span>` : ''}
+        </div>
+      </div>
+      <div style="display:flex;gap:4px;flex-shrink:0">
+        <button onclick="addSaveToCollectionPrompt(${s.id})"
+          style="background:none;border:1px solid var(--line2);color:var(--t3);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer"
+          title="Add to collection">📁</button>
+        <button onclick="removeSave(${s.id});acRenderSaves()"
+          style="background:none;border:1px solid var(--line2);color:var(--t3);border-radius:4px;padding:3px 8px;font-size:11px;cursor:pointer;transition:color .1s"
+          onmouseover="this.style.color='var(--red)'" onmouseout="this.style.color='var(--t3)'"
+          title="Remove">✕</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// acClearSaves — confirm-then-clear all saved searches
+async function acClearSaves() {
+  if (!savedSearches.length) return;
+  const ok = await alturaConfirm(
+    `Delete all ${savedSearches.length} saved search${savedSearches.length !== 1 ? 'es' : ''}? This cannot be undone.`,
+    { title: 'Clear all saves', icon: '🗑', confirm: 'Clear all', danger: true }
+  );
+  if (!ok) return;
+  savedSearches = [];
+  localStorage.setItem(SAVES_KEY, JSON.stringify(savedSearches));
+  acRenderSaves();
+  if (_hubOpen) renderHub();
+}
+
+// acAddBlock — add a domain to the blocked list from the input field
+async function acAddBlock() {
+  const input = document.getElementById('ac-block-input');
+  const raw = (input?.value || '').trim().toLowerCase().replace(/^https?:\/\//, '').split('/')[0];
+  if (!raw) { input?.focus(); return; }
+  if (blockedSites.includes(raw)) {
+    await alturaAlert(`${raw} is already blocked.`, { title: 'Already blocked', icon: '🚫' });
+    return;
+  }
+  blockSite(raw);
+  if (input) input.value = '';
+  renderAccountBlocked();
+  if (typeof renderAccountBlocked === 'function') renderAccountBlocked();
+}
+
+// acAddAlert — add a search alert from the input field
+async function acAddAlert() {
+  const input = document.getElementById('ac-alert-input');
+  const freq = document.getElementById('ac-alert-freq')?.value || 'weekly';
+  const query = (input?.value || '').trim();
+  if (!query) { input?.focus(); return; }
+  if (searchAlerts.some(a => a.query.toLowerCase() === query.toLowerCase())) {
+    await alturaAlert(`An alert for "${query.replace(/&/g,'&amp;')}" already exists.`, { title: 'Already exists', icon: '🔔' });
+    return;
+  }
+  searchAlerts.push({
+    id: Date.now(),
+    query,
+    created: new Date().toISOString(),
+    lastChecked: new Date().toISOString(),
+    frequency: freq,
+    active: true,
+  });
+  localStorage.setItem(ALERTS_KEY, JSON.stringify(searchAlerts));
+  if (input) input.value = '';
+  renderAccountAlerts();
+  if (_hubOpen) renderHub();
+}
+
+// acExportData — export from account profile panel
+function acExportData() {
+  exportData('json');
+}
+
+// Patch renderAccountSaves to use acRenderSaves
+const _origRenderAccountSaves2 = renderAccountSaves;
+renderAccountSaves = function() {
+  const el = document.getElementById('ac-saves-list');
+  if (el) {
+    acRenderSaves();
+  } else {
+    _origRenderAccountSaves2();
+  }
+};
+
+// Patch acTab to init toggles and safe search state when privacy tab opens
+const _origAcTab = acTab;
+acTab = function(tab, btn) {
+  _origAcTab(tab, btn);
+  if (tab === 'privacy') {
+    // Sync toggle states
+    const pauseBtn = document.getElementById('ac-toggle-pause');
+    if (pauseBtn) pauseBtn.classList.toggle('on', !settings.history);
+    const ghostBtn = document.getElementById('ac-toggle-ghost');
+    if (ghostBtn) ghostBtn.classList.toggle('on', ghostMode);
+    // Sync safe search buttons
+    const level = settings.safeLevel || (settings.safe ? 'moderate' : 'off');
+    document.querySelectorAll('.btn-group-item').forEach(b => {
+      if (b.getAttribute('onclick')?.includes('acSafeLevel')) {
+        b.classList.toggle('active', b.getAttribute('onclick')?.includes("'" + level + "'"));
+      }
+    });
+  }
+  if (tab === 'saves') {
+    acRenderSaves();
+  }
+};
+</script>
+
+<!-- Delete My Data (easter egg) — handled via altura-modal system -->
 
 <!-- Hub Overlay -->
 <div id="hub-overlay">
