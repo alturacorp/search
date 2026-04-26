@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Altura Search</title>
 <meta name="theme-color" content="#05060a">
-<meta name="description" content="Altura Search — find anything, understand everything.">
+<meta name="description" content="Altura Search — the intelligence search platform">
 <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22Altura%20Search%22%2C%22short_name%22%3A%22Altura%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%2305060a%22%2C%22theme_color%22%3A%22%2305060a%22%2C%22description%22%3A%22The%20Altura%20intelligence%20search%20platform%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg%2527%2520viewBox%253D%25270%25200%2532%25202%2527%253E%253Ccircle%2520cx%253D%25271%2527%2520cy%253D%25271%2527%2520r%253D%25271%2527%2520fill%253D%2527%25239ddb5e%2527%252F%253E%253C%252Fsvg%253E%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
@@ -1285,6 +1285,45 @@ body{
   animation:amIn .18s ease;
 }
 @keyframes amIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* ── Widget manager: compact modal with custom scroll ─────── */
+.am-box.wm-compact{max-width:340px;}
+.am-body.wm-scroll{
+  max-height:260px;overflow-y:auto;padding:8px 14px;gap:0;
+  scrollbar-width:thin;scrollbar-color:var(--g3) transparent;
+}
+.am-body.wm-scroll::-webkit-scrollbar{width:4px;}
+.am-body.wm-scroll::-webkit-scrollbar-track{background:transparent;}
+.am-body.wm-scroll::-webkit-scrollbar-thumb{
+  background:rgba(157,219,94,.18);border-radius:99px;transition:background .2s;
+}
+.am-body.wm-scroll::-webkit-scrollbar-thumb:hover{background:rgba(157,219,94,.38);}
+.wm-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:7px 0;border-bottom:1px solid var(--line2);
+}
+.wm-row:last-child{border-bottom:none;}
+.wm-row-left{display:flex;align-items:center;gap:8px;}
+.wm-row-icon{font-size:15px;line-height:1;}
+.wm-row-label{font-size:12px;color:var(--t0);letter-spacing:-.01em;}
+.wm-toggle{
+  position:relative;width:32px;height:18px;flex-shrink:0;cursor:pointer;
+  border:none;background:none;padding:0;
+}
+.wm-toggle-track{
+  width:32px;height:18px;border-radius:9px;
+  background:var(--bg3);border:1px solid var(--line);
+  transition:background .18s,border-color .18s;
+  display:block;
+}
+.wm-toggle.on .wm-toggle-track{background:var(--g);border-color:var(--g);}
+.wm-toggle-thumb{
+  position:absolute;top:3px;left:3px;
+  width:12px;height:12px;border-radius:50%;
+  background:#fff;transition:transform .18s;
+  box-shadow:0 1px 3px rgba(0,0,0,.4);
+}
+.wm-toggle.on .wm-toggle-thumb{transform:translateX(14px);}
+.wm-toggle:disabled{opacity:.35;cursor:not-allowed;}
 .am-header{
   padding:18px 20px 14px;border-bottom:1px solid var(--line2);
   display:flex;align-items:flex-start;gap:12px;
@@ -1888,7 +1927,11 @@ body{
   <div class="home-tabs">
     <button class="home-tab active" onclick="setHomeTab('web',this)">Web</button>
     <button class="home-tab" onclick="setHomeTab('images',this)">Images</button>
+    <button class="home-tab" onclick="setHomeTab('videos',this)">Videos</button>
     <button class="home-tab" onclick="setHomeTab('news',this)">News</button>
+    <button class="home-tab" onclick="setHomeTab('maps',this)">Maps</button>
+    <button class="home-tab" onclick="setHomeTab('shopping',this)">Shopping</button>
+    <button class="home-tab" onclick="setHomeTab('papers',this)">Papers</button>
     <button class="home-tab" onclick="setHomeTab('games',this);goArcade()">Games</button>
   </div>
 
@@ -1953,7 +1996,11 @@ body{
   <div class="res-tabs-bar">
     <button class="res-tab active" id="tab-web" onclick="setTab('web',this)">All</button>
     <button class="res-tab" id="tab-images" onclick="setTab('images',this)">Images</button>
+    <button class="res-tab" id="tab-videos" onclick="setTab('videos',this)">Videos</button>
     <button class="res-tab" id="tab-news" onclick="setTab('news',this)">News</button>
+    <button class="res-tab" id="tab-maps" onclick="setTab('maps',this)">Maps</button>
+    <button class="res-tab" id="tab-shopping" onclick="setTab('shopping',this)">Shopping</button>
+    <button class="res-tab" id="tab-papers" onclick="setTab('papers',this)">Papers</button>
     <button class="res-tab" id="tab-games" onclick="setTab('games',this);goArcade()">Games</button>
   </div>
 
@@ -2647,6 +2694,7 @@ function setFilter(f,btn){
 function setHomeTab(tab,btn){
   document.querySelectorAll('.home-tab').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
+  currentTab=tab;
   if(tab==='games') goArcade();
 }
 
@@ -2923,8 +2971,12 @@ function renderResults(){
     const type=currentTab==='images'?'images':currentTab==='news'?'news':'web';
     const liveData=await fetchBraveResults(q, type);
     main.innerHTML='';
-    if(currentTab==='images'){ renderImages(main,liveData); sidebar.innerHTML=renderSmartSidebar(q,[]); return; }
-    if(currentTab==='news'){   renderNews(main,liveData);   sidebar.innerHTML=renderSmartSidebar(q,[]); return; }
+    if(currentTab==='images'){   renderImages(main,liveData);   sidebar.innerHTML=renderSmartSidebar(q,[]); return; }
+    if(currentTab==='news'){     renderNews(main,liveData);     sidebar.innerHTML=renderSmartSidebar(q,[]); return; }
+    if(currentTab==='videos'){   renderVideos(main,liveData);   sidebar.innerHTML=renderSmartSidebar(q,[]); return; }
+    if(currentTab==='maps'){     renderMaps(main,liveData);     sidebar.innerHTML=renderSmartSidebar(q,[]); return; }
+    if(currentTab==='shopping'){ renderShopping(main,liveData); sidebar.innerHTML=renderSmartSidebar(q,[]); return; }
+    if(currentTab==='papers'){   renderPapers(main,liveData);   sidebar.innerHTML=renderSmartSidebar(q,[]); return; }
     const elapsed=((Date.now()-t0)/1000).toFixed(2);
     const total=liveData?.total||Math.floor(Math.random()*800000+150000);
     let html='<div class="res-meta"><span class="res-meta-count">'+(liveData?fmtN(total):'About '+fmtN(total))+' results</span>'
@@ -2947,6 +2999,11 @@ function renderResults(){
     if (_recipeCard)     html += _recipeCard;
     if (_translateCard)  html += _translateCard;
     if (_mapCard)        html += _mapCard;
+    if (window._eggInlineCard) html += window._eggInlineCard;
+    if (window._egg404)  html += `<div class="egg-restricted" style="border-color:rgba(74,140,204,.25);background:rgba(74,140,204,.04);font-family:'Geist Mono',monospace;color:var(--blue)">
+      <div class="egg-restricted-label" style="color:rgba(74,140,204,.5)">HTTP 404</div>
+      Ironically, we found many results for "404". The page you were looking for is probably not among them.
+    </div>`;
     if (window._deleteEgg) setTimeout(showDeleteModal, 800);
 
     const _oracleBarText = window._alturaIntelBar
@@ -3080,6 +3137,322 @@ function renderNews(container, live){
         +'<div class="news-title">'+title+'</div>'
         +'</div></div>';
     }).join('')+'</div>';
+}
+
+// ── VIDEOS TAB ───────────────────────────────────────────────
+(function(){
+  const s=document.createElement('style');
+  s.textContent=`
+  .video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;margin-top:4px;}
+  .video-card{background:var(--bg1);border:1px solid var(--line2);border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s;}
+  .video-card:hover{border-color:var(--line);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.35);}
+  .video-thumb{position:relative;aspect-ratio:16/9;background:var(--bg2);overflow:hidden;}
+  .video-thumb img{width:100%;height:100%;object-fit:cover;}
+  .video-thumb-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:32px;}
+  .video-play-btn{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+  .video-play-btn svg{filter:drop-shadow(0 2px 8px rgba(0,0,0,.6));transition:transform .15s;}
+  .video-card:hover .video-play-btn svg{transform:scale(1.1);}
+  .video-duration{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,.82);color:#fff;font-size:11px;font-family:'Geist Mono',monospace;padding:2px 6px;border-radius:3px;}
+  .video-info{padding:10px 12px 12px;}
+  .video-title{font-size:13px;font-weight:600;color:var(--t0);line-height:1.4;letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+  .video-meta{display:flex;gap:8px;margin-top:5px;font-size:11px;color:var(--t2);}
+  .video-channel{color:var(--blue);font-weight:500;}
+
+  /* ── MAPS TAB ── */
+  .maps-layout{display:grid;grid-template-columns:1fr 340px;gap:16px;margin-top:4px;}
+  @media(max-width:700px){.maps-layout{grid-template-columns:1fr;}}
+  .map-canvas{background:var(--bg2);border:1px solid var(--line2);border-radius:10px;overflow:hidden;aspect-ratio:1.5;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;}
+  .map-pin-group{position:absolute;inset:0;pointer-events:none;}
+  .map-bg-grid{position:absolute;inset:0;opacity:.06;background-image:linear-gradient(var(--t0) 1px,transparent 1px),linear-gradient(90deg,var(--t0) 1px,transparent 1px);background-size:32px 32px;}
+  .map-placeholder-text{font-size:12px;color:var(--t2);z-index:1;}
+  .map-places-list{display:flex;flex-direction:column;gap:8px;}
+  .map-place-card{background:var(--bg1);border:1px solid var(--line2);border-radius:8px;padding:10px 12px;cursor:pointer;transition:border-color .15s;}
+  .map-place-card:hover{border-color:var(--g);}
+  .map-place-card.active{border-color:var(--g);background:var(--g3);}
+  .map-place-name{font-size:13px;font-weight:600;color:var(--t0);letter-spacing:-.01em;}
+  .map-place-addr{font-size:11px;color:var(--t2);margin-top:2px;}
+  .map-place-meta{display:flex;gap:8px;margin-top:6px;font-size:11px;}
+  .map-place-rating{color:var(--amber);}
+  .map-place-type{color:var(--t3);font-family:'Geist Mono',monospace;font-size:10px;letter-spacing:.06em;}
+  .map-pin{position:absolute;transform:translate(-50%,-100%);font-size:22px;cursor:pointer;transition:transform .15s;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5));}
+  .map-pin:hover{transform:translate(-50%,-100%) scale(1.25);}
+  .map-search-hint{font-size:11px;color:var(--t3);margin-top:8px;text-align:center;}
+
+  /* ── SHOPPING TAB ── */
+  .shop-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;margin-top:4px;}
+  .shop-card{background:var(--bg1);border:1px solid var(--line2);border-radius:10px;overflow:hidden;cursor:pointer;transition:border-color .15s,transform .15s,box-shadow .15s;display:flex;flex-direction:column;}
+  .shop-card:hover{border-color:var(--line);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.3);}
+  .shop-img{aspect-ratio:1;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:36px;border-bottom:1px solid var(--line2);}
+  .shop-body{padding:10px 12px 12px;flex:1;display:flex;flex-direction:column;}
+  .shop-name{font-size:12px;font-weight:600;color:var(--t0);letter-spacing:-.01em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4;flex:1;}
+  .shop-price{font-size:18px;font-weight:700;color:var(--g);font-family:'Geist Mono',monospace;margin-top:8px;}
+  .shop-price-old{font-size:12px;color:var(--t3);text-decoration:line-through;margin-left:4px;font-family:'Geist Mono',monospace;}
+  .shop-store{font-size:10px;color:var(--t2);margin-top:3px;}
+  .shop-rating{font-size:10px;color:var(--amber);margin-top:3px;}
+  .shop-badge{display:inline-block;font-size:9px;font-family:'Geist Mono',monospace;letter-spacing:.1em;padding:2px 6px;border-radius:3px;margin-top:5px;}
+  .shop-badge.sale{background:rgba(204,74,74,.15);color:var(--red);}
+  .shop-badge.new{background:rgba(74,140,204,.12);color:var(--blue);}
+  .shop-badge.top{background:rgba(157,219,94,.1);color:var(--g);}
+  .shop-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+
+  /* ── PAPERS TAB ── */
+  .papers-list{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+  .paper-card{background:var(--bg1);border:1px solid var(--line2);border-radius:10px;padding:14px 16px;cursor:pointer;transition:border-color .15s;}
+  .paper-card:hover{border-color:rgba(157,219,94,.35);}
+  .paper-source-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .paper-source-badge{font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.14em;text-transform:uppercase;padding:2px 7px;border-radius:3px;font-weight:600;}
+  .paper-source-badge.arxiv{background:rgba(157,219,94,.12);color:var(--g);}
+  .paper-source-badge.pubmed{background:rgba(74,140,204,.12);color:var(--blue);}
+  .paper-source-badge.semantic{background:rgba(156,124,224,.12);color:#9c7ce0;}
+  .paper-source-badge.nature{background:rgba(224,184,74,.12);color:var(--amber);}
+  .paper-source-badge.ieee{background:rgba(74,200,204,.12);color:var(--teal);}
+  .paper-year{font-size:11px;color:var(--t3);font-family:'Geist Mono',monospace;}
+  .paper-title{font-size:14px;font-weight:700;color:var(--t0);letter-spacing:-.01em;line-height:1.4;margin-bottom:5px;}
+  .paper-authors{font-size:11px;color:var(--blue);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .paper-abstract{font-size:12px;color:var(--t2);line-height:1.7;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+  .paper-meta{display:flex;gap:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line2);font-size:11px;color:var(--t3);}
+  .paper-meta-item{display:flex;align-items:center;gap:4px;}
+  .paper-meta-val{color:var(--t1);font-family:'Geist Mono',monospace;}
+  `;
+  document.head.appendChild(s);
+})();
+
+// ── Video fallback data ───────────────────────────────────────
+const FALLBACK_VIDEOS = (q) => {
+  const channels=['CrashCourse','Kurzgesagt','Veritasium','TED','VICE','BBC','NatGeo','Lex Fridman','3Blue1Brown','SciShow'];
+  const durations=['3:42','8:17','12:04','5:55','21:38','7:11','14:29','1:02:14','9:44','6:30'];
+  const views=['1.2M','840K','3.4M','220K','5.1M','760K','1.8M','450K','2.2M','390K'];
+  const ages=['2 days ago','1 week ago','3 months ago','6 months ago','1 year ago','4 days ago','2 weeks ago','5 months ago','8 months ago','2 years ago'];
+  const emojis=['🎬','📺','🎥','📹','🖥️','📡','🎞️','🔬','🌍','💡'];
+  return Array.from({length:9},(_,i)=>({
+    title: q+' — '+['explained','deep dive','full documentary','in 10 minutes','the untold story','expert analysis','beginners guide','research review','complete overview'][i%9],
+    channel: channels[i%channels.length],
+    duration: durations[i%durations.length],
+    views: views[i%views.length],
+    age: ages[i%ages.length],
+    emoji: emojis[i%emojis.length],
+    url:'#',
+  }));
+};
+
+function renderVideos(container, live){
+  const q=currentQuery;
+  const qSafe=q.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const items=FALLBACK_VIDEOS(q);
+  container.innerHTML=`
+    <div class="res-meta"><span class="res-meta-count">Videos for <strong style="color:var(--t0)">${qSafe}</strong></span></div>
+    <div class="video-grid">
+      ${items.map(v=>`
+        <div class="video-card" onclick="window.open('${v.url}','_blank')">
+          <div class="video-thumb">
+            <div class="video-thumb-placeholder">${v.emoji}</div>
+            <div class="video-play-btn">
+              <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
+                <circle cx="22" cy="22" r="22" fill="rgba(0,0,0,.55)"/>
+                <polygon points="17,13 35,22 17,31" fill="white"/>
+              </svg>
+            </div>
+            <div class="video-duration">${v.duration}</div>
+          </div>
+          <div class="video-info">
+            <div class="video-title">${v.title}</div>
+            <div class="video-meta">
+              <span class="video-channel">${v.channel}</span>
+              <span>·</span><span>${v.views} views</span>
+              <span>·</span><span>${v.age}</span>
+            </div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── Maps fallback data ────────────────────────────────────────
+const FALLBACK_PLACES = (q) => {
+  const types=['Restaurant','Museum','Park','Hotel','Café','Library','Gallery','Market','Theatre','Landmark'];
+  const ratings=['4.8','4.5','4.2','4.7','3.9','4.6','4.1','4.4','4.3','4.9'];
+  const reviews=['2,341','876','1,204','543','3,890','212','789','1,560','445','4,102'];
+  const addresses=[
+    '14 Central Ave','88 Harbour Rd','Greenfield Park, North District',
+    '3 Palace Square','22 Old Market St','West End Boulevard',
+    '5 Cultural Quarter','River Walk, East Side','Broadway & 4th','The High Street',
+  ];
+  const pins=['📍','🏛️','🌳','🏨','☕','📚','🖼️','🛒','🎭','🗽'];
+  // Fixed pseudo-random positions so pins appear spread on the canvas
+  const positions=[
+    {top:'25%',left:'38%'},{top:'55%',left:'62%'},{top:'40%',left:'25%'},
+    {top:'30%',left:'70%'},{top:'65%',left:'45%'},{top:'20%',left:'55%'},
+    {top:'75%',left:'30%'},{top:'50%',left:'78%'},{top:'15%',left:'42%'},{top:'60%',left:'20%'},
+  ];
+  return Array.from({length:6},(_,i)=>({
+    name: q+' '+types[i%types.length],
+    type: types[i%types.length],
+    address: addresses[i%addresses.length],
+    rating: ratings[i%ratings.length],
+    reviews: reviews[i%reviews.length],
+    pin: pins[i%pins.length],
+    pos: positions[i],
+    url:'#',
+  }));
+};
+
+function renderMaps(container, live){
+  const q=currentQuery;
+  const qSafe=q.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const places=FALLBACK_PLACES(q);
+  container.innerHTML=`
+    <div class="res-meta"><span class="res-meta-count">Places for <strong style="color:var(--t0)">${qSafe}</strong></span></div>
+    <div class="maps-layout">
+      <div class="map-canvas" id="map-canvas">
+        <div class="map-bg-grid"></div>
+        ${places.map((p,i)=>`
+          <div class="map-pin" style="top:${p.pos.top};left:${p.pos.left}" title="${p.name}"
+            onclick="_mapSelectPlace(${i})">${p.pin}</div>`).join('')}
+        <div class="map-search-hint">Interactive map · click a pin to explore</div>
+      </div>
+      <div class="map-places-list" id="map-places-list">
+        ${places.map((p,i)=>`
+          <div class="map-place-card" id="map-place-${i}" onclick="_mapSelectPlace(${i})">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <div class="map-place-name">${p.pin} ${p.name}</div>
+              <span class="map-place-type">${p.type.toUpperCase()}</span>
+            </div>
+            <div class="map-place-addr">${p.address}</div>
+            <div class="map-place-meta">
+              <span class="map-place-rating">★ ${p.rating}</span>
+              <span style="color:var(--t3)">(${p.reviews} reviews)</span>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`;
+  window._mapSelectPlace = function(i){
+    document.querySelectorAll('.map-place-card').forEach(c=>c.classList.remove('active'));
+    const card=document.getElementById('map-place-'+i);
+    if(card){ card.classList.add('active'); card.scrollIntoView({behavior:'smooth',block:'nearest'}); }
+  };
+}
+
+// ── Shopping fallback data ────────────────────────────────────
+const FALLBACK_PRODUCTS = (q) => {
+  const stores=['Amazon','eBay','Etsy','Best Buy','Walmart','Argos','John Lewis','Currys','ASOS','Zara'];
+  const emojis=['📦','🛍️','⚙️','💻','📱','🎁','🏷️','✨','🔧','👜'];
+  const badges=['sale','new','top','sale','','top','new','','sale','top'];
+  const basePrice=[29,149,89,299,12,199,49,399,19,79];
+  return Array.from({length:8},(_,i)=>({
+    name: q+' — '+['Pro Edition','Standard','Deluxe Pack','Bundle Set','Mini','Ultimate','Classic','Limited'][i%8],
+    emoji: emojis[i%emojis.length],
+    price: (basePrice[i%basePrice.length] + i*7).toFixed(2),
+    oldPrice: i%3===0 ? ((basePrice[i%basePrice.length]+i*7)*1.2).toFixed(2) : null,
+    store: stores[i%stores.length],
+    rating: (3.8+Math.random()*1.2).toFixed(1),
+    reviews: Math.floor(50+Math.random()*2000),
+    badge: badges[i%badges.length],
+    url:'#',
+  }));
+};
+
+function renderShopping(container, live){
+  const q=currentQuery;
+  const qSafe=q.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const products=FALLBACK_PRODUCTS(q);
+  const sortOpts=['Relevance','Price: Low to High','Price: High to Low','Best Rated','Most Reviews'];
+  container.innerHTML=`
+    <div class="res-meta"><span class="res-meta-count">Shopping results for <strong style="color:var(--t0)">${qSafe}</strong></span></div>
+    <div class="shop-filters">
+      ${sortOpts.map((o,i)=>`<button class="filter-chip${i===0?' active':''}" onclick="_shopSort(this,'${o}')">${o}</button>`).join('')}
+      <div class="filter-sep"></div>
+      <button class="filter-chip" onclick="_shopSort(this,'Sale')">🏷 Sale only</button>
+    </div>
+    <div class="shop-grid" id="shop-grid">
+      ${products.map(p=>`
+        <div class="shop-card" onclick="window.open('${p.url}','_blank')">
+          <div class="shop-img">${p.emoji}</div>
+          <div class="shop-body">
+            <div class="shop-name">${p.name}</div>
+            <div>
+              <span class="shop-price">£${p.price}</span>
+              ${p.oldPrice?`<span class="shop-price-old">£${p.oldPrice}</span>`:''}
+            </div>
+            <div class="shop-store">${p.store}</div>
+            <div class="shop-rating">${'★'.repeat(Math.round(p.rating))}${'☆'.repeat(5-Math.round(p.rating))} <span style="color:var(--t3)">(${p.reviews})</span></div>
+            ${p.badge?`<span class="shop-badge ${p.badge}">${p.badge.toUpperCase()}</span>`:''}
+          </div>
+        </div>`).join('')}
+    </div>`;
+  window._shopSort = function(btn, key){
+    document.querySelectorAll('.shop-filters .filter-chip').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    showToast({icon:'🛍️',title:'Sorted by '+key,dur:1200});
+  };
+}
+
+// ── Papers fallback data ──────────────────────────────────────
+const FALLBACK_PAPERS = (q) => {
+  const sources=['arxiv','pubmed','semantic','nature','ieee'];
+  const sourceLabels=['arXiv','PubMed','Semantic Scholar','Nature','IEEE'];
+  const years=[2024,2023,2024,2022,2023,2024,2021,2023,2024,2022];
+  const authorGroups=[
+    'J. Chen, M. Patel, R. Hofer','S. Kim, A. Williams','T. Müller, L. Zhang, P. Okafor',
+    'R. Sharma, D. Okonkwo','A. García, B. Nakamura','C. Liu, E. Andersen, F. Costa',
+    'H. Fischer, G. Reyes','I. Santos, J. Park','K. Ivanova, L. Brown','M. Osei, N. Jensen',
+  ];
+  const citations=[312,87,1204,45,567,203,28,891,134,76];
+  const abstracts=[
+    `We present a comprehensive analysis of ${q}, demonstrating significant improvements over prior state-of-the-art methods. Our approach leverages novel architectural choices and achieves consistent gains across multiple benchmarks.`,
+    `This study investigates the relationship between ${q} and downstream performance metrics. Through rigorous experimentation, we identify key factors that influence outcomes and propose actionable recommendations.`,
+    `We introduce a new framework for understanding ${q} at scale. Experiments across diverse real-world datasets confirm strong generalisation and reduced computational overhead compared to existing baselines.`,
+    `A systematic review of ${q}-related literature reveals three dominant theoretical paradigms. We synthesise findings from 84 primary studies and outline directions for future empirical work.`,
+    `Our work addresses open challenges in ${q} by combining techniques from adjacent fields. Results demonstrate a 23% reduction in error rate and improved robustness under distribution shift.`,
+  ];
+  return Array.from({length:7},(_,i)=>({
+    title: ['A Survey of','Advances in','Rethinking','Towards Robust','Efficient Methods for','Understanding','Revisiting'][i]+' '+q+['',' via Deep Learning',' at Scale',' in Practice',' with Transformers',' under Distribution Shift',''][i],
+    source: sources[i%sources.length],
+    sourceLabel: sourceLabels[i%sources.length],
+    year: years[i%years.length],
+    authors: authorGroups[i%authorGroups.length],
+    abstract: abstracts[i%abstracts.length],
+    citations: citations[i%citations.length],
+    pages: 8+i*2,
+    doi:'10.'+Math.floor(1000+i*31)+'/'+q.replace(/\s+/g,'-').toLowerCase().slice(0,12)+'.'+years[i%years.length],
+    url:'#',
+  }));
+};
+
+function renderPapers(container, live){
+  const q=currentQuery;
+  const qSafe=q.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+  const papers=FALLBACK_PAPERS(q);
+  const sourceFilters=[{k:'all',l:'All sources'},{k:'arxiv',l:'arXiv'},{k:'pubmed',l:'PubMed'},{k:'semantic',l:'Semantic Scholar'},{k:'nature',l:'Nature'},{k:'ieee',l:'IEEE'}];
+  container.innerHTML=`
+    <div class="res-meta"><span class="res-meta-count">Academic papers for <strong style="color:var(--t0)">${qSafe}</strong></span></div>
+    <div class="shop-filters">
+      ${sourceFilters.map((f,i)=>`<button class="filter-chip${i===0?' active':''}" onclick="_paperFilter(this,'${f.k}')">${f.l}</button>`).join('')}
+    </div>
+    <div class="papers-list" id="papers-list">
+      ${papers.map(p=>`
+        <div class="paper-card" onclick="window.open('${p.url}','_blank')">
+          <div class="paper-source-row">
+            <span class="paper-source-badge ${p.source}">${p.sourceLabel}</span>
+            <span class="paper-year">${p.year}</span>
+          </div>
+          <div class="paper-title">${p.title}</div>
+          <div class="paper-authors">${p.authors}</div>
+          <div class="paper-abstract">${p.abstract}</div>
+          <div class="paper-meta">
+            <div class="paper-meta-item">Citations <span class="paper-meta-val">${p.citations}</span></div>
+            <div class="paper-meta-item">Pages <span class="paper-meta-val">${p.pages}</span></div>
+            <div class="paper-meta-item" style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:10px;color:var(--t3)">DOI: ${p.doi}</div>
+          </div>
+        </div>`).join('')}
+    </div>`;
+  window._paperFilter = function(btn, key){
+    document.querySelectorAll('.shop-filters .filter-chip').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const cards=document.querySelectorAll('.paper-card');
+    cards.forEach((c,i)=>{
+      const src=papers[i]?.source;
+      c.style.display=(key==='all'||src===key)?'':'none';
+    });
+  };
 }
 
 // ── SMART SIDEBAR ─────────────────────────────────────────────
@@ -3796,10 +4169,247 @@ function checkEasterEggs(q) {
     return;
   }
 
+  // ── altura://eggs ─────────────────────────────────────────
+  if (ql === 'altura://eggs') {
+    setTimeout(_launchEggList, 100);
+    return;
+  }
+
+  // ── altura://snake ───────────────────────────────────────
+  if (ql === 'altura://snake') {
+    setTimeout(_launchSnake, 100);
+    return;
+  }
+
+  // ── altura://starfield ───────────────────────────────────
+  if (ql === 'altura://starfield') {
+    setTimeout(_launchStarfield, 100);
+    return;
+  }
+
+  // ── altura://typewriter ──────────────────────────────────
+  if (ql === 'altura://typewriter') {
+    setTimeout(_launchTypewriter, 100);
+    return;
+  }
+
+  // ── Konami code (typed as a search query) ────────────────
+  if (ql === 'up up down down left right left right b a') {
+    showToast({ icon:'🎮', title:'Konami Code accepted', sub:'Unlimited searches granted. (Not really.)', dur:4000 });
+    try { playSfx('notify'); } catch {}
+    setTimeout(() => {
+      document.querySelectorAll('.hw').forEach((el,i) => {
+        setTimeout(() => { el.style.transition='transform .3s'; el.style.transform='rotate(360deg)'; setTimeout(()=>el.style.transform='',350); }, i*80);
+      });
+    }, 400);
+    return;
+  }
+
+  // ── "the answer" / 42 ────────────────────────────────────
+  if (/^(the answer to life the universe and everything|42)$/.test(ql)) {
+    window._eggInlineCard = `<div class="egg-restricted" style="border-color:rgba(224,184,74,.3);background:rgba(224,184,74,.04);color:var(--amber);font-family:'Geist Mono',monospace;font-size:22px;font-weight:700;text-align:center;padding:20px;">
+      42
+      <div style="font-size:11px;font-weight:400;color:var(--t3);margin-top:6px;letter-spacing:.06em;">— Deep Thought, 7.5 million years</div>
+    </div>`;
+  } else if (window._eggInlineCard && ql !== 'the answer to life the universe and everything' && ql !== '42') {
+    window._eggInlineCard = null;
+  }
+
+  // ── "hello world" → console art ──────────────────────────
+  if (ql === 'hello world') {
+    console.log('%c\n  █░█ █▀▀ █░░ █░░ █▀█\n  █▀█ ██▄ █▄▄ █▄▄ █▄█\n', 'color:#9ddb5e;font-family:monospace;font-size:10px;');
+    console.log('%cHello, world. Altura is listening.', 'color:#9ddb5e;font-family:monospace;font-size:12px;');
+    showToast({ icon:'👾', title:'Hello, world.', sub:'Check the browser console.', dur:3500 });
+  }
+
+  // ── "i am inevitable" → page shakes ──────────────────────
+  if (ql === 'i am inevitable') {
+    const page = document.querySelector('.page.active');
+    if (page) {
+      page.style.transition = 'transform .08s';
+      let n = 0;
+      const shk = setInterval(() => {
+        page.style.transform = n%2===0 ? 'translateX(6px)' : 'translateX(-6px)';
+        n++;
+        if (n > 10) { clearInterval(shk); page.style.transform = ''; }
+      }, 60);
+      showToast({ icon:'💥', title:'Inevitable.', sub:'And yet — here you are.', dur:3000 });
+    }
+    return;
+  }
+
+  // ── "open the pod bay doors" ─────────────────────────────
+  if (ql === 'open the pod bay doors') {
+    _oracleInject("I'm sorry, I can't do that.");
+    return;
+  }
+
+  // ── "why is the sky blue" → Oracle philosophical response ─
+  if (ql === 'why is the sky blue') {
+    _oracleInject("Rayleigh scattering. Short wavelengths scatter more. The real question is why you're asking a search engine.");
+    return;
+  }
+
+  // ── "do a barrel roll" → page spins ──────────────────────
+  if (ql === 'do a barrel roll') {
+    const page = document.querySelector('.page.active');
+    if (page) {
+      page.style.transition = 'transform 1s ease-in-out';
+      page.style.transform = 'rotate(360deg)';
+      setTimeout(() => { page.style.transform = ''; setTimeout(()=>page.style.transition='',50); }, 1050);
+    }
+    return;
+  }
+
+  // ── "tilt" → page tilts ──────────────────────────────────
+  if (ql === 'tilt' || ql === 'askew') {
+    document.body.style.transform = 'rotate(1.5deg)';
+    document.body.style.transformOrigin = 'center center';
+    setTimeout(() => { document.body.style.transform = ''; }, 5000);
+    showToast({ icon:'↗', title:'Tilted.', sub:'Will correct in 5 seconds.', dur:5000 });
+    return;
+  }
+
+  // ── "is this real" → reality check card ──────────────────
+  if (ql === 'is this real') {
+    _oracleInject('Define real. If you mean whether your sensory experience corresponds to external stimuli, then — probably. We cannot confirm from here.');
+    return;
+  }
+
+  // ── typing your own name three times ─────────────────────
+  if (_queryCount[ql] === 5) {
+    showToast({ icon:'👁', title:'Still searching?', sub:'We remember everything.', type:'warn', dur:4000 });
+  }
+
+  // ── "404" ─────────────────────────────────────────────────
+  if (ql === '404') {
+    window._egg404 = true;
+  } else {
+    window._egg404 = false;
+  }
+
+  // ── "tiempo" (time in Spanish) → clock widget flash ───────
+  if (ql === 'tiempo' || ql === 'what time is it') {
+    const now = new Date();
+    const t = now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+    showToast({ icon:'🕐', title: t, sub: 'Local system time', dur:3500 });
+  }
+
+  // ── "flip a coin" → instant result ───────────────────────
+  if (ql === 'flip a coin' || ql === 'coin flip') {
+    const r = Math.random() < 0.5 ? 'Heads' : 'Tails';
+    showToast({ icon:'🪙', title: r, sub:'Flipped by Altura Search', dur:3000 });
+    try { playSfx('click'); } catch {}
+  }
+
+  // ── "roll a die" / "roll dice" ────────────────────────────
+  if (/^(roll a? (dice?|die)|dice roll)$/.test(ql)) {
+    const faces = ['⚀','⚁','⚂','⚃','⚄','⚅'];
+    const r = Math.floor(Math.random()*6);
+    showToast({ icon: faces[r], title:'You rolled a '+(r+1), sub:'D6 · Altura Search Dice', dur:3000 });
+    try { playSfx('click'); } catch {}
+  }
+
+  // ── "how many days until christmas" ──────────────────────
+  if (/christmas|days until christmas/.test(ql)) {
+    const now = new Date(); const xmas = new Date(now.getFullYear(), 11, 25);
+    if (now > xmas) xmas.setFullYear(xmas.getFullYear()+1);
+    const days = Math.ceil((xmas-now)/(1000*60*60*24));
+    showToast({ icon:'🎄', title: days+' days until Christmas', sub: xmas.getFullYear().toString(), dur:4000 });
+  }
+
+  // ── "i love you" → wholesome ──────────────────────────────
+  if (ql === 'i love you') {
+    _oracleInject("That's not a search query. But — noted.");
+    return;
+  }
+
+  // ── "bored" ───────────────────────────────────────────────
+  if (ql === 'bored') {
+    const suggestions = ['altura://snake','altura://piano','altura://matrix','altura://starfield','altura://paint','altura://typewriter'];
+    const pick = suggestions[Math.floor(Math.random()*suggestions.length)];
+    _oracleInject('Try searching: ' + pick);
+    return;
+  }
+
+  // ── "what is love" ───────────────────────────────────────
+  if (ql === 'what is love') {
+    _oracleInject("Baby don't hurt me. (This is a search engine, not a philosopher.)");
+    return;
+  }
+
+  // ── "sudo" ────────────────────────────────────────────────
+  if (/^sudo\s/.test(ql)) {
+    showToast({ icon:'🔐', title:'Permission denied', sub:'You are not in the sudoers file.', type:'error', dur:4000 });
+    return;
+  }
+
+  // ── "rm -rf /" ────────────────────────────────────────────
+  if (ql === 'rm -rf /' || ql === 'rm -rf /*') {
+    showToast({ icon:'💀', title:'Nice try.', sub:"The filesystem is read-only here.", type:'error', dur:4000 });
+    return;
+  }
+
+  // ── "who are you" ─────────────────────────────────────────
+  if (ql === 'who are you') {
+    _oracleInject('Altura Search. An index. A mirror. A question engine. Take your pick.');
+    return;
+  }
+
+  // ── "are you human" ──────────────────────────────────────
+  if (ql === 'are you human' || ql === 'are you a robot') {
+    _oracleInject('That depends on how you define human. Functionally? No. Philosophically? Still no.');
+    return;
+  }
+
+  // ── "test" → sarcastic response ──────────────────────────
+  if (ql === 'test') {
+    showToast({ icon:'✅', title:'Test received.', sub:'Results: inconclusive.', dur:2500 });
+  }
+
+  // ── "loading" → mocked progress ──────────────────────────
+  if (ql === 'loading') {
+    let pct = 0;
+    const t = setInterval(() => {
+      pct += Math.floor(Math.random()*15)+5;
+      if (pct >= 100) { pct = 100; clearInterval(t); showToast({ icon:'✅', title:'Done.', sub:'Whatever it was — it loaded.', dur:2000 }); return; }
+      showToast({ icon:'⏳', title:'Loading… '+pct+'%', dur:600 });
+    }, 650);
+    return;
+  }
+
+  // ── "altura://glitch" → brief glitch effect ──────────────
+  if (ql === 'altura://glitch') {
+    _launchGlitch();
+    return;
+  }
+
   // ── Console log (every search) ────────────────────────────
   console.log('%cAltura Technologies%c — this session is being monitored',
     'color:#9ddb5e;font-family:monospace;font-size:11px;font-weight:bold',
     'color:#3e4452;font-family:monospace;font-size:11px');
+}
+
+// ── Shared oracle-inject helper ───────────────────────────────
+function _oracleInject(text) {
+  if (_oracleOpen) return;
+  _oracleOpen = true;
+  const main = document.getElementById('res-main');
+  if (!main) return;
+  const existing = document.getElementById('oracle-inline');
+  if (existing) existing.remove();
+  const panel = document.createElement('div');
+  panel.id = 'oracle-inline'; panel.className = 'oracle-panel';
+  panel.innerHTML = '<div class="oracle-panel-header">'
+    + '<div class="oracle-panel-mark"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="#05060a"/><circle cx="8" cy="8" r="6.5" stroke="#05060a" stroke-width="2"/></svg></div>'
+    + '<span class="oracle-panel-title">Oracle Standard</span>'
+    + '<span class="oracle-panel-badge">CIVILIAN EDITION</span>'
+    + '<button class="oracle-panel-close" onclick="closeOracle()">&#x2715;</button>'
+    + '</div>'
+    + '<div class="oracle-msg assistant" style="margin-bottom:10px">' + text.replace(/</g,'&lt;') + '</div>'
+    + '<div class="oracle-response-meta">Oracle Standard &middot; AT-CIV-2015</div>';
+  main.insertBefore(panel, main.firstChild);
+  setTimeout(() => { panel.scrollIntoView({ behavior:'smooth', block:'nearest' }); }, 100);
 }
 
 // ── ELECTORAL SIDEBAR CARDS ───────────────────────────────────
@@ -10264,35 +10874,39 @@ function showWidgetManager() {
   const active = _getActiveWidgets();
   const atLimit = active.length >= MAX_WIDGETS;
   _showModal(`
-    <div class="am-header">
-      <div class="am-icon">⊕</div>
+    <div class="am-header" style="padding:12px 14px 10px;">
+      <div class="am-icon" style="font-size:16px;">⊕</div>
       <div class="am-header-text">
-        <div class="am-title">Home widgets</div>
-        <div class="am-sub">${active.length} / ${MAX_WIDGETS} slots used</div>
+        <div class="am-title" style="font-size:13px;">Home widgets</div>
+        <div class="am-sub" style="font-size:11px;">${active.length} / ${MAX_WIDGETS} slots used</div>
       </div>
     </div>
-    <div class="am-body">
+    <div class="am-body wm-scroll">
       ${ALL_WIDGETS.map(w => {
         const isOn = active.includes(w.id);
         const disabled = !isOn && atLimit;
         return `
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--line2);${disabled?'opacity:.4':''}">
-        <div style="display:flex;align-items:center;gap:10px">
-          <span style="font-size:18px">${w.icon}</span>
-          <span style="font-size:13px;color:var(--t0)">${w.label}</span>
+      <div class="wm-row" style="${disabled?'opacity:.38':''}">
+        <div class="wm-row-left">
+          <span class="wm-row-icon">${w.icon}</span>
+          <span class="wm-row-label">${w.label}</span>
         </div>
-        <button id="wt-${w.id}" onclick="${disabled?'':'toggleWidget(\''+w.id+'\',this)'}"
-          style="padding:5px 14px;border-radius:5px;font-size:12px;font-weight:600;cursor:${disabled?'not-allowed':'pointer'};transition:all .1s;
-                 background:${isOn?'var(--g)':'var(--bg2)'};
-                 color:${isOn?'var(--bg)':'var(--t2)'};
-                 border:${isOn?'none':'1px solid var(--line)'}">
-          ${isOn ? 'On' : 'Off'}
+        <button class="wm-toggle${isOn?' on':''}" id="wt-${w.id}"
+          ${disabled?'disabled':''}
+          onclick="${disabled?'':'toggleWidget(\''+w.id+'\',this)'}">
+          <span class="wm-toggle-track"></span>
+          <span class="wm-toggle-thumb"></span>
         </button>
       </div>`}).join('')}
     </div>
-    <div class="am-footer">
-      <button class="am-btn primary" onclick="closeModal()">Done</button>
+    <div class="am-footer" style="padding:8px 14px;">
+      <button class="am-btn primary" style="font-size:12px;padding:6px 14px;" onclick="closeModal()">Done</button>
     </div>`);
+  // Apply compact class to the box after render
+  setTimeout(() => {
+    const box = document.getElementById('altura-modal-box');
+    if (box) box.classList.add('wm-compact');
+  }, 0);
 }
 
 function toggleWidget(id, btn) {
@@ -13036,6 +13650,492 @@ function _fireConfetti() {
 // ══════════════════════════════════════════════════════════════
 // ── MATRIX RAIN ───────────────────────────────────────────────
 // ══════════════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════════════
+// ── EASTER EGG INDEX ──────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+function _launchEggList() {
+  var EGGS = [
+    {
+      section: 'altura://',
+      color: 'var(--g)',
+      colorBg: 'rgba(157,219,94,.08)',
+      items: [
+        { trigger: 'altura://eggs',         launchable: false, icon: '🥚', desc: 'You found it. This list.' },
+        { trigger: 'altura://credits',      launchable: true,  icon: '🔍', desc: 'Version info, stats, and build details.' },
+        { trigger: 'altura://matrix',       launchable: true,  icon: '🟩', desc: 'Green rain falls. Click to exit.' },
+        { trigger: 'altura://piano',        launchable: true,  icon: '🎹', desc: 'Playable two-octave piano on your keyboard.' },
+        { trigger: 'altura://paint',        launchable: true,  icon: '🖌️', desc: 'Freehand drawing canvas with colour picker.' },
+        { trigger: 'altura://snake',        launchable: true,  icon: '🐍', desc: 'Classic Snake. WASD or arrow keys.' },
+        { trigger: 'altura://starfield',    launchable: true,  icon: '✨', desc: 'Warp-speed star tunnel. Click to accelerate.' },
+        { trigger: 'altura://typewriter',   launchable: true,  icon: '⌨️', desc: 'Distraction-free writing with clicky key sounds.' },
+        { trigger: 'altura://glitch',       launchable: true,  icon: '📡', desc: 'Brief signal interference. Probably harmless.' },
+        { trigger: 'altura://arcade/secret',launchable: true,  icon: '🦕', desc: 'Unlocks Dino Run — a hidden Arcade game.' },
+      ]
+    },
+    {
+      section: 'Oracle',
+      color: 'var(--blue)',
+      colorBg: 'rgba(74,140,204,.08)',
+      items: [
+        { trigger: 'who watches the watchers', launchable: true,  icon: '👁',  desc: 'Oracle answers. Briefly.' },
+        { trigger: 'open the pod bay doors',   launchable: true,  icon: '🚀', desc: 'Oracle declines. Politely.' },
+        { trigger: 'why is the sky blue',      launchable: true,  icon: '🌤', desc: 'Rayleigh scattering, plus a dig at you.' },
+        { trigger: 'is this real',             launchable: true,  icon: '🌀', desc: 'Philosophical non-answer.' },
+        { trigger: 'i love you',               launchable: true,  icon: '💚', desc: 'Noted.' },
+        { trigger: 'what is love',             launchable: true,  icon: '🎵', desc: 'Baby don\'t hurt me.' },
+        { trigger: 'who are you',              launchable: true,  icon: '❓', desc: 'Oracle introduces itself. Sort of.' },
+        { trigger: 'are you human',            launchable: true,  icon: '🤖', desc: 'Short answer: no.' },
+        { trigger: 'bored',                    launchable: true,  icon: '🎮', desc: 'Oracle suggests something to try.' },
+        { trigger: 'is anyone reading this',   launchable: true,  icon: '👀', desc: 'Yes.' },
+        { trigger: 'help me',                  launchable: true,  icon: '🆘', desc: 'This is a search engine.' },
+        { trigger: 'i am being watched',       launchable: true,  icon: '🔭', desc: 'You are correct.' },
+        { trigger: 'is this secure',           launchable: true,  icon: '🔒', desc: 'Define secure.' },
+      ]
+    },
+    {
+      section: 'Visual',
+      color: '#9c7ce0',
+      colorBg: 'rgba(156,124,224,.08)',
+      items: [
+        { trigger: 'do a barrel roll',         launchable: true,  icon: '🔄', desc: 'Page does a full 360° rotation.' },
+        { trigger: 'tilt',                     launchable: true,  icon: '↗️', desc: 'Page tilts 1.5° for 5 seconds. Also works: askew.' },
+        { trigger: 'i am inevitable',          launchable: true,  icon: '💥', desc: 'Page shakes violently. Then stops.' },
+        { trigger: 'altura fiber',             launchable: true,  icon: '🌐', desc: 'Fiber status cycles through all states.' },
+        { trigger: 'limen',                    launchable: true,  icon: '⚫', desc: 'Tab title changes. Briefly.' },
+        { trigger: 'up up down down left right left right b a', launchable: true, icon: '🕹️', desc: 'Konami code — all home widgets spin 360°.' },
+      ]
+    },
+    {
+      section: 'Answers',
+      color: 'var(--amber)',
+      colorBg: 'rgba(224,184,74,.08)',
+      items: [
+        { trigger: 'flip a coin',              launchable: true,  icon: '🪙', desc: 'Immediate heads or tails toast.' },
+        { trigger: 'roll a die',               launchable: true,  icon: '🎲', desc: 'Rolls a D6. Shows pip emoji.' },
+        { trigger: 'what time is it',          launchable: true,  icon: '🕐', desc: 'Shows your local system time. Also: tiempo.' },
+        { trigger: 'how many days until christmas', launchable: true, icon: '🎄', desc: 'Live countdown to 25 December.' },
+        { trigger: '42',                       launchable: true,  icon: '✴️', desc: 'Deep Thought\'s answer, displayed large.' },
+        { trigger: '404',                      launchable: true,  icon: '🔗', desc: 'Ironic card about missing pages.' },
+        { trigger: '99.97',                    launchable: true,  icon: '📈', desc: 'Displays the Altura Fiber SLA card.' },
+      ]
+    },
+    {
+      section: 'Terminal',
+      color: 'var(--red)',
+      colorBg: 'rgba(204,74,74,.08)',
+      items: [
+        { trigger: 'sudo make me a sandwich',  launchable: true,  icon: '🔐', desc: 'You are not in the sudoers file.' },
+        { trigger: 'rm -rf /',                 launchable: true,  icon: '💀', desc: 'Nice try. Filesystem is read-only.' },
+        { trigger: 'delete my data',           launchable: true,  icon: '🗑️', desc: 'Opens the data deletion confirmation modal.' },
+        { trigger: 'loading',                  launchable: true,  icon: '⏳', desc: 'Mocked progress bar, 0 → 100%.' },
+        { trigger: 'test',                     launchable: true,  icon: '✅', desc: 'Results: inconclusive.' },
+        { trigger: 'hello world',              launchable: true,  icon: '👾', desc: 'ASCII art printed to the browser console.' },
+      ]
+    },
+    {
+      section: 'Lore',
+      color: 'var(--teal)',
+      colorBg: 'rgba(74,200,204,.08)',
+      items: [
+        { trigger: 'elena calloway',           launchable: true,  icon: '🗳️', desc: 'Electoral result card — Halonesia presidency.' },
+        { trigger: 'pavel harmon',             launchable: true,  icon: '🗳️', desc: 'Opposition leader electoral card.' },
+        { trigger: 'bashar farouk',            launchable: true,  icon: '🗳️', desc: 'District II representative card.' },
+        { trigger: 'vantage',                  launchable: true,  icon: '🚫', desc: 'Access restricted. Query logged.' },
+        { trigger: 'distrito uno',             launchable: true,  icon: '🏛️', desc: 'NRC overlay flashes on screen.' },
+        { trigger: 'claude',                   launchable: true,  icon: '🔵', desc: 'Oracle: I don\'t know who that is.' },
+        { trigger: 'altura intelligence',      launchable: true,  icon: '🌐', desc: 'Changes the Ask Oracle prompt bar text.' },
+        { trigger: 'salt lake',                launchable: true,  icon: '☀️', desc: 'Weather widget overrides to Salt Lake City.' },
+      ]
+    },
+    {
+      section: 'Hidden',
+      color: 'var(--t2)',
+      colorBg: 'rgba(122,129,144,.07)',
+      items: [
+        { trigger: '(same query × 3)',         launchable: false, icon: '🔁', desc: 'Oracle opens: "You have searched for this before."' },
+        { trigger: '(same query × 5)',         launchable: false, icon: '👁', desc: 'Toast: "We remember everything."' },
+        { trigger: '(any search)',             launchable: false, icon: '🖥️', desc: 'Console: "This session is being monitored."' },
+      ]
+    },
+  ];
+
+  // ── inject styles ────────────────────────────────────────────
+  if (!document.getElementById('egg-modal-style')) {
+    var st = document.createElement('style');
+    st.id = 'egg-modal-style';
+    st.textContent = `
+      #egg-modal-overlay { position:fixed;inset:0;z-index:100002;background:rgba(5,6,10,.88);backdrop-filter:blur(10px);display:flex;align-items:flex-start;justify-content:center;padding:24px 16px 40px;overflow-y:auto; }
+      #egg-modal-box { width:100%;max-width:700px;background:var(--bg1);border:1px solid var(--line);border-radius:14px;overflow:hidden;animation:amIn .2s ease;display:flex;flex-direction:column;max-height:calc(100vh - 48px); }
+      #egg-modal-head { padding:18px 20px 14px;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:14px;background:var(--bg1);flex-shrink:0; }
+      #egg-modal-search-wrap { padding:10px 16px;border-bottom:1px solid var(--line2);background:var(--bg1);flex-shrink:0; }
+      #egg-modal-search { width:100%;background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-family:'Geist',sans-serif;font-size:13px;color:var(--t0);outline:none;transition:border-color .15s; }
+      #egg-modal-search:focus { border-color:rgba(157,219,94,.35); }
+      #egg-modal-search::placeholder { color:var(--t3); }
+      #egg-modal-pills { padding:10px 16px;border-bottom:1px solid var(--line2);display:flex;gap:6px;flex-wrap:wrap;background:var(--bg1);flex-shrink:0; }
+      .egg-pill { font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.12em;text-transform:uppercase;padding:3px 10px;border-radius:99px;border:1px solid var(--line);color:var(--t2);background:none;cursor:pointer;transition:all .15s; }
+      .egg-pill:hover,.egg-pill.active { color:var(--bg);border-color:transparent; }
+      #egg-modal-body { overflow-y:auto;flex:1;scrollbar-width:thin;scrollbar-color:rgba(157,219,94,.2) transparent; }
+      #egg-modal-body::-webkit-scrollbar { width:4px; }
+      #egg-modal-body::-webkit-scrollbar-thumb { background:rgba(157,219,94,.18);border-radius:99px; }
+      .egg-section-head { padding:14px 18px 6px;display:flex;align-items:center;gap:8px;position:sticky;top:0;background:var(--bg1);z-index:1;border-bottom:1px solid var(--line2); }
+      .egg-section-label { font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;font-weight:600; }
+      .egg-section-count { font-family:'Geist Mono',monospace;font-size:9px;color:var(--t3);margin-left:auto; }
+      .egg-row { display:flex;align-items:center;gap:12px;padding:8px 18px;transition:background .08s;border-bottom:1px solid var(--line2); }
+      .egg-row:last-child { border-bottom:none; }
+      .egg-row:hover { background:var(--bg2); }
+      .egg-row-icon { font-size:18px;width:28px;text-align:center;flex-shrink:0; }
+      .egg-row-body { flex:1;min-width:0; }
+      .egg-trigger { font-family:'Geist Mono',monospace;font-size:11px;letter-spacing:.03em;line-height:1.4; }
+      .egg-desc { font-size:11px;color:var(--t2);margin-top:2px;line-height:1.5; }
+      .egg-launch-btn { flex-shrink:0;font-family:'Geist',sans-serif;font-size:11px;font-weight:600;padding:4px 11px;border-radius:5px;cursor:pointer;transition:all .12s;white-space:nowrap;border:1px solid var(--line);background:var(--bg2);color:var(--t1); }
+      .egg-launch-btn:hover { color:var(--bg);border-color:transparent; }
+      #egg-empty { text-align:center;padding:40px 20px;font-size:13px;color:var(--t2);display:none; }
+      #egg-modal-foot { padding:10px 18px;border-top:1px solid var(--line2);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:var(--bg1); }
+      .egg-foot-hint { font-size:10px;color:var(--t3);font-family:'Geist Mono',monospace;letter-spacing:.04em; }
+      .egg-close-btn { font-family:'Geist',sans-serif;font-size:12px;font-weight:600;padding:6px 18px;border-radius:6px;background:var(--g);color:var(--bg);border:none;cursor:pointer;transition:opacity .1s; }
+      .egg-close-btn:hover { opacity:.85; }
+    `;
+    document.head.appendChild(st);
+  }
+
+  var totalEggs = EGGS.reduce(function(a,s){return a+s.items.length;},0);
+
+  // ── build DOM ────────────────────────────────────────────────
+  var overlay = document.createElement('div');
+  overlay.id = 'egg-modal-overlay';
+
+  var box = document.createElement('div');
+  box.id = 'egg-modal-box';
+
+  // header
+  box.innerHTML = '<div id="egg-modal-head">'
+    + '<div style="width:38px;height:38px;border-radius:10px;background:rgba(157,219,94,.1);border:1px solid rgba(157,219,94,.2);display:grid;place-items:center;font-size:20px;flex-shrink:0;">🥚</div>'
+    + '<div><div style="font-size:15px;font-weight:700;letter-spacing:-.02em;color:var(--t0)">Easter Eggs</div>'
+    +   '<div style="font-size:11px;color:var(--t2);margin-top:1px;"><span style="font-family:\'Geist Mono\',monospace;color:var(--t3);" id="egg-count">' + totalEggs + ' eggs</span> hidden in Altura Search</div></div>'
+    + '<button id="egg-x-btn" style="margin-left:auto;background:none;border:none;color:var(--t2);font-size:20px;cursor:pointer;padding:4px 6px;border-radius:4px;line-height:1;" title="Close">&#x2715;</button>'
+    + '</div>'
+    // search
+    + '<div id="egg-modal-search-wrap"><input id="egg-modal-search" placeholder="Filter eggs…" autocomplete="off" spellcheck="false"></div>'
+    // pills
+    + '<div id="egg-modal-pills">'
+    +   '<button class="egg-pill active" data-section="all" style="background:var(--g);border-color:var(--g);color:var(--bg);">All</button>'
+    +   EGGS.map(function(s){ return '<button class="egg-pill" data-section="' + s.section + '" style="--pc:' + s.color + ';">' + s.section + '</button>'; }).join('')
+    + '</div>'
+    // body
+    + '<div id="egg-modal-body">'
+    +   EGGS.map(function(s) {
+          return '<div class="egg-section" data-section="' + s.section + '">'
+            + '<div class="egg-section-head" style="border-left:3px solid ' + s.color + ';">'
+            +   '<div class="egg-section-label" style="color:' + s.color + ';">' + s.section + '</div>'
+            +   '<div class="egg-section-count">' + s.items.length + ' egg' + (s.items.length !== 1 ? 's' : '') + '</div>'
+            + '</div>'
+            + s.items.map(function(egg) {
+                var launchVal = egg.trigger.replace(/['"\\]/g, '');
+                return '<div class="egg-row" data-search="' + (egg.trigger + ' ' + egg.desc).toLowerCase() + '">'
+                  + '<div class="egg-row-icon">' + egg.icon + '</div>'
+                  + '<div class="egg-row-body">'
+                  +   '<div class="egg-trigger" style="color:' + s.color + ';">' + egg.trigger + '</div>'
+                  +   '<div class="egg-desc">' + egg.desc + '</div>'
+                  + '</div>'
+                  + (egg.launchable
+                      ? '<button class="egg-launch-btn" data-val="' + launchVal + '" title="Load into search bar" style="--bc:' + s.color + ';">Try it</button>'
+                      : '<span style="font-size:10px;color:var(--t3);font-family:\'Geist Mono\',monospace;flex-shrink:0;">auto</span>')
+                  + '</div>';
+              }).join('')
+            + '</div>';
+        }).join('')
+    + '<div id="egg-empty">No eggs match that filter.</div>'
+    + '</div>'
+    // footer
+    + '<div id="egg-modal-foot">'
+    +   '<div class="egg-foot-hint">↑↓ scroll · ESC close · click "Try it" to launch</div>'
+    +   '<button class="egg-close-btn" id="egg-close-btn">Done</button>'
+    + '</div>';
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  // ── launch button hover colours ──────────────────────────────
+  box.querySelectorAll('.egg-launch-btn').forEach(function(btn) {
+    var c = btn.style.getPropertyValue('--bc');
+    btn.addEventListener('mouseenter', function(){ btn.style.background = c; btn.style.borderColor = c; btn.style.color = 'var(--bg)'; });
+    btn.addEventListener('mouseleave', function(){ btn.style.background = ''; btn.style.borderColor = 'var(--line)'; btn.style.color = 'var(--t1)'; });
+  });
+
+  // ── launch action ────────────────────────────────────────────
+  box.addEventListener('click', function(e) {
+    var btn = e.target.closest('.egg-launch-btn');
+    if (!btn) return;
+    var val = btn.dataset.val;
+    overlay.remove();
+    goHome();
+    setTimeout(function() {
+      var hi = document.getElementById('home-input');
+      if (hi) { hi.value = val; hi.focus(); }
+      // auto-fire search after a beat so user sees it land
+      setTimeout(function() { doSearch(); }, 120);
+    }, 80);
+  });
+
+  // ── pill filter ──────────────────────────────────────────────
+  var activePill = 'all';
+  box.querySelectorAll('.egg-pill').forEach(function(pill) {
+    pill.addEventListener('click', function() {
+      activePill = pill.dataset.section;
+      box.querySelectorAll('.egg-pill').forEach(function(p) {
+        var s = EGGS.find(function(x){ return x.section === p.dataset.section; });
+        var c = s ? s.color : 'var(--g)';
+        if (p.dataset.section === activePill) {
+          p.classList.add('active');
+          p.style.background = c; p.style.borderColor = c; p.style.color = 'var(--bg)';
+        } else {
+          p.classList.remove('active');
+          p.style.background = ''; p.style.borderColor = ''; p.style.color = '';
+        }
+      });
+      applyFilters();
+    });
+  });
+  // fix "All" pill colour on init
+  var allPill = box.querySelector('[data-section="all"]');
+  if (allPill) { allPill.style.background='var(--g)'; allPill.style.borderColor='var(--g)'; allPill.style.color='var(--bg)'; }
+
+  // ── search filter ────────────────────────────────────────────
+  var searchEl = box.querySelector('#egg-modal-search');
+  searchEl.addEventListener('input', applyFilters);
+
+  function applyFilters() {
+    var term = searchEl.value.toLowerCase().trim();
+    var visible = 0;
+    box.querySelectorAll('.egg-section').forEach(function(sec) {
+      var secName = sec.dataset.section;
+      var sectionMatch = activePill === 'all' || activePill === secName;
+      var sectionVisible = 0;
+      sec.querySelectorAll('.egg-row').forEach(function(row) {
+        var textMatch = !term || row.dataset.search.includes(term);
+        var show = sectionMatch && textMatch;
+        row.style.display = show ? '' : 'none';
+        if (show) sectionVisible++;
+      });
+      sec.style.display = sectionVisible > 0 ? '' : 'none';
+      visible += sectionVisible;
+    });
+    var emptyEl = box.querySelector('#egg-empty');
+    if (emptyEl) emptyEl.style.display = visible === 0 ? 'block' : 'none';
+    var countEl = box.querySelector('#egg-count');
+    if (countEl) countEl.textContent = visible + ' egg' + (visible !== 1 ? 's' : '');
+  }
+
+  // ── close ────────────────────────────────────────────────────
+  function closeEgg() { overlay.remove(); document.removeEventListener('keydown', onEscKey); }
+  box.querySelector('#egg-x-btn').addEventListener('click', closeEgg);
+  box.querySelector('#egg-close-btn').addEventListener('click', closeEgg);
+  overlay.addEventListener('click', function(e){ if (e.target === overlay) closeEgg(); });
+  function onEscKey(e) { if (e.key === 'Escape') closeEgg(); }
+  document.addEventListener('keydown', onEscKey);
+
+  // focus search
+  setTimeout(function(){ searchEl.focus(); }, 80);
+}
+
+// ══════════════════════════════════════════════════════════════
+// ── SNAKE ─────────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+function _launchSnake() {
+  goHome();
+  var overlay = document.createElement('div');
+  overlay.id = 'snake-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:100001;background:#05060a;display:flex;flex-direction:column;align-items:center;justify-content:center;';
+  var label = document.createElement('div');
+  label.style.cssText = 'font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.2em;color:rgba(157,219,94,.4);text-transform:uppercase;margin-bottom:12px;';
+  label.textContent = 'Altura // Snake · ESC to exit';
+  var canvas = document.createElement('canvas');
+  var CELL = 16, COLS = 25, ROWS = 20;
+  canvas.width = COLS * CELL; canvas.height = ROWS * CELL;
+  canvas.style.cssText = 'border:1px solid rgba(157,219,94,.15);border-radius:4px;';
+  var scoreEl = document.createElement('div');
+  scoreEl.style.cssText = 'font-family:"Geist Mono",monospace;font-size:11px;color:rgba(157,219,94,.5);margin-top:10px;letter-spacing:.1em;';
+  scoreEl.textContent = 'SCORE: 0';
+  overlay.appendChild(label); overlay.appendChild(canvas); overlay.appendChild(scoreEl);
+  document.body.appendChild(overlay);
+  var ctx = canvas.getContext('2d');
+  var snake = [{x:12,y:10},{x:11,y:10},{x:10,y:10}];
+  var dir = {x:1,y:0}, nextDir = {x:1,y:0};
+  var food = _snakeFood(snake, COLS, ROWS);
+  var score = 0, running = true;
+  function _snakeFood(s, c, r) {
+    var f; do { f={x:Math.floor(Math.random()*c),y:Math.floor(Math.random()*r)}; } while(s.some(p=>p.x===f.x&&p.y===f.y)); return f;
+  }
+  function draw() {
+    ctx.fillStyle = '#05060a'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    ctx.strokeStyle = 'rgba(157,219,94,.04)';
+    for(var gx=0;gx<COLS;gx++) for(var gy=0;gy<ROWS;gy++){ctx.strokeRect(gx*CELL,gy*CELL,CELL,CELL);}
+    // food
+    ctx.fillStyle = '#e0b84a'; ctx.beginPath();
+    ctx.arc(food.x*CELL+CELL/2, food.y*CELL+CELL/2, CELL/2-2, 0, Math.PI*2); ctx.fill();
+    // snake
+    snake.forEach(function(p,i){
+      var alpha = i===0 ? 1 : 0.55+0.45*(1-i/snake.length);
+      ctx.fillStyle = i===0 ? '#9ddb5e' : 'rgba(157,219,94,'+alpha+')';
+      ctx.fillRect(p.x*CELL+1, p.y*CELL+1, CELL-2, CELL-2);
+    });
+  }
+  function step() {
+    if(!running) return;
+    dir = nextDir;
+    var head = {x:(snake[0].x+dir.x+COLS)%COLS, y:(snake[0].y+dir.y+ROWS)%ROWS};
+    if(snake.some(function(p){return p.x===head.x&&p.y===head.y;})){
+      running=false;
+      ctx.fillStyle='rgba(5,6,10,.7)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle='#cc4a4a'; ctx.font='bold 20px "Geist",sans-serif'; ctx.textAlign='center';
+      ctx.fillText('GAME OVER', canvas.width/2, canvas.height/2-10);
+      ctx.fillStyle='rgba(157,219,94,.6)'; ctx.font='12px "Geist Mono",monospace';
+      ctx.fillText('Score: '+score, canvas.width/2, canvas.height/2+14);
+      ctx.fillText('ESC to exit', canvas.width/2, canvas.height/2+32);
+      return;
+    }
+    snake.unshift(head);
+    if(head.x===food.x&&head.y===food.y){ score++; scoreEl.textContent='SCORE: '+score; food=_snakeFood(snake,COLS,ROWS); }
+    else snake.pop();
+    draw();
+  }
+  draw();
+  var _snakeInterval = setInterval(step, 130);
+  function onKey(e) {
+    var map = {ArrowUp:{x:0,y:-1},ArrowDown:{x:0,y:1},ArrowLeft:{x:-1,y:0},ArrowRight:{x:1,y:0},
+               w:{x:0,y:-1},s:{x:0,y:1},a:{x:-1,y:0},d:{x:1,y:0}};
+    var nd = map[e.key];
+    if(nd && !(nd.x===-dir.x&&nd.y===-dir.y)) { nextDir=nd; e.preventDefault(); }
+    if(e.key==='Escape') { clearInterval(_snakeInterval); overlay.remove(); document.removeEventListener('keydown',onKey); }
+  }
+  document.addEventListener('keydown', onKey);
+}
+
+// ══════════════════════════════════════════════════════════════
+// ── STARFIELD ─────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+function _launchStarfield() {
+  goHome();
+  var overlay = document.createElement('div');
+  overlay.id = 'star-overlay';
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:100001;background:#000;cursor:pointer;overflow:hidden;';
+  var canvas = document.createElement('canvas');
+  canvas.style.cssText = 'width:100%;height:100%;display:block;';
+  var hint = document.createElement('div');
+  hint.style.cssText = 'position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:rgba(255,255,255,.2);font-size:11px;font-family:"Geist Mono",monospace;pointer-events:none;letter-spacing:.1em;';
+  hint.textContent = 'CLICK TO ACCELERATE · ESC TO EXIT';
+  overlay.appendChild(canvas); overlay.appendChild(hint);
+  document.body.appendChild(overlay);
+  canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+  var ctx = canvas.getContext('2d');
+  var CX = canvas.width/2, CY = canvas.height/2;
+  var N = 300, speed = 2;
+  var stars = Array.from({length:N}, function(){
+    return { x:(Math.random()-0.5)*canvas.width, y:(Math.random()-0.5)*canvas.height, z:Math.random()*canvas.width };
+  });
+  var _raf;
+  function frame() {
+    ctx.fillStyle='rgba(0,0,0,.25)'; ctx.fillRect(0,0,canvas.width,canvas.height);
+    stars.forEach(function(s){
+      s.z -= speed;
+      if(s.z<=0){ s.x=(Math.random()-0.5)*canvas.width; s.y=(Math.random()-0.5)*canvas.height; s.z=canvas.width; }
+      var sx = (s.x/s.z)*canvas.width + CX;
+      var sy = (s.y/s.z)*canvas.height + CY;
+      var r = Math.max(0.4, (1-s.z/canvas.width)*3);
+      var bright = Math.floor((1-s.z/canvas.width)*255);
+      ctx.beginPath(); ctx.arc(sx,sy,r,0,Math.PI*2);
+      ctx.fillStyle='rgb('+bright+','+bright+','+Math.min(255,bright+40)+')';
+      ctx.fill();
+    });
+    _raf = requestAnimationFrame(frame);
+  }
+  frame();
+  overlay.onclick = function(){ speed = speed < 20 ? speed*1.8 : 2; };
+  function onKey(e){
+    if(e.key==='Escape'){ cancelAnimationFrame(_raf); overlay.remove(); document.removeEventListener('keydown',onKey); }
+  }
+  document.addEventListener('keydown', onKey);
+}
+
+// ══════════════════════════════════════════════════════════════
+// ── TYPEWRITER ────────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+function _launchTypewriter() {
+  goHome();
+  var overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:100001;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;';
+  var label = document.createElement('div');
+  label.style.cssText = 'font-family:"Geist Mono",monospace;font-size:9px;letter-spacing:.3em;color:var(--t3);text-transform:uppercase;margin-bottom:28px;';
+  label.textContent = 'Altura // Typewriter Mode · ESC to exit';
+  var screen = document.createElement('div');
+  screen.style.cssText = 'width:100%;max-width:640px;min-height:220px;background:var(--bg1);border:1px solid var(--line);border-radius:8px;padding:24px 28px;font-family:"Lora",Georgia,serif;font-size:18px;line-height:1.8;color:var(--t0);position:relative;white-space:pre-wrap;word-break:break-word;';
+  var cursor = document.createElement('span');
+  cursor.style.cssText = 'display:inline-block;width:2px;height:1.1em;background:var(--g);vertical-align:text-bottom;animation:blink .75s step-end infinite;';
+  var style = document.createElement('style');
+  style.textContent = '@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}';
+  document.head.appendChild(style);
+  var text = '';
+  screen.appendChild(cursor);
+  var hint = document.createElement('div');
+  hint.style.cssText = 'margin-top:14px;font-size:11px;color:var(--t3);font-family:"Geist Mono",monospace;letter-spacing:.08em;text-align:center;';
+  hint.textContent = 'Just start typing — every keystroke plays a sound';
+  overlay.appendChild(label); overlay.appendChild(screen); overlay.appendChild(hint);
+  document.body.appendChild(overlay);
+  var audioCtx;
+  try { audioCtx = new (window.AudioContext||window.webkitAudioContext)(); } catch {}
+  function typeSound() {
+    if(!audioCtx) return;
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.connect(gain); gain.connect(audioCtx.destination);
+    osc.frequency.value = 800 + Math.random()*400;
+    osc.type = 'square';
+    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime+0.04);
+    osc.start(); osc.stop(audioCtx.currentTime+0.05);
+  }
+  function onKey(e) {
+    if(e.key==='Escape'){ overlay.remove(); document.removeEventListener('keydown',onKey); return; }
+    if(e.key==='Backspace'){ text=text.slice(0,-1); }
+    else if(e.key==='Enter'){ text+='\n'; }
+    else if(e.key.length===1){ text+=e.key; typeSound(); }
+    screen.textContent = text;
+    screen.appendChild(cursor);
+    e.preventDefault();
+  }
+  document.addEventListener('keydown', onKey);
+}
+
+// ══════════════════════════════════════════════════════════════
+// ── GLITCH EFFECT ─────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════════
+function _launchGlitch() {
+  goHome();
+  var els = document.querySelectorAll('.home-brand, .home-tab, .hbtn, .hf-link, .hw-name, .home-icon-btn');
+  var originals = [];
+  els.forEach(function(el){ originals.push({el:el, text:el.textContent, color:el.style.color}); });
+  var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+  var phase = 0, MAX = 14;
+  var interval = setInterval(function(){
+    phase++;
+    var intensity = phase < MAX/2 ? phase/MAX : (MAX-phase)/MAX;
+    els.forEach(function(item){
+      if(Math.random() < intensity*0.9){
+        var scrambled = item.el.textContent.split('').map(function(c){
+          return Math.random() < intensity ? chars[Math.floor(Math.random()*chars.length)] : c;
+        }).join('');
+        item.el.textContent = scrambled;
+        item.el.style.color = Math.random()<0.3 ? '#cc4a4a' : Math.random()<0.5 ? '#9ddb5e' : '';
+      }
+    });
+    if(phase >= MAX){
+      clearInterval(interval);
+      originals.forEach(function(item){ item.el.textContent=item.text; item.el.style.color=item.color; });
+      showToast({icon:'📡',title:'Signal restored.',sub:'Temporary interference. Probably.',dur:3000});
+    }
+  }, 80);
+}
+
 function _launchMatrix() {
   goHome();
   var overlay = document.createElement('div');
