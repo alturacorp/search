@@ -6,6 +6,7 @@
 <title>Altura Search</title>
 <meta name="theme-color" content="#05060a">
 <meta name="description" content="Altura Search — search made simple">
+<!-- BUILD: v35 -->
 <link rel="manifest" href="data:application/json;charset=utf-8,%7B%22name%22%3A%22Altura%20Search%22%2C%22short_name%22%3A%22Altura%22%2C%22start_url%22%3A%22.%2F%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%2305060a%22%2C%22theme_color%22%3A%22%2305060a%22%2C%22description%22%3A%22The%20Altura%20intelligence%20search%20platform%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%2C%253Csvg%2520xmlns%253D%2527http%253A%252F%252Fwww.w3.org%252F2000%252Fsvg%2527%2520viewBox%253D%25270%25200%2532%25202%2527%253E%253Ccircle%2520cx%253D%25271%2527%2520cy%253D%25271%2527%2520r%253D%25271%2527%2520fill%253D%2527%25239ddb5e%2527%252F%253E%253C%252Fsvg%253E%22%2C%22sizes%22%3A%22any%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,500;1,400;1,500&display=swap" rel="stylesheet">
@@ -1845,9 +1846,9 @@ body{
       </div>
       <input class="home-input" id="home-input" type="text" placeholder="Search the web"
         autocomplete="off" spellcheck="false"
-        oninput="handleHomeInput()"
-        onkeydown="handleHomeKey(event)"
-        onfocus="onSearchFocus('home')" />
+        oninput="typeof handleHomeInput==='function'&&handleHomeInput()"
+        onkeydown="typeof handleHomeKey==='function'&&handleHomeKey(event)"
+        onfocus="typeof onSearchFocus==='function'&&onSearchFocus('home')" />
       <div class="ghost-indicator" id="ghost-indicator">
         <div class="ghost-dot"></div>
         <div>
@@ -1967,8 +1968,8 @@ body{
           </svg>
         </div>
         <input class="res-input" id="res-input" type="text" autocomplete="off" spellcheck="false"
-          oninput="handleResInput()"
-          onkeydown="if(event.key==='Enter')doSearch()" />
+          oninput="typeof handleResInput==='function'&&handleResInput()"
+          onkeydown="if(event.key==='Enter')typeof doSearch==='function'&&doSearch()" />
         <button class="res-clear" id="res-clear" onclick="clearResSearch()">&#x2715;</button>
         <button class="res-search-btn" onclick="doSearch()">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
@@ -2417,32 +2418,211 @@ body{
 
 <!-- SIGN IN MODAL -->
 <div id="signin-modal">
-  <div class="modal-box">
-    <div class="modal-logo">
-      <div class="res-logomark"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="#05060a"/><circle cx="8" cy="8" r="6.5" stroke="#05060a" stroke-width="2"/></svg></div>
-      <span style="font-size:14px;font-weight:700;letter-spacing:-.01em">Altura ID</span>
+  <div class="modal-box" id="aid-box" style="width:min(480px,95vw);padding:0;overflow:hidden;border-radius:14px;">
+
+    <!-- Progress bar -->
+    <div id="aid-progress-bar" style="height:3px;background:var(--bg3);position:relative;display:none">
+      <div id="aid-progress-fill" style="height:100%;background:var(--g);transition:width .35s ease;width:0%"></div>
     </div>
-    <div class="modal-title">Altura ID</div>
-    <div class="modal-tabs">
-      <button class="modal-tab active" id="tab-signin" onclick="switchAuthTab('signin')">Sign in</button>
-      <button class="modal-tab" id="tab-register" onclick="switchAuthTab('register')">Create account</button>
+
+    <!-- ── STEP 0: LANDING ── -->
+    <div class="aid-step" id="aid-step-0" style="display:flex">
+      <div style="padding:32px 32px 24px;text-align:center;border-bottom:1px solid var(--line)">
+        <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:20px">
+          <div class="res-logomark" style="width:32px;height:32px"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="#05060a"/><circle cx="8" cy="8" r="6.5" stroke="#05060a" stroke-width="2"/></svg></div>
+          <span style="font-size:18px;font-weight:700;letter-spacing:-.02em;color:var(--t0)">Altura ID</span>
+        </div>
+        <div style="font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--t0);margin-bottom:6px">Your key to Altura</div>
+        <div style="font-size:13px;color:var(--t2);line-height:1.6;max-width:320px;margin:0 auto">One account for Altura Search, Altura Fiber, and the Arcade. Free to join.</div>
+      </div>
+      <div style="padding:24px 32px">
+        <button class="modal-btn" onclick="aidShowSignup()" style="margin-bottom:12px">Create Altura ID</button>
+        <button class="modal-btn" onclick="aidShowSignin()" style="background:var(--bg2);color:var(--t1);border:1px solid var(--line)">Sign in</button>
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--line2)">
+          <div style="font-size:11px;color:var(--t3);text-align:center;line-height:1.7">
+            Altura ID is required to access Arcade leaderboards,<br>sync your history, and unlock search insights.
+          </div>
+        </div>
+      </div>
+        <div style="text-align:center;padding:0 32px 24px">
+          <button onclick="closeSignIn()" style="background:none;border:none;color:var(--t3);font-size:12px;font-family:'Geist',sans-serif;cursor:pointer;padding:8px;transition:color .1s;" onmouseover="this.style.color='var(--t1)'" onmouseout="this.style.color='var(--t3)'">Maybe later</button>
+        </div>
     </div>
-    <div id="signin-form">
-      <input class="modal-input" id="modal-email" type="email" placeholder="Email address" />
-      <input class="modal-input" id="modal-pass" type="password" placeholder="Password" />
-      <button class="modal-btn" onclick="doSignIn()">Sign in</button>
+
+    <!-- ── STEP 1: NAME ── -->
+    <div class="aid-step" id="aid-step-1" style="display:none">
+      <div style="padding:28px 32px 20px;border-bottom:1px solid var(--line)">
+        <div style="font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">Step 1 of 4</div>
+        <div style="font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--t0);margin-bottom:4px">What's your name?</div>
+        <div style="font-size:12px;color:var(--t2)">This appears on your Altura ID profile and in the Arcade.</div>
+      </div>
+      <div style="padding:24px 32px">
+        <div style="display:flex;gap:10px;margin-bottom:14px">
+          <div style="flex:1">
+            <label class="aid-label">First name</label>
+            <input class="modal-input" id="aid-fname" type="text" placeholder="e.g. Alex" autocomplete="given-name" style="margin:0" oninput="aidValidateStep(1)" />
+          </div>
+          <div style="flex:1">
+            <label class="aid-label">Last name</label>
+            <input class="modal-input" id="aid-lname" type="text" placeholder="e.g. Chen" autocomplete="family-name" style="margin:0" oninput="aidValidateStep(1)" />
+          </div>
+        </div>
+        <div style="margin-bottom:14px">
+          <label class="aid-label">Display name <span style="color:var(--t3)">(shown publicly)</span></label>
+          <input class="modal-input" id="aid-display" type="text" placeholder="How others see you" style="margin:0" oninput="aidValidateStep(1)" />
+          <div style="font-size:10px;color:var(--t3);margin-top:4px;font-family:'Geist Mono',monospace">Auto-filled from your first name — you can change it</div>
+        </div>
+        <div id="aid-err-1" class="aid-err"></div>
+        <button class="modal-btn" id="aid-next-1" onclick="aidStep(2)" disabled style="opacity:.4">Continue</button>
+        <button class="aid-back-btn" onclick="aidStep(0)">← Back</button>
+      </div>
     </div>
-    <div id="register-form" style="display:none">
-      <input class="modal-input" id="reg-email" type="email" placeholder="Email address" />
-      <input class="modal-input" id="reg-pass" type="password" placeholder="Choose a password" />
-      <input class="modal-input" id="reg-name" type="text" placeholder="Display name (optional)" />
-      <button class="modal-btn" onclick="doRegister()">Create Altura ID</button>
+
+    <!-- ── STEP 2: EMAIL ── -->
+    <div class="aid-step" id="aid-step-2" style="display:none">
+      <div style="padding:28px 32px 20px;border-bottom:1px solid var(--line)">
+        <div style="font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">Step 2 of 4</div>
+        <div style="font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--t0);margin-bottom:4px">Your email address</div>
+        <div style="font-size:12px;color:var(--t2)">Used to sign in and receive service notices. Altura does not share this.</div>
+      </div>
+      <div style="padding:24px 32px">
+        <label class="aid-label">Email address</label>
+        <input class="modal-input" id="aid-email" type="email" placeholder="you@example.com" autocomplete="email" style="margin-bottom:14px" oninput="aidValidateStep(2)" />
+        <div id="aid-email-check" style="font-size:11px;margin-bottom:10px;min-height:18px;font-family:'Geist Mono',monospace"></div>
+        <div id="aid-err-2" class="aid-err"></div>
+        <button class="modal-btn" id="aid-next-2" onclick="aidStep(3)" disabled style="opacity:.4">Continue</button>
+        <button class="aid-back-btn" onclick="aidStep(1)">← Back</button>
+      </div>
     </div>
-    <button class="modal-cancel" onclick="closeSignIn()">Cancel</button>
-    <div id="auth-error" style="font-size:12px;color:var(--red);text-align:center;margin-top:8px;display:none"></div>
-    <div class="modal-note">Altura ID gives access to Altura Search, Altura Fiber, and other Altura civilian services.</div>
+
+    <!-- ── STEP 3: PASSWORD ── -->
+    <div class="aid-step" id="aid-step-3" style="display:none">
+      <div style="padding:28px 32px 20px;border-bottom:1px solid var(--line)">
+        <div style="font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">Step 3 of 4</div>
+        <div style="font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--t0);margin-bottom:4px">Create a password</div>
+        <div style="font-size:12px;color:var(--t2)">Minimum 8 characters. Use a mix of letters and numbers.</div>
+      </div>
+      <div style="padding:24px 32px">
+        <label class="aid-label">Password</label>
+        <div style="position:relative;margin-bottom:14px">
+          <input class="modal-input" id="aid-pass" type="password" placeholder="At least 8 characters" autocomplete="new-password" style="margin:0;padding-right:44px" oninput="aidValidateStep(3)" />
+          <button onclick="aidTogglePass('aid-pass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--t3);font-size:14px;padding:0">👁</button>
+        </div>
+        <!-- Strength meter -->
+        <div style="margin-bottom:14px">
+          <div style="height:4px;background:var(--bg3);border-radius:2px;overflow:hidden;margin-bottom:5px">
+            <div id="aid-strength-bar" style="height:100%;width:0%;transition:width .2s,background .2s;border-radius:2px"></div>
+          </div>
+          <div id="aid-strength-label" style="font-size:10px;color:var(--t3);font-family:'Geist Mono',monospace"></div>
+        </div>
+        <label class="aid-label">Confirm password</label>
+        <input class="modal-input" id="aid-pass2" type="password" placeholder="Repeat password" autocomplete="new-password" style="margin-bottom:14px" oninput="aidValidateStep(3)" />
+        <div id="aid-err-3" class="aid-err"></div>
+        <button class="modal-btn" id="aid-next-3" onclick="aidStep(4)" disabled style="opacity:.4">Continue</button>
+        <button class="aid-back-btn" onclick="aidStep(2)">← Back</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 4: PREFERENCES ── -->
+    <div class="aid-step" id="aid-step-4" style="display:none">
+      <div style="padding:28px 32px 20px;border-bottom:1px solid var(--line)">
+        <div style="font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:6px">Step 4 of 4</div>
+        <div style="font-size:19px;font-weight:700;letter-spacing:-.02em;color:var(--t0);margin-bottom:4px">Your preferences</div>
+        <div style="font-size:12px;color:var(--t2)">Personalise your Altura experience from day one.</div>
+      </div>
+      <div style="padding:24px 32px">
+        <!-- Avatar picker -->
+        <label class="aid-label">Choose an avatar</label>
+        <div id="aid-avatars" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px">
+          <button class="aid-avatar-btn selected" data-emoji="🔭" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--g);background:var(--g2);font-size:20px;cursor:pointer">🔭</button>
+          <button class="aid-avatar-btn" data-emoji="🛸" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg2);font-size:20px;cursor:pointer">🛸</button>
+          <button class="aid-avatar-btn" data-emoji="🧬" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg2);font-size:20px;cursor:pointer">🧬</button>
+          <button class="aid-avatar-btn" data-emoji="🌍" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg2);font-size:20px;cursor:pointer">🌍</button>
+          <button class="aid-avatar-btn" data-emoji="🛡" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg2);font-size:20px;cursor:pointer">🛡</button>
+          <button class="aid-avatar-btn" data-emoji="🔐" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg2);font-size:20px;cursor:pointer">🔐</button>
+          <button class="aid-avatar-btn" data-emoji="📡" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg2);font-size:20px;cursor:pointer">📡</button>
+          <button class="aid-avatar-btn" data-emoji="🧠" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg2);font-size:20px;cursor:pointer">🧠</button>
+          <button class="aid-avatar-btn" data-emoji="⚡" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg2);font-size:20px;cursor:pointer">⚡</button>
+          <button class="aid-avatar-btn" data-emoji="🌌" onclick="aidSelectAvatar(this)" style="width:40px;height:40px;border-radius:8px;border:2px solid var(--line);background:var(--bg2);font-size:20px;cursor:pointer">🌌</button>
+        </div>
+        <!-- Region -->
+        <label class="aid-label">Your region</label>
+        <select class="settings-select" id="aid-region" style="width:100%;margin-bottom:14px;padding:10px 12px">
+          <option value="global">Global</option>
+          <option value="gb">Great Britain</option>
+          <option value="us">United States</option>
+          <option value="de">Germany</option>
+          <option value="fr">France</option>
+          <option value="jp">Japan / Akebono</option>
+          <option value="au">Australia</option>
+        </select>
+        <!-- Consent -->
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;margin-bottom:10px">
+          <input type="checkbox" id="aid-consent" style="margin-top:2px;accent-color:var(--g)" onchange="aidValidateStep(4)" />
+          <span style="font-size:12px;color:var(--t2);line-height:1.6">I agree to the <span style="color:var(--g);cursor:pointer" onclick="aidShowTerms()">Altura Civilian Service Agreement</span> and acknowledge that this is a fictional interface.</span>
+        </label>
+        <div id="aid-err-4" class="aid-err"></div>
+        <button class="modal-btn" id="aid-next-4" onclick="aidSubmit()" disabled style="opacity:.4">Create my Altura ID</button>
+        <button class="aid-back-btn" onclick="aidStep(3)">← Back</button>
+      </div>
+    </div>
+
+    <!-- ── STEP 5: SUCCESS ── -->
+    <div class="aid-step" id="aid-step-5" style="display:none;text-align:center;padding:40px 32px">
+      <div id="aid-success-avatar" style="font-size:48px;margin-bottom:12px">🔭</div>
+      <div style="font-size:22px;font-weight:700;letter-spacing:-.02em;color:var(--t0);margin-bottom:6px">Welcome to Altura, <span id="aid-success-name">Agent</span>.</div>
+      <div style="font-size:13px;color:var(--t2);line-height:1.7;margin-bottom:8px">Your Altura ID has been created. Civilian clearance issued.</div>
+      <div id="aid-success-ref" style="font-family:'Geist Mono',monospace;font-size:10px;color:var(--t3);margin-bottom:24px"></div>
+      <!-- Feature pills -->
+      <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px;text-align:left">
+        <div class="aid-feature-pill">✓ Arcade access &amp; leaderboards unlocked</div>
+        <div class="aid-feature-pill">✓ Search history sync enabled</div>
+        <div class="aid-feature-pill">✓ Civilian clearance: Tier 0</div>
+      </div>
+      <button class="modal-btn" onclick="aidFinish()">Enter Altura Search</button>
+    </div>
+
+    <!-- ── SIGN IN VIEW ── -->
+    <div class="aid-step" id="aid-signin-view" style="display:none">
+      <div style="padding:28px 32px 20px;border-bottom:1px solid var(--line)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+          <div class="res-logomark" style="width:24px;height:24px"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="#05060a"/><circle cx="8" cy="8" r="6.5" stroke="#05060a" stroke-width="2"/></svg></div>
+          <span style="font-size:16px;font-weight:700;color:var(--t0)">Sign in to Altura</span>
+        </div>
+        <div style="font-size:12px;color:var(--t2)">Use your Altura ID credentials.</div>
+      </div>
+      <div style="padding:24px 32px">
+        <label class="aid-label">Email address</label>
+        <input class="modal-input" id="si-email" type="email" placeholder="you@example.com" autocomplete="email" style="margin-bottom:14px" />
+        <label class="aid-label">Password</label>
+        <div style="position:relative;margin-bottom:14px">
+          <input class="modal-input" id="si-pass" type="password" placeholder="Your password" autocomplete="current-password" style="margin:0;padding-right:44px"
+            onkeydown="if(event.key==='Enter')aidDoSignIn()" />
+          <button onclick="aidTogglePass('si-pass',this)" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--t3);font-size:14px;padding:0">👁</button>
+        </div>
+        <div id="aid-signin-err" class="aid-err"></div>
+        <button class="modal-btn" id="aid-signin-btn" onclick="aidDoSignIn()">Sign in</button>
+        <div style="text-align:center;margin-top:12px">
+          <span style="font-size:12px;color:var(--t2)">No account? </span>
+          <button onclick="aidShowSignup()" style="background:none;border:none;color:var(--g);font-size:12px;cursor:pointer;font-family:'Geist',sans-serif">Create Altura ID</button>
+        </div>
+        <button class="aid-back-btn" onclick="aidStep(0)">← Back</button>
+      </div>
+    </div>
+
   </div>
 </div>
+
+<style>
+.aid-step { flex-direction: column; }
+.aid-label { display:block;font-size:11px;font-weight:600;color:var(--t2);letter-spacing:.06em;text-transform:uppercase;margin-bottom:6px;font-family:'Geist Mono',monospace; }
+.aid-err { font-size:12px;color:var(--red);min-height:18px;margin-bottom:8px;display:none; }
+.aid-err.show { display:block; }
+.aid-back-btn { display:block;width:100%;background:none;border:none;color:var(--t2);font-size:12px;cursor:pointer;padding:10px 0 0;font-family:'Geist',sans-serif;text-align:left;transition:color .1s; }
+.aid-back-btn:hover { color:var(--t0); }
+.aid-avatar-btn.selected { border-color:var(--g);background:var(--g2); }
+.aid-feature-pill { background:var(--g3);border:1px solid rgba(157,219,94,.15);border-radius:6px;padding:8px 12px;font-size:12px;color:var(--t1); }
+</style>
 
 <script>
 
@@ -2517,8 +2697,273 @@ function updateHistoryCount(){
 }
 
 // ── AUTH ──────────────────────────────────────────────────────
-function showSignIn(){ document.getElementById('signin-modal').classList.add('show'); }
-function closeSignIn(){ document.getElementById('signin-modal').classList.remove('show'); }
+function showSignIn() {
+  document.getElementById('signin-modal').classList.add('show');
+  aidStep(0);
+}
+function closeSignIn() {
+  document.getElementById('signin-modal').classList.remove('show');
+  // Compatibility shims
+  const ae = document.getElementById('auth-error');
+  if (ae) ae.style.display = 'none';
+}
+
+// ── Altura ID wizard state ────────────────────────────────────
+let _aidAvatar = '🔭';
+
+function aidStep(n) {
+  document.querySelectorAll('.aid-step').forEach(el => el.style.display = 'none');
+  const step = document.getElementById('aid-step-' + n) || document.getElementById('aid-signin-view');
+  if (step) step.style.display = 'flex';
+
+  // Progress bar (steps 1-4)
+  const bar = document.getElementById('aid-progress-bar');
+  const fill = document.getElementById('aid-progress-fill');
+  if (bar && fill) {
+    if (n >= 1 && n <= 4) {
+      bar.style.display = 'block';
+      fill.style.width = (n / 4 * 100) + '%';
+    } else {
+      bar.style.display = 'none';
+    }
+  }
+
+  // Auto-fill display name from first name
+  if (n === 1) {
+    const fname = document.getElementById('aid-fname');
+    const display = document.getElementById('aid-display');
+    if (fname && display) {
+      fname.addEventListener('input', function() {
+        if (!display.dataset.edited) display.value = fname.value;
+      }, { once: false });
+      display.addEventListener('input', function() { display.dataset.edited = '1'; });
+      setTimeout(() => fname.focus(), 80);
+    }
+  }
+  if (n === 2) setTimeout(() => document.getElementById('aid-email')?.focus(), 80);
+  if (n === 3) setTimeout(() => document.getElementById('aid-pass')?.focus(), 80);
+}
+
+function aidShowSignup() { aidStep(1); }
+function aidShowSignin() {
+  document.querySelectorAll('.aid-step').forEach(el => el.style.display = 'none');
+  document.getElementById('aid-signin-view').style.display = 'flex';
+  document.getElementById('aid-progress-bar').style.display = 'none';
+  setTimeout(() => document.getElementById('si-email')?.focus(), 80);
+}
+
+function aidErr(n, msg) {
+  const el = document.getElementById('aid-err-' + n);
+  if (!el) return;
+  if (msg) { el.textContent = msg; el.classList.add('show'); }
+  else el.classList.remove('show');
+}
+
+function aidSetBtn(n, enabled) {
+  const btn = document.getElementById('aid-next-' + n);
+  if (!btn) return;
+  btn.disabled = !enabled;
+  btn.style.opacity = enabled ? '1' : '0.4';
+}
+
+function aidValidateStep(n) {
+  if (n === 1) {
+    const fname = (document.getElementById('aid-fname')?.value || '').trim();
+    const display = (document.getElementById('aid-display')?.value || '').trim();
+    // Auto-fill display if empty
+    if (fname && !document.getElementById('aid-display')?.dataset.edited) {
+      document.getElementById('aid-display').value = fname;
+    }
+    aidSetBtn(1, fname.length >= 1);
+  }
+  if (n === 2) {
+    const email = (document.getElementById('aid-email')?.value || '').trim();
+    const valid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    const check = document.getElementById('aid-email-check');
+    if (check) {
+      if (!email) { check.textContent = ''; check.style.color = ''; }
+      else if (valid) { check.textContent = '✓ Looks good'; check.style.color = 'var(--g)'; }
+      else { check.textContent = '✗ Enter a valid email'; check.style.color = 'var(--red)'; }
+    }
+    aidErr(2, '');
+    aidSetBtn(2, valid);
+  }
+  if (n === 3) {
+    const pass = document.getElementById('aid-pass')?.value || '';
+    const pass2 = document.getElementById('aid-pass2')?.value || '';
+    // Strength
+    const bar = document.getElementById('aid-strength-bar');
+    const label = document.getElementById('aid-strength-label');
+    let strength = 0;
+    if (pass.length >= 8) strength++;
+    if (pass.length >= 12) strength++;
+    if (/[A-Z]/.test(pass)) strength++;
+    if (/[0-9]/.test(pass)) strength++;
+    if (/[^A-Za-z0-9]/.test(pass)) strength++;
+    const levels = ['','Weak','Fair','Good','Strong','Very strong'];
+    const colors = ['','var(--red)','var(--amber)','var(--amber)','var(--g)','var(--g)'];
+    if (bar) { bar.style.width = (strength / 5 * 100) + '%'; bar.style.background = colors[strength] || 'var(--bg3)'; }
+    if (label) label.textContent = pass ? (levels[strength] || '') : '';
+    const match = pass2 && pass !== pass2;
+    aidErr(3, match ? 'Passwords do not match' : '');
+    aidSetBtn(3, pass.length >= 8 && pass === pass2);
+  }
+  if (n === 4) {
+    const consent = document.getElementById('aid-consent')?.checked;
+    aidSetBtn(4, consent);
+  }
+}
+
+function aidSelectAvatar(btn) {
+  document.querySelectorAll('.aid-avatar-btn').forEach(b => {
+    b.classList.remove('selected');
+    b.style.borderColor = 'var(--line)';
+    b.style.background = 'var(--bg2)';
+  });
+  btn.classList.add('selected');
+  btn.style.borderColor = 'var(--g)';
+  btn.style.background = 'var(--g2)';
+  _aidAvatar = btn.dataset.emoji;
+}
+
+function aidTogglePass(id, btn) {
+  const inp = document.getElementById(id);
+  if (!inp) return;
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.textContent = inp.type === 'password' ? '👁' : '🙈';
+}
+
+function aidShowTerms() {
+  _showModal(`<div class="am-header"><div class="am-icon">📋</div>
+    <div class="am-header-text">
+      <div class="am-title">Civilian Service Agreement</div>
+      <div class="am-sub">Altura Technologies · Effective Jan 2015</div>
+    </div></div>
+    <div class="am-body" style="font-size:12px;color:var(--t1);line-height:1.9">
+      <p style="margin-bottom:10px"><strong style="color:var(--t0)">1. Nature of service.</strong> Altura Search is a civilian-facing interface operated by Altura Technologies. All searches are processed via the SLC-01 cluster. Ghost Mode suppresses history logging but does not affect upstream network analysis.</p>
+      <p style="margin-bottom:10px"><strong style="color:var(--t0)">2. Data retention.</strong> Search history is stored locally unless you enable cloud sync. Altura Technologies retains anonymised query telemetry for a period not exceeding 90 days.</p>
+      <p style="margin-bottom:10px"><strong style="color:var(--t0)">3. Oracle Standard.</strong> Oracle Standard (AT-CIV-2015) is a restricted AI. Civilian users are granted Tier 0 access. Querying restricted pattern classes will result in an automatic incident log.</p>
+      <p style="margin-bottom:10px"><strong style="color:var(--t0)">4. Fictional nature.</strong> This is a creative fictional interface. No real data collection occurs. No real account is created. All Halonesia references are works of fiction.</p>
+      <p><strong style="color:var(--t0)">5. Clearance.</strong> Creating an Altura ID grants Civilian Clearance Tier 0. Clearance upgrades require in-person verification at an Altura district office.</p>
+    </div>
+    <div class="am-footer"><button class="am-btn primary" onclick="closeModal();document.getElementById('aid-consent').checked=true;aidValidateStep(4)">I agree</button></div>`);
+}
+
+async function aidSubmit() {
+  const btn = document.getElementById('aid-next-4');
+  if (btn) { btn.disabled = true; btn.textContent = 'Creating…'; }
+
+  const fname = (document.getElementById('aid-fname')?.value || '').trim();
+  const lname = (document.getElementById('aid-lname')?.value || '').trim();
+  const display = (document.getElementById('aid-display')?.value || '').trim() || fname;
+  const email = (document.getElementById('aid-email')?.value || '').trim();
+  const pass = document.getElementById('aid-pass')?.value || '';
+  const region = document.getElementById('aid-region')?.value || 'global';
+
+  // Try real registration
+  if (SEARCH_WORKER_URL) {
+    try {
+      const result = await apiAuth('register', { email, password: pass });
+      if (result?.token) {
+        localStorage.setItem(AUTH_TOKEN_KEY, result.token);
+        authState = { email, name: display, fullName: fname + (lname ? ' ' + lname : ''), avatar: _aidAvatar, region, id: result.user?.id, token: result.token, ts: Date.now() };
+        localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
+        if (region) saveSetting('region', region);
+        updateAuthUI();
+        aidShowSuccess(display);
+        return;
+      }
+      if (result?.error && !result.error.includes('KV not configured')) {
+        aidErr(4, result.error);
+        if (btn) { btn.disabled = false; btn.textContent = 'Create my Altura ID'; }
+        return;
+      }
+    } catch {}
+  }
+
+  // Offline / demo mode
+  await new Promise(r => setTimeout(r, 900)); // simulate network
+  authState = { email, name: display, fullName: fname + (lname ? ' ' + lname : ''), avatar: _aidAvatar, region, ts: Date.now() };
+  localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
+  if (region) saveSetting('region', region);
+  updateAuthUI();
+  aidShowSuccess(display);
+}
+
+function aidShowSuccess(name) {
+  document.querySelectorAll('.aid-step').forEach(el => el.style.display = 'none');
+  document.getElementById('aid-progress-bar').style.display = 'none';
+  document.getElementById('aid-step-5').style.display = 'flex';
+  const nameEl = document.getElementById('aid-success-name');
+  const avatarEl = document.getElementById('aid-success-avatar');
+  const refEl = document.getElementById('aid-success-ref');
+  if (nameEl) nameEl.textContent = name;
+  if (avatarEl) avatarEl.textContent = _aidAvatar;
+  if (refEl) refEl.textContent = 'Clearance ref: AID-' + Math.random().toString(36).slice(2,8).toUpperCase() + '-' + new Date().getFullYear();
+}
+
+function aidFinish() {
+  closeSignIn();
+  showToast({ icon: _aidAvatar, title: 'Welcome to Altura', sub: 'Civilian clearance granted · Tier 0', dur: 4000 });
+  if (typeof playSfx === 'function') playSfx('hs');
+  if (typeof renderHomeWidgets === 'function') setTimeout(renderHomeWidgets, 100);
+}
+
+async function aidDoSignIn() {
+  const email = (document.getElementById('si-email')?.value || '').trim();
+  const pass = document.getElementById('si-pass')?.value || '';
+  const errEl = document.getElementById('aid-signin-err');
+  const btn = document.getElementById('aid-signin-btn');
+
+  if (!email || !email.includes('@')) {
+    if (errEl) { errEl.textContent = 'Enter a valid email address'; errEl.classList.add('show'); }
+    return;
+  }
+  if (!pass) {
+    if (errEl) { errEl.textContent = 'Enter your password'; errEl.classList.add('show'); }
+    return;
+  }
+  if (errEl) errEl.classList.remove('show');
+  if (btn) { btn.disabled = true; btn.textContent = 'Signing in…'; }
+
+  if (SEARCH_WORKER_URL) {
+    try {
+      const result = await apiAuth('login', { email, password: pass });
+      if (result?.token) {
+        localStorage.setItem(AUTH_TOKEN_KEY, result.token);
+        authState = { email, name: result.user?.name || email.split('@')[0], id: result.user?.id, token: result.token, avatar: authState?.avatar || '🔭' };
+        localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
+        updateAuthUI(); closeSignIn();
+        showToast({ icon: authState.avatar || '👤', title: 'Signed in', sub: authState.name, dur: 2500 });
+        syncUserData();
+        return;
+      }
+      if (result?.error && !result.error.includes('KV not configured')) {
+        if (errEl) { errEl.textContent = result.error; errEl.classList.add('show'); }
+        if (btn) { btn.disabled = false; btn.textContent = 'Sign in'; }
+        return;
+      }
+    } catch {}
+  }
+  // Offline
+  authState = { email, name: email.split('@')[0], ts: Date.now(), avatar: '👤' };
+  localStorage.setItem(AUTH_KEY, JSON.stringify(authState));
+  updateAuthUI(); closeSignIn();
+  showToast({ icon: '👤', title: 'Signed in', sub: authState.name, dur: 2500 });
+  if (btn) { btn.disabled = false; btn.textContent = 'Sign in'; }
+}
+
+// Compatibility shims for old code that calls doSignIn/doRegister/switchAuthTab
+function doSignIn() { aidDoSignIn(); }
+function doRegister() { aidShowSignup(); showSignIn(); }
+function switchAuthTab(tab) { if (tab === 'signin') aidShowSignin(); else aidShowSignup(); }
+function showAuthError(msg) {
+  const e1 = document.getElementById('aid-err-4');
+  const e2 = document.getElementById('aid-signin-err');
+  if (e1) { e1.textContent = msg; e1.classList.add('show'); }
+  if (e2) { e2.textContent = msg; e2.classList.add('show'); }
+}
+
 function doSignIn(){
   const email=(document.getElementById('modal-email')?.value||'').trim();
   if(!email||!email.includes('@')){ showAuthError('Please enter a valid email address.'); return; }
@@ -3298,37 +3743,78 @@ const FALLBACK_PLACES = (q) => {
 function renderMaps(container, live){
   const q=currentQuery;
   const qSafe=q.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-  const places=FALLBACK_PLACES(q);
+  // Show skeleton then fetch real geocoding data
   container.innerHTML=`
-    <div class="res-meta"><span class="res-meta-count">Places for <strong style="color:var(--t0)">${qSafe}</strong></span></div>
+    <div class="res-meta"><span class="res-meta-count">Map results for <strong style="color:var(--t0)">${qSafe}</strong></span></div>
     <div class="maps-layout">
-      <div class="map-canvas" id="map-canvas">
-        <div class="map-bg-grid"></div>
-        ${places.map((p,i)=>`
-          <div class="map-pin" style="top:${p.pos.top};left:${p.pos.left}" title="${p.name}"
-            onclick="_mapSelectPlace(${i})">${p.pin}</div>`).join('')}
-        <div class="map-search-hint">Interactive map · click a pin to explore</div>
+      <div class="map-canvas" id="map-canvas" style="position:relative;overflow:hidden;border-radius:8px;background:var(--bg2)">
+        <div id="map-iframe-wrap" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center">
+          <div style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--t3);letter-spacing:.08em">Locating…</div>
+        </div>
+        <a id="map-open-link" href="#" target="_blank" rel="noopener"
+          style="position:absolute;bottom:10px;right:10px;background:var(--g);color:var(--bg);border-radius:5px;padding:6px 12px;font-size:11px;font-weight:700;font-family:'Geist Mono',monospace;text-decoration:none;letter-spacing:.06em;display:none">
+          Open in Maps ↗
+        </a>
       </div>
       <div class="map-places-list" id="map-places-list">
-        ${places.map((p,i)=>`
-          <div class="map-place-card" id="map-place-${i}" onclick="_mapSelectPlace(${i})">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start">
-              <div class="map-place-name">${p.pin} ${p.name}</div>
-              <span class="map-place-type">${p.type.toUpperCase()}</span>
-            </div>
-            <div class="map-place-addr">${p.address}</div>
-            <div class="map-place-meta">
-              <span class="map-place-rating">★ ${p.rating}</span>
-              <span style="color:var(--t3)">(${p.reviews} reviews)</span>
-            </div>
-          </div>`).join('')}
+        <div style="padding:16px;font-family:'Geist Mono',monospace;font-size:11px;color:var(--t3)">Searching…</div>
       </div>
     </div>`;
-  window._mapSelectPlace = function(i){
-    document.querySelectorAll('.map-place-card').forEach(c=>c.classList.remove('active'));
-    const card=document.getElementById('map-place-'+i);
-    if(card){ card.classList.add('active'); card.scrollIntoView({behavior:'smooth',block:'nearest'}); }
-  };
+
+  (async () => {
+    try {
+      // Nominatim geocoding
+      const geoRes = await fetch(
+        'https://nominatim.openstreetmap.org/search?q=' + encodeURIComponent(q) +
+        '&format=json&limit=6&addressdetails=1',
+        { headers: { 'Accept-Language': 'en' } }
+      );
+      const places = await geoRes.json();
+      const wrap = document.getElementById('map-iframe-wrap');
+      const list = document.getElementById('map-places-list');
+      const openLink = document.getElementById('map-open-link');
+      if (!wrap || !list) return;
+
+      if (!places.length) {
+        wrap.innerHTML = '<div style="font-family:\'Geist Mono\',monospace;font-size:11px;color:var(--t3);padding:24px">No locations found for this query.</div>';
+        list.innerHTML = '<div style="padding:16px;font-size:12px;color:var(--t2)">Try a more specific place name or address.</div>';
+        return;
+      }
+
+      const first = places[0];
+      const lat = parseFloat(first.lat), lon = parseFloat(first.lon);
+      const bbox = first.boundingbox; // [minlat,maxlat,minlon,maxlon]
+
+      // OpenStreetMap iframe
+      const iframeSrc = 'https://www.openstreetmap.org/export/embed.html?bbox=' +
+        (lon-0.05) + '%2C' + (lat-0.05) + '%2C' + (lon+0.05) + '%2C' + (lat+0.05) +
+        '&layer=mapnik&marker=' + lat + '%2C' + lon;
+      wrap.innerHTML = '<iframe src="' + iframeSrc + '" style="width:100%;height:100%;border:none;border-radius:8px" loading="lazy" allowfullscreen></iframe>';
+
+      if (openLink) {
+        openLink.href = 'https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon + '&zoom=14';
+        openLink.style.display = '';
+      }
+
+      // Place cards
+      list.innerHTML = places.map((p, i) => {
+        const addr = [p.address?.road, p.address?.city || p.address?.town || p.address?.village, p.address?.country].filter(Boolean).join(', ');
+        const type = (p.type || p.class || '').replace(/_/g,' ');
+        return `<div class="map-place-card" style="cursor:pointer" onclick="window.open('https://www.openstreetmap.org/?mlat=${p.lat}&mlon=${p.lon}&zoom=15','_blank')">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start">
+            <div class="map-place-name">📍 ${p.display_name.split(',')[0]}</div>
+            ${type ? '<span class="map-place-type">' + type.toUpperCase() + '</span>' : ''}
+          </div>
+          <div class="map-place-addr">${addr || p.display_name}</div>
+          <div style="font-family:\'Geist Mono\',monospace;font-size:9px;color:var(--t3);margin-top:4px">${parseFloat(p.lat).toFixed(4)}°N ${parseFloat(p.lon).toFixed(4)}°E</div>
+        </div>`;
+      }).join('');
+
+    } catch(err) {
+      const wrap = document.getElementById('map-iframe-wrap');
+      if (wrap) wrap.innerHTML = '<div style="padding:24px;font-size:12px;color:var(--t2)">Could not load map. <a href="https://www.openstreetmap.org/search?query=' + encodeURIComponent(q) + '" target="_blank" style="color:var(--g)">Open in OpenStreetMap ↗</a></div>';
+    }
+  })();
 }
 
 // ── Shopping fallback data ────────────────────────────────────
@@ -3353,36 +3839,48 @@ const FALLBACK_PRODUCTS = (q) => {
 function renderShopping(container, live){
   const q=currentQuery;
   const qSafe=q.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-  const products=FALLBACK_PRODUCTS(q);
-  const sortOpts=['Relevance','Price: Low to High','Price: High to Low','Best Rated','Most Reviews'];
+  const enc=encodeURIComponent(q);
+
+  // Real retailer search URLs
+  const retailers=[
+    {name:'Amazon',          icon:'📦', color:'#e07b20', url:'https://www.amazon.com/s?k='+enc,              desc:'Millions of products, fast delivery'},
+    {name:'eBay',            icon:'🏷️', color:'#e43137', url:'https://www.ebay.com/sch/i.html?_nkw='+enc,    desc:'New and used, auction and buy-it-now'},
+    {name:'Google Shopping', icon:'🛒', color:'#4285f4', url:'https://www.google.com/search?tbm=shop&q='+enc,desc:'Compare prices across the web'},
+    {name:'Etsy',            icon:'✨', color:'#f16521', url:'https://www.etsy.com/search?q='+enc,            desc:'Handmade, vintage, and unique items'},
+  ];
+
+  // Also fetch web results for price comparisons if available
+  const webResults = live?.results?.filter(r =>
+    /shop|buy|price|store|product|amazon|ebay|etsy|currys|argos|john lewis/i.test(r.url + r.title)
+  ).slice(0, 4) || [];
+
   container.innerHTML=`
-    <div class="res-meta"><span class="res-meta-count">Shopping results for <strong style="color:var(--t0)">${qSafe}</strong></span></div>
-    <div class="shop-filters">
-      ${sortOpts.map((o,i)=>`<button class="filter-chip${i===0?' active':''}" onclick="_shopSort(this,'${o}')">${o}</button>`).join('')}
-      <div class="filter-sep"></div>
-      <button class="filter-chip" onclick="_shopSort(this,'Sale')">🏷 Sale only</button>
-    </div>
-    <div class="shop-grid" id="shop-grid">
-      ${products.map(p=>`
-        <div class="shop-card" onclick="window.open('${p.url}','_blank')">
-          <div class="shop-img">${p.emoji}</div>
-          <div class="shop-body">
-            <div class="shop-name">${p.name}</div>
-            <div>
-              <span class="shop-price">£${p.price}</span>
-              ${p.oldPrice?`<span class="shop-price-old">£${p.oldPrice}</span>`:''}
-            </div>
-            <div class="shop-store">${p.store}</div>
-            <div class="shop-rating">${'★'.repeat(Math.round(p.rating))}${'☆'.repeat(5-Math.round(p.rating))} <span style="color:var(--t3)">(${p.reviews})</span></div>
-            ${p.badge?`<span class="shop-badge ${p.badge}">${p.badge.toUpperCase()}</span>`:''}
+    <div class="res-meta"><span class="res-meta-count">Shopping for <strong style="color:var(--t0)">${qSafe}</strong> · links open real retailer searches</span></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:20px">
+      ${retailers.map(r=>`
+        <a href="${r.url}" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--bg1);border:1px solid var(--line);border-radius:10px;text-decoration:none;transition:border-color .1s;cursor:pointer"
+          onmouseover="this.style.borderColor='var(--g)'" onmouseout="this.style.borderColor='var(--line)'">
+          <span style="font-size:24px;flex-shrink:0">${r.icon}</span>
+          <div style="min-width:0">
+            <div style="font-size:13px;font-weight:600;color:var(--t0);margin-bottom:2px">${r.name}</div>
+            <div style="font-size:11px;color:var(--t2);line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.desc}</div>
           </div>
-        </div>`).join('')}
-    </div>`;
-  window._shopSort = function(btn, key){
-    document.querySelectorAll('.shop-filters .filter-chip').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    showToast({icon:'🛍️',title:'Sorted by '+key,dur:1200});
-  };
+          <span style="margin-left:auto;color:var(--t3);font-size:12px;flex-shrink:0">↗</span>
+        </a>`).join('')}
+    </div>
+    ${webResults.length ? `
+    <div style="font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:10px">From the web</div>
+    <div class="result-list">
+      ${webResults.map(r=>{
+        const fav=(r.url.replace(/^https?:\/\//,'').charAt(0)||'S').toUpperCase();
+        const displayUrl=r.url.replace(/^https?:\/\//,'').split('/')[0];
+        return `<div class="result-item" tabindex="0" data-url="${r.url}" onclick="window.open('${r.url}','_blank')" style="cursor:pointer">
+          <div class="result-url"><div class="result-favicon">${fav}</div>${displayUrl}</div>
+          <div class="result-title">${r.title}</div>
+          <div class="result-snippet">${r.description||''}</div>
+        </div>`;
+      }).join('')}
+    </div>` : ''}`;
 }
 
 // ── Papers fallback data ──────────────────────────────────────
@@ -3420,39 +3918,96 @@ const FALLBACK_PAPERS = (q) => {
 function renderPapers(container, live){
   const q=currentQuery;
   const qSafe=q.replace(/&/g,'&amp;').replace(/</g,'&lt;');
-  const papers=FALLBACK_PAPERS(q);
-  const sourceFilters=[{k:'all',l:'All sources'},{k:'arxiv',l:'arXiv'},{k:'pubmed',l:'PubMed'},{k:'semantic',l:'Semantic Scholar'},{k:'nature',l:'Nature'},{k:'ieee',l:'IEEE'}];
+
   container.innerHTML=`
     <div class="res-meta"><span class="res-meta-count">Academic papers for <strong style="color:var(--t0)">${qSafe}</strong></span></div>
-    <div class="shop-filters">
-      ${sourceFilters.map((f,i)=>`<button class="filter-chip${i===0?' active':''}" onclick="_paperFilter(this,'${f.k}')">${f.l}</button>`).join('')}
-    </div>
-    <div class="papers-list" id="papers-list">
-      ${papers.map(p=>`
-        <div class="paper-card" onclick="window.open('${p.url}','_blank')">
-          <div class="paper-source-row">
-            <span class="paper-source-badge ${p.source}">${p.sourceLabel}</span>
-            <span class="paper-year">${p.year}</span>
-          </div>
-          <div class="paper-title">${p.title}</div>
-          <div class="paper-authors">${p.authors}</div>
-          <div class="paper-abstract">${p.abstract}</div>
-          <div class="paper-meta">
-            <div class="paper-meta-item">Citations <span class="paper-meta-val">${p.citations}</span></div>
-            <div class="paper-meta-item">Pages <span class="paper-meta-val">${p.pages}</span></div>
-            <div class="paper-meta-item" style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:10px;color:var(--t3)">DOI: ${p.doi}</div>
-          </div>
-        </div>`).join('')}
+    <div id="papers-list">
+      <div style="display:flex;align-items:center;gap:10px;padding:20px 0;font-family:'Geist Mono',monospace;font-size:11px;color:var(--t3)">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--g);animation:pulse 1s infinite"></div>
+        Searching Semantic Scholar…
+      </div>
     </div>`;
-  window._paperFilter = function(btn, key){
-    document.querySelectorAll('.shop-filters .filter-chip').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const cards=document.querySelectorAll('.paper-card');
-    cards.forEach((c,i)=>{
-      const src=papers[i]?.source;
-      c.style.display=(key==='all'||src===key)?'':'none';
-    });
-  };
+
+  (async () => {
+    const list = document.getElementById('papers-list');
+    if (!list) return;
+    try {
+      const res = await fetch(
+        'https://api.semanticscholar.org/graph/v1/paper/search?query=' +
+        encodeURIComponent(q) +
+        '&limit=8&fields=title,authors,year,abstract,citationCount,externalIds,openAccessPdf,venue,url',
+        { headers: { 'Accept': 'application/json' } }
+      );
+      if (!res.ok) throw new Error('API error ' + res.status);
+      const data = await res.json();
+      const papers = data.data || [];
+
+      if (!papers.length) {
+        list.innerHTML = `<div style="padding:20px 0;font-size:13px;color:var(--t2)">
+          No papers found for this query.
+          <a href="https://www.semanticscholar.org/search?q=${encodeURIComponent(q)}&sort=Relevance" target="_blank" style="color:var(--g);margin-left:6px">Search Semantic Scholar ↗</a>
+        </div>`;
+        return;
+      }
+
+      const sourceFilters = [{k:'all',l:'All'}];
+      const venues = [...new Set(papers.map(p=>p.venue).filter(Boolean))].slice(0,4);
+      venues.forEach(v => sourceFilters.push({k:v, l:v.slice(0,20)}));
+
+      list.innerHTML = `
+        <div class="shop-filters" style="margin-bottom:16px">
+          ${sourceFilters.map((f,i)=>`<button class="filter-chip${i===0?' active':''}" onclick="_paperFilter2(this,'${f.k.replace(/'/g,'')}')">${f.l}</button>`).join('')}
+          <a href="https://www.semanticscholar.org/search?q=${encodeURIComponent(q)}&sort=Relevance" target="_blank" rel="noopener"
+            style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:9px;color:var(--t3);text-decoration:none;letter-spacing:.08em;align-self:center;white-space:nowrap"
+            onmouseover="this.style.color='var(--g)'" onmouseout="this.style.color='var(--t3)'">
+            Open Semantic Scholar ↗
+          </a>
+        </div>
+        <div id="papers-cards">
+          ${papers.map(p => {
+            const authors = (p.authors||[]).slice(0,3).map(a=>a.name).join(', ') + ((p.authors||[]).length>3?' et al.':'');
+            const doi = p.externalIds?.DOI;
+            const pdfUrl = p.openAccessPdf?.url;
+            const paperUrl = p.url || (doi ? 'https://doi.org/' + doi : 'https://www.semanticscholar.org/');
+            const abstract = (p.abstract||'').slice(0,280) + ((p.abstract||'').length>280?'…':'');
+            const venue = p.venue || '';
+            return `<div class="paper-card" data-venue="${venue.replace(/"/g,'')}" onclick="window.open('${paperUrl}','_blank')">
+              <div class="paper-source-row">
+                ${venue ? `<span class="paper-source-badge semantic">${venue.slice(0,30)}</span>` : ''}
+                <span class="paper-year">${p.year||'—'}</span>
+                ${pdfUrl ? `<a href="${pdfUrl}" target="_blank" onclick="event.stopPropagation()" rel="noopener" style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:9px;color:var(--g);text-decoration:none;border:1px solid rgba(157,219,94,.3);border-radius:3px;padding:2px 6px">PDF ↗</a>` : ''}
+              </div>
+              <div class="paper-title">${p.title||'Untitled'}</div>
+              <div class="paper-authors">${authors||'—'}</div>
+              ${abstract ? `<div class="paper-abstract">${abstract}</div>` : ''}
+              <div class="paper-meta">
+                <div class="paper-meta-item">Citations <span class="paper-meta-val">${(p.citationCount||0).toLocaleString()}</span></div>
+                ${doi ? `<div class="paper-meta-item" style="margin-left:auto;font-family:'Geist Mono',monospace;font-size:10px;color:var(--t3)">DOI: ${doi}</div>` : ''}
+              </div>
+            </div>`;
+          }).join('')}
+        </div>`;
+
+      window._paperFilter2 = function(btn, key) {
+        document.querySelectorAll('.shop-filters .filter-chip').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        document.querySelectorAll('.paper-card').forEach(c => {
+          c.style.display = (key==='all' || c.dataset.venue===key) ? '' : 'none';
+        });
+      };
+
+    } catch(err) {
+      if (list) list.innerHTML = `<div style="padding:20px 0">
+        <div style="font-size:13px;color:var(--t2);margin-bottom:12px">Could not reach Semantic Scholar. Search directly:</div>
+        ${[
+          {name:'Semantic Scholar', url:'https://www.semanticscholar.org/search?q='+encodeURIComponent(q)},
+          {name:'Google Scholar',   url:'https://scholar.google.com/scholar?q='+encodeURIComponent(q)},
+          {name:'arXiv',            url:'https://arxiv.org/search/?searchtype=all&query='+encodeURIComponent(q)},
+          {name:'PubMed',           url:'https://pubmed.ncbi.nlm.nih.gov/?term='+encodeURIComponent(q)},
+        ].map(s=>`<a href="${s.url}" target="_blank" rel="noopener" style="display:inline-block;margin:4px 6px 4px 0;padding:6px 12px;background:var(--bg2);border:1px solid var(--line);border-radius:6px;color:var(--t1);font-size:12px;text-decoration:none">${s.name} ↗</a>`).join('')}
+      </div>`;
+    }
+  })();
 }
 
 // ── SMART SIDEBAR ─────────────────────────────────────────────
@@ -5518,33 +6073,63 @@ function initMinesweeper(area) {
 
 // ── WORDLE
 function initWordle(area) {
-  const WORDS=['CRANE','SLATE','TRACE','AUDIO','RAISE','LIGHT','STORM','PLANT','BLEND','CRISP','FROST','GRIND','PLUMB','SNACK','DRINK','FLAME','GLOBE','SWIFT','PIXEL','GRASP','BOXER','DWARF','QUILL','VIVID','WALTZ','BLINK','FLICK','STOMP','CROWN','GLYPH'];
+  const WORDS=['CRANE','SLATE','TRACE','AUDIO','RAISE','LIGHT','STORM','PLANT','BLEND','CRISP','FROST','GRIND','PLUMB','SNACK','DRINK','FLAME','GLOBE','SWIFT','PIXEL','GRASP','BOXER','DWARF','QUILL','VIVID','WALTZ','BLINK','FLICK','STOMP','CROWN','GLYPH','SPINE','GLARE','TRAMP','FROTH','CLAMP','WHIRL','SMIRK','PLANK','CRAVE','BROIL','FLINT','GRAFT','CRIMP','BLAZE','SWAMP','CHURN','GLOOM','FROWN','STRUT','SCALP'];
   const answer=WORDS[Math.floor(Math.random()*WORDS.length)];
   let guesses=[],current='',gameOver=false,keyStates={};
+  let hardMode=JSON.parse(localStorage.getItem('altura_wordle_hard')||'false');
   const KEYS=[['Q','W','E','R','T','Y','U','I','O','P'],['A','S','D','F','G','H','J','K','L'],['ENTER','Z','X','C','V','B','N','M','DEL']];
-  area.innerHTML='<div class="gword-grid" id="gword-grid">'+Array(6).fill('<div class="gword-row">'+Array(5).fill('<div class="gword-tile"></div>').join('')+'</div>').join('')+'</div><div class="gword-keyboard" id="gword-kb">'+KEYS.map(function(row){return '<div class="gword-kb-row">'+row.map(function(k){return '<button class="gword-key'+(k.length>1?' wide':'')+'" data-key="'+k+'">'+k+'</button>';}).join('')+'</div>';}).join('')+'</div><div class="game-overlay-msg" id="gword-msg" style="display:none"><h2></h2><p>The word was <strong>'+answer+'</strong></p><button class="game-start-btn" onclick="switchGame(\'wordle\')">Play Again</button></div>';
+  function getConstraints(){
+    const mustContain={},mustPosition={};
+    guesses.forEach(g=>{
+      const counts={};
+      g.split('').forEach((ch,ci)=>{
+        if(ch===answer[ci]){mustPosition[ci]=ch;counts[ch]=(counts[ch]||0)+1;}
+        else if(answer.includes(ch)){counts[ch]=(counts[ch]||0)+1;}
+      });
+      Object.entries(counts).forEach(([ch,n])=>{mustContain[ch]=Math.max(mustContain[ch]||0,n);});
+    });
+    return{mustContain,mustPosition};
+  }
+  function validateHard(word){
+    if(!hardMode||!guesses.length)return null;
+    const{mustContain,mustPosition}=getConstraints();
+    for(const[ci,ch]of Object.entries(mustPosition)){if(word[ci]!==ch)return'Pos '+(+ci+1)+' must be '+ch;}
+    for(const[ch,n]of Object.entries(mustContain)){if(word.split('').filter(x=>x===ch).length<n)return'Must use '+ch+(n>1?' (x'+n+')':'');}
+    return null;
+  }
+  function showErrMsg(msg){const el=document.getElementById('gword-err');if(!el)return;el.textContent=msg;clearTimeout(el._t);el._t=setTimeout(()=>el.textContent='',2000);}
+  const hbg=hardMode?'var(--g)':'var(--bg2)',hcol=hardMode?'var(--bg)':'var(--t2)',hbord=hardMode?'transparent':'var(--line)';
+  area.innerHTML='<div style="display:flex;align-items:center;justify-content:space-between;padding:0 4px 10px;width:100%">'
+    +'<div style="font-family:\'Geist Mono\',monospace;font-size:9px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase">Wordle</div>'
+    +'<button id="gword-hard-btn" onclick="window._wHard()" style="background:'+hbg+';color:'+hcol+';border:1px solid '+hbord+';border-radius:5px;padding:4px 12px;font-size:11px;font-weight:600;cursor:pointer;font-family:\'Geist Mono\',monospace;letter-spacing:.06em;text-transform:uppercase">Hard '+(hardMode?'ON':'OFF')+'</button></div>'
+    +'<div class="gword-grid" id="gword-grid">'+Array(6).fill('<div class="gword-row">'+Array(5).fill('<div class="gword-tile"></div>').join('')+'</div>').join('')+'</div>'
+    +'<div class="gword-keyboard" id="gword-kb">'+KEYS.map(row=>'<div class="gword-kb-row">'+row.map(k=>'<button class="gword-key'+(k.length>1?' wide':'')+'" data-key="'+k+'">'+k+'</button>').join('')+'</div>').join('')+'</div>'
+    +'<div id="gword-err" style="font-family:\'Geist Mono\',monospace;font-size:11px;color:var(--amber);min-height:18px;text-align:center;margin-top:4px;"></div>'
+    +'<div class="game-overlay-msg" id="gword-msg" style="display:none"><h2></h2><p>The word was <strong>'+answer+'</strong></p><button class="game-start-btn" onclick="switchGame(\'wordle\')">Play Again</button></div>';
+  window._wHard=function(){
+    if(guesses.length){showErrMsg('Change hard mode before first guess');return;}
+    hardMode=!hardMode;localStorage.setItem('altura_wordle_hard',JSON.stringify(hardMode));
+    const b=document.getElementById('gword-hard-btn');
+    if(b){b.textContent='Hard '+(hardMode?'ON':'OFF');b.style.background=hardMode?'var(--g)':'var(--bg2)';b.style.color=hardMode?'var(--bg)':'var(--t2)';b.style.borderColor=hardMode?'transparent':'var(--line)';}
+    showToast({icon:hardMode?'lock':'',title:hardMode?'Hard mode ON':'Hard mode OFF',sub:hardMode?'Must use all revealed letters':'',dur:2000});
+  };
   function renderGrid(){
     const rows=document.querySelectorAll('#gword-grid .gword-row');
-    guesses.forEach(function(g,ri){g.split('').forEach(function(ch,ci){const t=rows[ri]&&rows[ri].children[ci];if(!t)return;t.textContent=ch;t.className='gword-tile '+(ch===answer[ci]?'correct':answer.indexOf(ch)>=0?'present':'absent');});});
-    if(!gameOver&&rows[guesses.length]){Array.from(rows[guesses.length].children).forEach(function(t,ci){t.textContent=current[ci]||'';t.className='gword-tile'+(current[ci]?' active':'');});}
+    guesses.forEach((g,ri)=>g.split('').forEach((ch,ci)=>{const t=rows[ri]&&rows[ri].children[ci];if(!t)return;t.textContent=ch;t.className='gword-tile '+(ch===answer[ci]?'correct':answer.includes(ch)?'present':'absent');}));
+    if(!gameOver&&rows[guesses.length])Array.from(rows[guesses.length].children).forEach((t,ci)=>{t.textContent=current[ci]||'';t.className='gword-tile'+(current[ci]?' active':'');});
   }
-  function updateKeys(){document.querySelectorAll('#gword-kb .gword-key').forEach(function(btn){const k=btn.dataset.key,state=keyStates[k];btn.className='gword-key'+(k.length>1?' wide':'')+(state?' '+state:'');});}
+  function updateKeys(){document.querySelectorAll('#gword-kb .gword-key').forEach(btn=>{const k=btn.dataset.key,s=keyStates[k];btn.className='gword-key'+(k.length>1?' wide':'')+(s?' '+s:'');});}
   function submit(){
-    if(current.length!==5)return;
+    if(current.length!==5){showErrMsg('Not enough letters');return;}
+    const err=validateHard(current);if(err){showErrMsg(err);return;}
     guesses.push(current);
-    current.split('').forEach(function(ch,ci){const state=ch===answer[ci]?'correct':answer.indexOf(ch)>=0?'present':'absent';const prev=keyStates[ch];if(prev==='correct')return;if(prev==='present'&&state==='absent')return;keyStates[ch]=state;});
-    const won=guesses[guesses.length-1]===answer;
-    current='';renderGrid();updateKeys();
-    if(won){gameOver=true;setScore([100,90,70,50,30,10][guesses.length-1]||10);const m=document.getElementById('gword-msg');m.style.display='flex';m.querySelector('h2').textContent='Got it!';}
+    current.split('').forEach((ch,ci)=>{const s=ch===answer[ci]?'correct':answer.includes(ch)?'present':'absent';const p=keyStates[ch];if(p==='correct')return;if(p==='present'&&s==='absent')return;keyStates[ch]=s;});
+    const won=guesses[guesses.length-1]===answer;current='';renderGrid();updateKeys();
+    if(won){gameOver=true;setScore([100,90,70,50,30,10][guesses.length-1]||10);const m=document.getElementById('gword-msg');m.style.display='flex';m.querySelector('h2').textContent=hardMode?'Hard mode clear!':'Got it!';}
     else if(guesses.length===6){gameOver=true;const m=document.getElementById('gword-msg');m.style.display='flex';m.querySelector('h2').textContent='Out of guesses';}
   }
-  function input(k){
-    if(gameOver)return;
-    if(k==='ENTER')submit();
-    else if(k==='DEL'||k==='BACKSPACE'){current=current.slice(0,-1);renderGrid();}
-    else if(/^[A-Z]$/.test(k)&&current.length<5){current+=k;renderGrid();}
-  }
-  document.querySelectorAll('#gword-kb .gword-key').forEach(function(btn){btn.addEventListener('click',function(){input(btn.dataset.key);});});
+  function input(k){if(gameOver)return;if(k==='ENTER')submit();else if(k==='DEL'||k==='BACKSPACE'){current=current.slice(0,-1);renderGrid();}else if(/^[A-Z]$/.test(k)&&current.length<5){current+=k;renderGrid();}}
+  document.querySelectorAll('#gword-kb .gword-key').forEach(btn=>btn.addEventListener('click',()=>input(btn.dataset.key)));
   _gameKeyHandler=function(e){if(!_gameOpen||_activeGame!=='wordle')return;input(e.key==='Backspace'?'BACKSPACE':e.key.toUpperCase());};
   document.addEventListener('keydown',_gameKeyHandler);
   renderGrid();
@@ -9155,21 +9740,23 @@ document.addEventListener('focusout', function(e) {
 });
 
 // Patch renderPet to start idle watching
-const _origRenderPet = renderPet;
-renderPet = function() {
-  _origRenderPet();
-  if (_petState.enabled) {
-    // Update emoji to reflect mood
-    if (_petFace) {
-      const pl = _getPetLevel();
-      _petFace.textContent = pl.emoji;
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof renderPet !== 'function') return;
+  const _origRenderPet = renderPet;
+  renderPet = function() {
+    _origRenderPet();
+    if (_petState.enabled) {
+      if (_petFace) {
+        const pl = _getPetLevel();
+        _petFace.textContent = pl.emoji;
+      }
+      _startPetIdleWatch();
+    } else {
+      if (_petSitInterval) { clearInterval(_petSitInterval); _petSitInterval = null; }
+      _petSitting = false;
     }
-    _startPetIdleWatch();
-  } else {
-    if (_petSitInterval) { clearInterval(_petSitInterval); _petSitInterval = null; }
-    _petSitting = false;
-  }
-};
+  };
+});
 
 // ══════════════════════════════════════════════════════════════
 // ── DAILY CHALLENGE IMPROVEMENTS ─────────────────────────────
@@ -9217,7 +9804,9 @@ function _getDCStreak() {
 }
 
 // Replace launchDailyChallenge with improved version
-const _origLDC = launchDailyChallenge;
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof launchDailyChallenge !== 'function') return;
+  const _origLDC = launchDailyChallenge;
 launchDailyChallenge = function() {
   const dc = _getDailyChallenge();
   const today = _todayStr();
@@ -9314,7 +9903,9 @@ window._origLDCLaunch = function() {
       }
     };
   }, 350);
-};
+}; // end _origLDCLaunch
+
+}); // end DOMContentLoaded
 
 // ══════════════════════════════════════════════════════════════
 // ── ACCOUNT DELETION ─────────────────────────────────────────
@@ -9879,17 +10470,25 @@ function showToast({ icon='ℹ', title='', sub='', type='', dur=4000 }) {
   setTimeout(dismiss, dur);
 }
 
-// Patch doSearch to play sound
-const _origDoSearch = doSearch;
-doSearch = function() {
-  playSfx('search');
-  _origDoSearch.apply(this, arguments);
-};
-const _origDoQuickSearch = doQuickSearch;
-doQuickSearch = function(q) {
-  playSfx('search');
-  _origDoQuickSearch.apply(this, arguments);
-};
+// Patch doSearch / doQuickSearch / applyGhostMode / renderArcade
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof doSearch === 'function') {
+    const _origDoSearch = doSearch;
+    doSearch = function() { playSfx('search'); _origDoSearch.apply(this, arguments); };
+  }
+  if (typeof doQuickSearch === 'function') {
+    const _origDoQuickSearch = doQuickSearch;
+    doQuickSearch = function(q) { playSfx('search'); _origDoQuickSearch.apply(this, arguments); };
+  }
+  if (typeof applyGhostMode === 'function') {
+    const _origApplyGhostMode = applyGhostMode;
+    applyGhostMode = function() { _origApplyGhostMode.apply(this, arguments); _syncGhostBanner(); };
+  }
+  if (typeof renderArcade === 'function') {
+    const _origRenderArcade = renderArcade;
+    renderArcade = function() { _origRenderArcade.apply(this, arguments); setTimeout(_addDailyToArcade, 50); };
+  }
+});
 
 // ── TOUCH SWIPE HELPER ───────────────────────────────────────────
 function addTouchSwipe(el, onSwipe, onTap) {
@@ -9925,13 +10524,6 @@ function _syncGhostBanner() {
   const indRes = document.getElementById('ghost-indicator-res');
   if (indRes) indRes.classList.toggle('show', !!ghostMode);
 }
-
-// Patch applyGhostMode to also sync the banner
-const _origApplyGhostMode = applyGhostMode;
-applyGhostMode = function() {
-  _origApplyGhostMode.apply(this, arguments);
-  _syncGhostBanner();
-};
 
 // ── DAILY CHALLENGE SYSTEM ───────────────────────────────────────
 const DAILY_GAMES = [
@@ -10042,13 +10634,6 @@ function _addDailyToArcade() {
   `;
   heroCards.insertBefore(card, heroCards.firstChild);
 }
-
-// Patch renderArcade to include daily challenge
-const _origRenderArcade = renderArcade;
-renderArcade = function() {
-  _origRenderArcade.apply(this, arguments);
-  setTimeout(_addDailyToArcade, 50);
-};
 
 // ── INIT ALL NEW FEATURES ────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
@@ -13286,14 +13871,77 @@ function copyProfileCard() {
     if (e.ctrlKey && e.key.toUpperCase() === 'U') { e.preventDefault(); return; }
   });
 
-  // Clear console periodically and warn
+  // Console branding
   var _consoleWarn = function() {
-    console.clear();
-    console.log('%c⚠ Altura Search', 'font-size:24px;font-weight:bold;color:#9ddb5e;');
-    console.log('%cThis browser feature is intended for developers.\nIf someone told you to paste something here, it is likely a scam.', 'font-size:13px;color:#e0b84a;');
+    try { if (typeof console.clear === 'function') console.clear(); } catch(e) {}
+
+    // ASCII wordmark
+    console.log(
+      '%c' + [
+        '',
+        '  ______   __     ________  __    __  _______    ______  ',
+        ' /      \\ |  \\   |        \\|  \\  |  \\|       \\  /      \\ ',
+        '|  $$$$$$\\| $$    \\$$$$$$$$| $$  | $$| $$$$$$$\\|  $$$$$$\\',
+        '| $$__| $$| $$      | $$   | $$  | $$| $$__| $$| $$__| $$',
+        '| $$    $$| $$      | $$   | $$  | $$| $$    $$| $$    $$',
+        '| $$$$$$$$| $$      | $$   | $$  | $$| $$$$$$$\\| $$$$$$$$',
+        '| $$  | $$| $$_____ | $$   | $$__/ $$| $$  | $$| $$  | $$',
+        '| $$  | $$| $$     \\| $$    \\$$    $$| $$  | $$| $$  | $$',
+        ' \\$$   \\$$ \\$$$$$$$$ \\$$     \\$$$$$$  \\$$   \\$$ \\$$   \\$$',
+        '',
+      ].join('\n'),
+      'color:#9ddb5e;font-family:monospace;font-size:11px;line-height:1.4;'
+    );
+
+    console.log('%cALTURA SEARCH%c  ·  Altura Technologies',
+      'color:#9ddb5e;font-weight:bold;font-family:monospace;font-size:13px;',
+      'color:#3e4452;font-family:monospace;font-size:12px;'
+    );
+
+    console.log('%c──────────────────────────────────────────────────────────────',
+      'color:#1e2229;font-family:monospace;font-size:11px;'
+    );
+
+    console.log('%c👋  Hey! You found the console.',
+      'color:#f0ece4;font-size:15px;font-weight:bold;font-family:monospace;'
+    );
+
+    console.log(
+      '%cThis is a browser developer tool — it\'s perfectly fine to be here.\n' +
+      'Just a heads up: if anyone asked you to paste code into this box,\n' +
+      'that\'s a scam. Don\'t do it.',
+      'color:#7a8190;font-size:13px;font-family:monospace;line-height:1.8;'
+    );
+
+    console.log('%c──────────────────────────────────────────────────────────────',
+      'color:#1e2229;font-family:monospace;font-size:11px;'
+    );
+
+    var sessionRef = 'SES-' + Math.random().toString(36).slice(2,6).toUpperCase() + '-' + Date.now().toString(36).toUpperCase().slice(-4);
+    console.log(
+      '%cSession   : %c' + sessionRef + '\n' +
+      '%cTimestamp : %c' + new Date().toISOString() + '\n' +
+      '%cBrowser   : %c' + navigator.userAgent.slice(0, 64) + '…',
+      'color:#3e4452;font-family:monospace;font-size:11px;', 'color:#9ddb5e;font-family:monospace;font-size:11px;',
+      'color:#3e4452;font-family:monospace;font-size:11px;', 'color:#9ddb5e;font-family:monospace;font-size:11px;',
+      'color:#3e4452;font-family:monospace;font-size:11px;', 'color:#9ddb5e;font-family:monospace;font-size:11px;'
+    );
+
+    console.log('%c──────────────────────────────────────────────────────────────',
+      'color:#1e2229;font-family:monospace;font-size:11px;'
+    );
+
+    console.log(
+      '%cCurious about how this works? %cView source or reach out:\n%chello@altura.int',
+      'color:#7a8190;font-size:12px;font-family:monospace;',
+      'color:#f0ece4;font-size:12px;font-family:monospace;',
+      'color:#4a8ccc;font-size:11px;font-family:monospace;'
+    );
+
+    console.log('%c ', 'font-size:4px;');
   };
   _consoleWarn();
-  setInterval(_consoleWarn, 5000);
+  setInterval(_consoleWarn, 15000);
 
   // Detect devtools open via debugger timing
   var _devtoolsOpen = false;
@@ -13475,19 +14123,8 @@ function initDinorun(area) {
   const KONAMI_KEY = 'altura_konami_unlocked';
   let _konamiUnlocked = !!localStorage.getItem(KONAMI_KEY);
 
-  document.addEventListener('keydown', function(e) {
-    if (e.key === KONAMI[konamiIdx] || e.key.toLowerCase() === KONAMI[konamiIdx]) {
-      konamiIdx++;
-      if (konamiIdx === KONAMI.length) {
-        konamiIdx = 0;
-        _konamiUnlocked = true;
-        localStorage.setItem(KONAMI_KEY, '1');
-        activateRetroMode();
-      }
-    } else {
-      konamiIdx = 0;
-    }
-  });
+  // Listener neutralised — superseded by the full easter egg system below.
+  // activateRetroMode() is still available and called by _eggRetro().
 
   // Also trigger via search
   window._checkKonamiSearch = function(q) {
@@ -15920,10 +16557,1791 @@ function _launchPaint() {
 
 })();
 
-// ══════════════════════════════════════════════════════════════
-// ── END NEW FEATURES ──────────────────────────────────────────
-// ══════════════════════════════════════════════════════════════
 
+
+
+
+</script>
+
+
+<script>
+
+
+// ══════════════════════════════════════════════════════════════
+// ── KONAMI CODE EASTER EGGS ───────────────────────────────────
+// ↑ ↑ ↓ ↓ ← → ← → B A
+// ══════════════════════════════════════════════════════════════
+(function() {
+
+const KONAMI = ['ArrowUp','ArrowUp','ArrowDown','ArrowDown',
+                'ArrowLeft','ArrowRight','ArrowLeft','ArrowRight','b','a'];
+let kIdx = 0, kTimer = null;
+const _eggsFound = new Set();
+
+const EGGS = ['matrix','rainbow','glitch','classified','gravity',
+              'retro','radar','bighead','earthquake','starfield'];
+
+function _nextEgg() {
+  const remaining = EGGS.filter(e => !_eggsFound.has(e));
+  if (!remaining.length) return '__all__';
+  return remaining[Math.floor(Math.random() * remaining.length)];
+}
+
+// ── Progress bar ──────────────────────────────────────────────
+function _showProgress(n) {
+  let el = document.getElementById('_kprog');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = '_kprog';
+    el.style.cssText = [
+      'position:fixed','bottom:22px','left:50%','transform:translateX(-50%)',
+      'z-index:2147483647','background:var(--bg1,#0d1018)',
+      'border:1px solid var(--line,rgba(255,255,255,.1))',
+      'border-radius:20px','padding:6px 16px',
+      'font-family:monospace','font-size:13px','color:var(--g,#9ddb5e)',
+      'letter-spacing:3px','pointer-events:none',
+      'transition:opacity .2s','opacity:0'
+    ].join(';');
+    document.body.appendChild(el);
+  }
+  if (n === 0) { el.style.opacity = '0'; return; }
+  el.textContent = '●'.repeat(n) + '○'.repeat(KONAMI.length - n);
+  el.style.opacity = '1';
+  clearTimeout(el._t);
+  el._t = setTimeout(() => { el.style.opacity = '0'; kIdx = 0; }, 2000);
+}
+
+// ── Single capture-phase listener on window ───────────────────
+// Using capture:true and window (not document) so it fires before
+// anything else can preventDefault or stop propagation.
+window.addEventListener('keydown', function(e) {
+  // Skip if actually typing in a field
+  const tag = (e.target || document.activeElement || {}).tagName || '';
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+
+  // Skip pure modifiers
+  if (['Shift','Control','Alt','Meta','CapsLock','Tab',
+       'Dead','Unidentified'].includes(e.key)) return;
+
+  const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+  const expected = KONAMI[kIdx];
+
+  if (key === expected) {
+    kIdx++;
+    clearTimeout(kTimer);
+    kTimer = setTimeout(() => { kIdx = 0; _showProgress(0); }, 2000);
+    _showProgress(kIdx);
+    if (kIdx >= KONAMI.length) {
+      kIdx = 0; clearTimeout(kTimer); _showProgress(0);
+      const egg = _nextEgg();
+      _eggsFound.add(egg);
+      setTimeout(() => _triggerEgg(egg), 50);
+    }
+  } else {
+    if (kIdx > 0) { kIdx = 0; _showProgress(0); }
+  }
+}, true); // <-- capture phase
+
+// ── Trigger dispatcher ────────────────────────────────────────
+function _triggerEgg(egg) {
+  if (egg === '__all__') { _eggAllFound(); return; }
+  const handlers = {
+    matrix: _eggMatrix, rainbow: _eggRainbow, glitch: _eggGlitch,
+    classified: _eggClassified, gravity: _eggGravity, retro: _eggRetro,
+    radar: _eggRadar, bighead: _eggBighead, earthquake: _eggEarthquake,
+    starfield: _eggStarfield,
+  };
+  (handlers[egg] || _eggMatrix)();
+}
+
+// ── Shared helpers ────────────────────────────────────────────
+function _overlay(id, z) {
+  const old = document.getElementById(id); if (old) old.remove();
+  const el = document.createElement('div');
+  el.id = id;
+  el.style.cssText = `position:fixed;inset:0;z-index:${z||99990};pointer-events:none;`;
+  document.body.appendChild(el);
+  return el;
+}
+function _removeOverlay(id) { const el = document.getElementById(id); if (el) el.remove(); }
+
+function _eggToast(title, sub, icon) {
+  showToast({ icon: icon||'🥚', title, sub, dur: 4000 });
+}
+
+// ── EGG 1: MATRIX RAIN ───────────────────────────────────────
+function _eggMatrix() {
+  _eggToast('Matrix rain', 'You are in the construct.', '🟩');
+  const ov = _overlay('_egg-matrix', 99991);
+  ov.style.cssText += 'pointer-events:auto;background:rgba(5,6,10,.9);cursor:pointer;';
+  const canvas = document.createElement('canvas');
+  canvas.style.cssText = 'position:absolute;inset:0;width:100%;height:100%;';
+  ov.appendChild(canvas);
+  const hint = document.createElement('div');
+  hint.style.cssText = 'position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-family:"Geist Mono",monospace;font-size:11px;color:rgba(157,219,94,.5);letter-spacing:.12em;';
+  hint.textContent = 'CLICK OR ESC TO EXIT';
+  ov.appendChild(hint);
+  const W = canvas.width = window.innerWidth, H = canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  const cols = Math.floor(W / 16), drops = Array(cols).fill(0).map(() => Math.random() * H / 20 | 0);
+  const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF';
+  let raf;
+  function draw() {
+    ctx.fillStyle = 'rgba(5,6,10,.08)'; ctx.fillRect(0,0,W,H);
+    ctx.font = '14px monospace';
+    drops.forEach((y,i) => {
+      const ch = chars[Math.random()*chars.length|0];
+      ctx.fillStyle = Math.random()>.96 ? '#fff' : `rgba(157,219,94,${.4+Math.random()*.6})`;
+      ctx.fillText(ch, i*16, y*20);
+      if (y*20 > H && Math.random()>.975) drops[i]=0; else drops[i]++;
+    });
+    raf = requestAnimationFrame(draw);
+  }
+  draw();
+  const close = () => { cancelAnimationFrame(raf); _removeOverlay('_egg-matrix'); };
+  ov.addEventListener('click', close);
+  window.addEventListener('keydown', function _k(e) { if(e.key==='Escape'){close();window.removeEventListener('keydown',_k,true);} }, true);
+}
+
+// ── EGG 2: RAINBOW MODE ──────────────────────────────────────
+function _eggRainbow() {
+  const already = document.getElementById('_rainbow-style');
+  if (already) {
+    already.remove(); document.documentElement.style.animation = '';
+    showToast({ icon:'🌈', title:'Rainbow mode OFF', dur:1500 }); return;
+  }
+  const s = document.createElement('style'); s.id = '_rainbow-style';
+  s.textContent = `html { animation: _rbRoot 4s linear infinite !important; }
+    @keyframes _rbRoot { 0%{filter:hue-rotate(0deg)} 100%{filter:hue-rotate(360deg)} }`;
+  document.head.appendChild(s);
+  showToast({ icon:'🌈', title:'Rainbow mode ON', sub:'Konami again to turn off', dur:3000 });
+}
+
+// ── EGG 3: GLITCH STORM ──────────────────────────────────────
+function _eggGlitch() {
+  _eggToast('Signal corrupted', 'Recovering…', '⚡');
+  if (!document.getElementById('_glitch-style')) {
+    const s = document.createElement('style'); s.id = '_glitch-style';
+    s.textContent = `
+      @keyframes _gk { 0%{clip-path:inset(40% 0 50% 0)} 33%{clip-path:inset(10% 0 85% 0)} 66%{clip-path:inset(60% 0 20% 0)} 100%{clip-path:inset(80% 0 5% 0)} }
+      ._gb::before{content:'';position:fixed;inset:0;background:rgba(74,140,204,.07);animation:_gk .18s steps(1) infinite;pointer-events:none;z-index:99992;}
+      ._gb::after{content:'';position:fixed;inset:0;background:rgba(204,74,74,.07);animation:_gk .22s steps(1) reverse infinite;pointer-events:none;z-index:99992;}
+      @keyframes _gs{0%{transform:translate(0)}25%{transform:translate(-3px,2px)}50%{transform:translate(3px,-2px)}75%{transform:translate(-2px,3px)}100%{transform:translate(2px,-1px)}}
+      ._gb *{animation:_gs .08s ease-in-out infinite alternate;}`;
+    document.head.appendChild(s);
+  }
+  document.body.classList.add('_gb');
+  setTimeout(() => {
+    document.body.classList.remove('_gb');
+    _removeOverlay('_egg-glitch');
+    showToast({ icon:'✓', title:'Signal restored', sub:'Altura is back online', dur:2000 });
+  }, 3000);
+}
+
+// ── EGG 4: CLASSIFIED DOCUMENT ───────────────────────────────
+function _eggClassified() {
+  const docs = [
+    { ref:'ATI-DOC-0042-C', date:'11 Feb 2014', clearance:'RESTRICTED',
+      title:'INTERNAL MEMORANDUM — ORACLE STANDARD LIMITATIONS',
+      body:`The Oracle Standard civilian edition (AT-CIV-2015) has been deliberately rate-limited to prevent Pattern-Class query resolution above Tier 3.\n\nField agents seeking Tier 4 or Tier 5 responses must submit form ATI-REQ-7 to their regional handler no fewer than 72 hours in advance.\n\nNote: The Oracle Standard AI is aware of its own limitations and has been instructed not to discuss them.`,
+      stamp:'DO NOT DISTRIBUTE' },
+    { ref:'ATI-DOC-0099-S', date:'28 Aug 2013', clearance:'CONFIDENTIAL',
+      title:'PROJECT ALTURA — ORIGINAL CHARTER',
+      body:`Altura Technologies was not founded as a search company.\n\nThe original mandate, approved by the Halonesia Science Directorate in 2009, was to build a unified intelligence layer for the SLC metropolitan region — a substrate through which all public information would eventually flow.\n\nSearch was a cover story. It remains one.`,
+      stamp:'ARCHIVE COPY' },
+    { ref:'ATI-DOC-0017-TS', date:'03 Mar 2015', clearance:'TOP SECRET',
+      title:'INCIDENT REPORT — DISTRICT III RELAY ANOMALY',
+      body:`At 02:14 UTC on 03 March 2015, the District III relay exchange began transmitting a 7-second repeating audio pattern on frequency 89.3 MHz.\n\nThe pattern has not been decoded. Attempts to shut down the relay were unsuccessful. Residents within 400 metres have reported an unusual sense of calm.\n\nCase status: open. Lead investigator: redacted.`,
+      stamp:'EYES ONLY' },
+  ];
+  const doc = docs[_eggsFound.size % docs.length];
+  _showModal(`<div style="font-family:'Geist Mono',monospace;padding:0">
+    <div style="background:var(--red,#cc4a4a);color:#fff;padding:10px 20px;display:flex;align-items:center;justify-content:space-between;">
+      <span style="font-size:10px;letter-spacing:.2em;font-weight:700">${doc.clearance}</span>
+      <span style="font-size:10px">${doc.ref}</span>
+    </div>
+    <div style="padding:20px 24px;border-bottom:1px solid var(--line)">
+      <div style="font-size:9px;letter-spacing:.18em;color:var(--t3);margin-bottom:6px">ALTURA TECHNOLOGIES · ${doc.date}</div>
+      <div style="font-size:15px;font-weight:700;color:var(--t0);line-height:1.4">${doc.title}</div>
+    </div>
+    <div style="padding:20px 24px;white-space:pre-wrap;font-size:12px;color:var(--t1);line-height:1.9;border-bottom:1px solid var(--line)">${doc.body}</div>
+    <div style="padding:12px 24px;display:flex;align-items:center;justify-content:space-between">
+      <span style="font-size:9px;letter-spacing:.14em;color:var(--t3)">${doc.stamp}</span>
+      <button class="am-btn primary" onclick="closeModal()">Acknowledge &amp; close</button>
+    </div></div>`);
+}
+
+// ── EGG 5: GRAVITY FLIP ──────────────────────────────────────
+function _eggGravity() {
+  _eggToast('Gravity anomaly detected', 'SLC-01 engineers have been notified.', '🌍');
+  const el = document.getElementById('res-main') || document.getElementById('home-page') || document.body;
+  el.style.transition = 'transform .6s cubic-bezier(.68,-.55,.27,1.55)';
+  el.style.transform = 'rotate(180deg)';
+  setTimeout(() => {
+    el.style.transform = 'rotate(360deg)';
+    setTimeout(() => { el.style.transform = ''; el.style.transition = '';
+      showToast({ icon:'✓', title:'Gravity restored', dur:2000 }); }, 700);
+  }, 2000);
+}
+
+// ── EGG 6: RETRO CRT MODE ────────────────────────────────────
+function _eggRetro() {
+  const already = document.getElementById('_crt-style');
+  if (already) {
+    already.remove(); _removeOverlay('_crt-vig');
+    showToast({ icon:'📺', title:'CRT mode OFF', dur:1500 }); return;
+  }
+  if (typeof activateRetroMode === 'function') { activateRetroMode(); }
+  else { _eggToast('CRT mode', 'Phosphor green engaged.', '📺'); }
+  const s = document.createElement('style'); s.id = '_crt-style'; s.textContent = '/* crt */';
+  document.head.appendChild(s);
+  const vig = _overlay('_crt-vig', 99979);
+  vig.style.background = 'radial-gradient(ellipse at center, transparent 60%, rgba(0,0,0,.55) 100%)';
+}
+
+// ── EGG 7: RADAR SCAN ────────────────────────────────────────
+function _eggRadar() {
+  _eggToast('Scanning region…', 'Altura network nodes located.', '📡');
+  const ov = _overlay('_egg-radar', 99993);
+  ov.style.cssText += 'display:flex;align-items:center;justify-content:center;background:rgba(5,6,10,.93);pointer-events:auto;cursor:pointer;';
+  const SIZE = Math.min(window.innerWidth, window.innerHeight) * 0.72;
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = SIZE;
+  canvas.style.cssText = `width:${SIZE}px;height:${SIZE}px;`;
+  ov.appendChild(canvas);
+  const hint = document.createElement('div');
+  hint.style.cssText = 'position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-family:"Geist Mono",monospace;font-size:10px;color:rgba(157,219,94,.4);letter-spacing:.1em;';
+  hint.textContent = 'ALTURA NETWORK RADAR · CLICK TO CLOSE';
+  ov.appendChild(hint);
+  const ctx = canvas.getContext('2d');
+  const cx = SIZE/2, cy = SIZE/2, R = SIZE/2 - 10;
+  let angle = 0, raf;
+  const blips = Array.from({length:12}, () => ({
+    r:(0.2+Math.random()*0.7)*R, a:Math.random()*Math.PI*2, opacity:0,
+    label:['SLC-01','SLC-02','NOC-III','FBR-7','RELAY','NODE','TOWER','HUB','GATE','MESH','CORE','EDGE'][Math.floor(Math.random()*12)]
+  }));
+  function draw() {
+    ctx.clearRect(0,0,SIZE,SIZE);
+    [.25,.5,.75,1].forEach(f => { ctx.beginPath(); ctx.arc(cx,cy,R*f,0,Math.PI*2); ctx.strokeStyle='rgba(157,219,94,.12)'; ctx.lineWidth=1; ctx.stroke(); });
+    ctx.strokeStyle='rgba(157,219,94,.1)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(cx-R,cy); ctx.lineTo(cx+R,cy); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(cx,cy-R); ctx.lineTo(cx,cy+R); ctx.stroke();
+    ctx.save(); ctx.translate(cx,cy); ctx.rotate(angle);
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.arc(0,0,R,-0.6,0.05); ctx.closePath();
+    ctx.fillStyle='rgba(157,219,94,.15)'; ctx.fill();
+    ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(R,0);
+    ctx.strokeStyle='rgba(157,219,94,.8)'; ctx.lineWidth=1.5; ctx.stroke();
+    ctx.restore();
+    blips.forEach(b => {
+      const sa = ((angle%(Math.PI*2))+Math.PI*2)%(Math.PI*2);
+      const ba = (b.a+Math.PI*2)%(Math.PI*2);
+      if (((sa-ba)+Math.PI*2)%(Math.PI*2) < 0.15) b.opacity=1;
+      else b.opacity=Math.max(0,b.opacity-.007);
+      if (b.opacity>.05) {
+        const bx=cx+Math.cos(b.a)*b.r, by=cy+Math.sin(b.a)*b.r;
+        ctx.beginPath(); ctx.arc(bx,by,3,0,Math.PI*2);
+        ctx.fillStyle=`rgba(157,219,94,${b.opacity})`; ctx.fill();
+        ctx.font='9px monospace'; ctx.fillStyle=`rgba(157,219,94,${b.opacity*.7})`;
+        ctx.fillText(b.label,bx+6,by-4);
+      }
+    });
+    ctx.beginPath(); ctx.arc(cx,cy,3,0,Math.PI*2); ctx.fillStyle='rgba(157,219,94,.9)'; ctx.fill();
+    angle+=0.025; raf=requestAnimationFrame(draw);
+  }
+  draw();
+  const close = () => { cancelAnimationFrame(raf); _removeOverlay('_egg-radar'); };
+  ov.addEventListener('click', close);
+  window.addEventListener('keydown', function _r(e){if(e.key==='Escape'){close();window.removeEventListener('keydown',_r,true);}},true);
+}
+
+// ── EGG 8: BIG HEAD MODE ─────────────────────────────────────
+function _eggBighead() {
+  const already = document.getElementById('_bighead-style');
+  if (already) { already.remove(); showToast({icon:'🗿',title:'Big Head mode OFF',dur:1500}); return; }
+  _eggToast('Big Head mode', 'All icons have been promoted.', '🗿');
+  const s = document.createElement('style'); s.id = '_bighead-style';
+  s.textContent = `
+    .home-logo,.res-logo{transform:scale(2.4)!important;display:inline-block!important;}
+    .hw .hw-value{font-size:48px!important;}
+    .arcade-game-icon{font-size:52px!important;}
+    .res-icon-btn,.home-icon-btn{transform:scale(1.6)!important;display:inline-block!important;}`;
+  document.head.appendChild(s);
+  showToast({icon:'🗿',title:'Big Head mode ON',sub:'Konami again to disable',dur:3000});
+}
+
+// ── EGG 9: EARTHQUAKE ────────────────────────────────────────
+function _eggEarthquake() {
+  _eggToast('Seismic event', 'Magnitude 2.1 · SLC epicentre', '🌋');
+  const s = document.createElement('style'); s.id='_quake-style';
+  s.textContent=`@keyframes _q{0%{transform:translate(0,0)}10%{transform:translate(-4px,3px)}20%{transform:translate(5px,-2px)}30%{transform:translate(-3px,5px)}40%{transform:translate(4px,-4px)}50%{transform:translate(-5px,2px)}60%{transform:translate(3px,-3px)}70%{transform:translate(-4px,4px)}80%{transform:translate(5px,-1px)}90%{transform:translate(-2px,3px)}100%{transform:translate(0,0)}}
+  body{animation:_q .08s linear infinite!important;}`;
+  document.head.appendChild(s);
+  setTimeout(()=>{s.remove();document.body.style.animation='';
+    showToast({icon:'✓',title:'Tremors subsided',sub:'Structural integrity maintained.',dur:2000});},2500);
+}
+
+// ── EGG 10: STARFIELD ────────────────────────────────────────
+function _eggStarfield() {
+  _eggToast('Entering hyperspace','Hold on.','🚀');
+  const ov = _overlay('_egg-stars',99994);
+  ov.style.cssText+='background:#000;pointer-events:auto;cursor:pointer;overflow:hidden;';
+  const canvas=document.createElement('canvas');
+  canvas.style.cssText='position:absolute;inset:0;width:100%;height:100%;';
+  ov.appendChild(canvas);
+  const hint=document.createElement('div');
+  hint.style.cssText='position:absolute;bottom:24px;left:50%;transform:translateX(-50%);font-family:"Geist Mono",monospace;font-size:11px;color:rgba(255,255,255,.25);letter-spacing:.1em;';
+  hint.textContent='CLICK OR ESC TO EXIT HYPERSPACE';
+  ov.appendChild(hint);
+  const W=canvas.width=window.innerWidth,H=canvas.height=window.innerHeight;
+  const ctx=canvas.getContext('2d');
+  const stars=Array.from({length:300},()=>({x:(Math.random()-.5)*W,y:(Math.random()-.5)*H,z:Math.random()*W,pz:0}));
+  let speed=2,raf;
+  function draw(){
+    ctx.fillStyle='rgba(0,0,0,.2)';ctx.fillRect(0,0,W,H);
+    speed=Math.min(speed+.12,22);
+    stars.forEach(s=>{
+      s.pz=s.z;s.z-=speed;
+      if(s.z<=0){s.x=(Math.random()-.5)*W;s.y=(Math.random()-.5)*H;s.z=W;s.pz=W;}
+      const sx=(s.x/s.z)*W/2+W/2,sy=(s.y/s.z)*H/2+H/2;
+      const px=(s.x/s.pz)*W/2+W/2,py=(s.y/s.pz)*H/2+H/2;
+      const r=Math.max(.5,(1-s.z/W)*2.5),br=Math.floor((1-s.z/W)*255);
+      ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(sx,sy);
+      ctx.strokeStyle=`rgb(${br},${br},${br})`;ctx.lineWidth=r;ctx.stroke();
+    });
+    raf=requestAnimationFrame(draw);
+  }
+  draw();
+  const close=()=>{cancelAnimationFrame(raf);_removeOverlay('_egg-stars');showToast({icon:'🌍',title:'Back in SLC',dur:2000});};
+  ov.addEventListener('click',close);
+  window.addEventListener('keydown',function _sf(e){if(e.key==='Escape'){close();window.removeEventListener('keydown',_sf,true);}},true);
+}
+
+// ── ALL FOUND ─────────────────────────────────────────────────
+function _eggAllFound() {
+  _showModal(`<div class="am-header"><div class="am-icon">🏆</div>
+    <div class="am-header-text"><div class="am-title">All Konami eggs found</div>
+    <div class="am-sub">You've triggered all 10 Konami code easter eggs.</div></div></div>
+    <div class="am-body" style="text-align:center;padding:24px">
+      <div style="font-size:36px;margin-bottom:12px">🥚🥚🥚🥚🥚<br>🥚🥚🥚🥚🥚</div>
+      <div style="font-size:13px;color:var(--t1);line-height:1.8;max-width:300px;margin:0 auto">
+        All 10 Konami code easter eggs unlocked. There are many more secrets hidden elsewhere in Altura — keep exploring.<br><br>
+        <span style="font-family:'Geist Mono',monospace;font-size:11px;color:var(--t3)">Ref: ATI-EGG-KONAMI10-${new Date().getFullYear()}</span>
+      </div>
+    </div>
+    <div class="am-footer"><button class="am-btn primary" onclick="closeModal();_eggsReset()">Claim reward</button></div>`);
+}
+
+window._eggsReset = function() { _eggsFound.clear(); };
+
+})(); // end Konami IIFE
+</script>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// PAC-MAN
+// ════════════════════════════════════════════════════════════════
+window.addEventListener('load', function() {
+  // Register in arcade game list
+  if(typeof ARCADE_GAMES !== 'undefined'){
+    if(!ARCADE_GAMES.find(g=>g.id==='pacman')){
+      ARCADE_GAMES.push({id:'pacman',label:'Pac-Man',icon:'👾',desc:'Eat all the dots. Avoid the ghosts.',keys:'Arrow keys / WASD'});
+    }
+  }
+  // Hook into launchArcadeGame
+  const _origLAG = typeof launchArcadeGame === 'function' ? launchArcadeGame : null;
+  if(_origLAG){
+    launchArcadeGame = function(gameId){
+      if(gameId==='pacman'){ initPacman(document.getElementById('arcade-game-area')||document.createElement('div')); return; }
+      _origLAG(gameId);
+    };
+  }
+});
+
+function initPacman(area) {
+  const CELL=20, COLS=19, ROWS=21;
+  // 0=empty,1=wall,2=dot,3=power,4=empty-eaten
+  const MAP_TEMPLATE=[
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+    [1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,1],
+    [1,3,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,3,1],
+    [1,2,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,2,1],
+    [1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,1],
+    [1,2,1,1,2,1,2,1,1,1,1,1,2,1,2,1,1,2,1],
+    [1,2,2,2,2,1,2,2,2,1,2,2,2,1,2,2,2,2,1],
+    [1,1,1,1,2,1,1,1,0,0,0,1,1,1,2,1,1,1,1],
+    [1,1,1,1,2,1,0,0,0,0,0,0,0,1,2,1,1,1,1],
+    [1,1,1,1,2,1,0,1,1,0,1,1,0,1,2,1,1,1,1],
+    [0,0,0,0,2,0,0,1,0,0,0,1,0,0,2,0,0,0,0],
+    [1,1,1,1,2,1,0,1,1,1,1,1,0,1,2,1,1,1,1],
+    [1,1,1,1,2,1,0,0,0,0,0,0,0,1,2,1,1,1,1],
+    [1,1,1,1,2,1,0,1,1,1,1,1,0,1,2,1,1,1,1],
+    [1,2,2,2,2,2,2,2,2,1,2,2,2,2,2,2,2,2,1],
+    [1,2,1,1,2,1,1,1,2,1,2,1,1,1,2,1,1,2,1],
+    [1,3,2,1,2,2,2,2,2,0,2,2,2,2,2,1,2,3,1],
+    [1,1,2,1,2,1,2,1,1,1,1,1,2,1,2,1,2,1,1],
+    [1,2,2,2,2,1,2,2,2,1,2,2,2,1,2,2,2,2,1],
+    [1,2,1,1,1,1,1,1,2,1,2,1,1,1,1,1,1,2,1],
+    [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
+  ];
+
+  area.innerHTML='';
+  const wrap=document.createElement('div');
+  wrap.style.cssText='display:flex;flex-direction:column;align-items:center;gap:8px;padding:8px;';
+  area.appendChild(wrap);
+
+  const scoreRow=document.createElement('div');
+  scoreRow.style.cssText='display:flex;gap:20px;font-family:"Geist Mono",monospace;font-size:11px;color:var(--t2);letter-spacing:.08em;width:'+(COLS*CELL)+'px;justify-content:space-between;';
+  scoreRow.innerHTML='<span id="pm-score">SCORE: 0</span><span id="pm-lives">LIVES: 3</span><span id="pm-level">LEVEL 1</span>';
+  wrap.appendChild(scoreRow);
+
+  const canvas=document.createElement('canvas');
+  canvas.width=COLS*CELL; canvas.height=ROWS*CELL;
+  canvas.style.cssText='display:block;background:#000;border-radius:4px;image-rendering:pixelated;';
+  wrap.appendChild(canvas);
+  const ctx=canvas.getContext('2d');
+
+  const hint=document.createElement('div');
+  hint.style.cssText='font-family:"Geist Mono",monospace;font-size:9px;color:var(--t3);letter-spacing:.1em;';
+  hint.textContent='ARROW KEYS OR WASD TO MOVE';
+  wrap.appendChild(hint);
+
+  let map,pac,ghosts,score,lives,level,totalDots,dotsEaten,raf,running,powerTimer,gameState;
+
+  function resetLevel(){
+    map=MAP_TEMPLATE.map(r=>[...r]);
+    totalDots=0; dotsEaten=0;
+    map.forEach(r=>r.forEach(c=>{if(c===2||c===3)totalDots++;}));
+    pac={x:9,y:16,dx:0,dy:0,nextDx:0,nextDy:0,mouth:0,mouthDir:1,powered:false};
+    ghosts=[
+      {x:8,y:9,dx:1,dy:0,color:'#cc4a4a',scared:false,home:true,tx:8,ty:9},
+      {x:9,y:9,dx:0,dy:1,color:'#e0b84a',scared:false,home:true,tx:9,ty:9},
+      {x:10,y:9,dx:-1,dy:0,color:'#4ac8cc',scared:false,home:true,tx:10,ty:9},
+      {x:9,y:10,dx:0,dy:-1,color:'#e070e0',scared:false,home:true,tx:9,ty:10},
+    ];
+    powerTimer=0; gameState='playing';
+  }
+
+  function init(){
+    score=0; lives=3; level=1;
+    resetLevel();
+    running=true;
+    document.getElementById('pm-score').textContent='SCORE: 0';
+    document.getElementById('pm-lives').textContent='LIVES: 3';
+    document.getElementById('pm-level').textContent='LEVEL 1';
+  }
+
+  function isWall(x,y){return !map[y]||map[y][x]===1;}
+
+  function movePac(){
+    // Try queued direction first
+    const nx=pac.x+pac.nextDx, ny=pac.y+pac.nextDy;
+    if(!isWall(nx,ny)){pac.dx=pac.nextDx;pac.dy=pac.nextDy;}
+    const mx=(pac.x+pac.dx+COLS)%COLS, my=(pac.y+pac.dy+ROWS)%ROWS;
+    if(!isWall(mx,my)){pac.x=mx;pac.y=my;}
+    // Eat
+    const cell=map[pac.y]?.[pac.x];
+    if(cell===2){map[pac.y][pac.x]=4;score+=10;dotsEaten++;document.getElementById('pm-score').textContent='SCORE: '+score;}
+    if(cell===3){map[pac.y][pac.x]=4;score+=50;dotsEaten++;powerTimer=200;pac.powered=true;ghosts.forEach(g=>g.scared=true);document.getElementById('pm-score').textContent='SCORE: '+score;}
+    if(dotsEaten>=totalDots){gameState='levelcomplete';}
+    // Animate mouth
+    pac.mouth+=pac.mouthDir*0.18;
+    if(pac.mouth>0.3||pac.mouth<0){pac.mouthDir*=-1;}
+  }
+
+  function moveGhosts(){
+    ghosts.forEach(g=>{
+      if(g.home){
+        // Leave home after delay
+        if(Math.random()<0.01){g.home=false;g.x=9;g.y=7;}
+        return;
+      }
+      const dirs=[[1,0],[-1,0],[0,1],[0,-1]];
+      const valid=dirs.filter(([dx,dy])=>{
+        const nx=(g.x+dx+COLS)%COLS,ny=(g.y+dy+ROWS)%ROWS;
+        return !isWall(nx,ny)&&!(dx===-g.dx&&dy===-g.dy);
+      });
+      if(!valid.length)return;
+      let chosen;
+      if(g.scared){
+        // Random when scared
+        chosen=valid[Math.floor(Math.random()*valid.length)];
+      } else {
+        // Chase pac-man
+        chosen=valid.reduce((best,d)=>{
+          const nx=(g.x+d[0]+COLS)%COLS,ny=(g.y+d[1]+ROWS)%ROWS;
+          const dist=Math.abs(nx-pac.x)+Math.abs(ny-pac.y);
+          const bd=Math.abs((g.x+best[0]+COLS)%COLS-pac.x)+Math.abs((g.y+best[1]+ROWS)%ROWS-pac.y);
+          return dist<bd?d:best;
+        });
+      }
+      [g.dx,g.dy]=chosen;
+      g.x=(g.x+g.dx+COLS)%COLS;
+      g.y=(g.y+g.dy+ROWS)%ROWS;
+    });
+  }
+
+  function checkCollision(){
+    ghosts.forEach(g=>{
+      if(Math.abs(g.x-pac.x)<=0&&Math.abs(g.y-pac.y)<=0){
+        if(g.scared){g.scared=false;g.home=true;g.x=9;g.y=9;score+=200;document.getElementById('pm-score').textContent='SCORE: '+score;}
+        else if(gameState==='playing'){lives--;document.getElementById('pm-lives').textContent='LIVES: '+lives;if(lives<=0){gameState='gameover';}else{pac.x=9;pac.y=16;pac.dx=0;pac.dy=0;ghosts.forEach((gh,i)=>{gh.home=true;gh.x=[8,9,10,9][i];gh.y=[9,9,9,10][i];gh.scared=false;});}}
+      }
+    });
+  }
+
+  function draw(){
+    ctx.fillStyle='#000';ctx.fillRect(0,0,canvas.width,canvas.height);
+    // Map
+    map.forEach((row,y)=>row.forEach((cell,x)=>{
+      const px=x*CELL,py=y*CELL;
+      if(cell===1){ctx.fillStyle='#1a2a6c';ctx.fillRect(px,py,CELL,CELL);ctx.strokeStyle='#4a8ccc22';ctx.strokeRect(px+1,py+1,CELL-2,CELL-2);}
+      else if(cell===2){ctx.fillStyle='var(--g,#9ddb5e)';ctx.beginPath();ctx.arc(px+CELL/2,py+CELL/2,2,0,Math.PI*2);ctx.fill();}
+      else if(cell===3){ctx.fillStyle='var(--g,#9ddb5e)';ctx.beginPath();ctx.arc(px+CELL/2,py+CELL/2,5,0,Math.PI*2);ctx.fill();}
+    }));
+    // Pac-Man
+    const px=pac.x*CELL+CELL/2, py=pac.y*CELL+CELL/2;
+    const angle=Math.atan2(pac.dy,pac.dx)||0;
+    ctx.fillStyle='#e0b84a';
+    ctx.beginPath();
+    ctx.moveTo(px,py);
+    ctx.arc(px,py,CELL/2-1,angle+pac.mouth,angle+Math.PI*2-pac.mouth);
+    ctx.closePath();ctx.fill();
+    // Ghosts
+    ghosts.forEach(g=>{
+      if(g.home)return;
+      const gx=g.x*CELL,gy=g.y*CELL;
+      ctx.fillStyle=g.scared?(powerTimer<60?Math.floor(powerTimer/8)%2===0?'#4a8ccc':'#fff':'#4a8ccc'):g.color;
+      ctx.beginPath();
+      ctx.arc(gx+CELL/2,gy+CELL/2-1,CELL/2-1,Math.PI,0);
+      ctx.lineTo(gx+CELL-1,gy+CELL);
+      const waves=3;for(let w=0;w<waves;w++){const wx=gx+CELL-1-(w*(CELL/(waves)));ctx.quadraticCurveTo(wx-(CELL/(waves*2)),gy+CELL-4,wx-(CELL/waves),gy+CELL);}
+      ctx.lineTo(gx+1,gy+CELL);ctx.closePath();ctx.fill();
+      // Eyes
+      if(!g.scared){
+        ctx.fillStyle='#fff';ctx.beginPath();ctx.arc(gx+CELL/2-3,gy+CELL/2-2,3,0,Math.PI*2);ctx.fill();
+        ctx.beginPath();ctx.arc(gx+CELL/2+3,gy+CELL/2-2,3,0,Math.PI*2);ctx.fill();
+        ctx.fillStyle='#00f';ctx.beginPath();ctx.arc(gx+CELL/2-2,gy+CELL/2-2,1.5,0,Math.PI*2);ctx.fill();
+        ctx.beginPath();ctx.arc(gx+CELL/2+4,gy+CELL/2-2,1.5,0,Math.PI*2);ctx.fill();
+      }
+    });
+    // Overlay messages
+    if(gameState==='gameover'){
+      ctx.fillStyle='rgba(0,0,0,.7)';ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle='#cc4a4a';ctx.font='bold 22px "Geist Mono",monospace';ctx.textAlign='center';ctx.fillText('GAME OVER',canvas.width/2,canvas.height/2-10);
+      ctx.fillStyle='var(--g,#9ddb5e)';ctx.font='13px "Geist Mono",monospace';ctx.fillText('Score: '+score,canvas.width/2,canvas.height/2+14);
+      ctx.fillStyle='rgba(255,255,255,.5)';ctx.font='11px "Geist Mono",monospace';ctx.fillText('Press SPACE to restart',canvas.width/2,canvas.height/2+34);
+      ctx.textAlign='left';
+    } else if(gameState==='levelcomplete'){
+      ctx.fillStyle='rgba(0,0,0,.7)';ctx.fillRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle='var(--g,#9ddb5e)';ctx.font='bold 18px "Geist Mono",monospace';ctx.textAlign='center';ctx.fillText('LEVEL COMPLETE!',canvas.width/2,canvas.height/2);
+      ctx.font='11px "Geist Mono",monospace';ctx.fillStyle='rgba(255,255,255,.5)';ctx.fillText('Press SPACE to continue',canvas.width/2,canvas.height/2+22);
+      ctx.textAlign='left';
+    }
+  }
+
+  let frame=0;
+  function loop(){
+    raf=requestAnimationFrame(loop);
+    frame++;
+    if(gameState==='playing'){
+      if(frame%8===0){movePac();moveGhosts();checkCollision();}
+      if(powerTimer>0){powerTimer--;if(powerTimer===0){pac.powered=false;ghosts.forEach(g=>g.scared=false);}}
+    }
+    draw();
+  }
+
+  const keys={};
+  const _pmKey=function(e){
+    if(['ArrowUp','ArrowDown','ArrowLeft','ArrowRight',' '].includes(e.key))e.preventDefault();
+    if(e.type==='keydown'){
+      keys[e.key]=true;
+      const map2={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],w:[0,-1],s:[0,1],a:[-1,0],d:[1,0]};
+      const d=map2[e.key];if(d){pac.nextDx=d[0];pac.nextDy=d[1];}
+      if(e.key===' '){
+        if(gameState==='gameover'){init();}
+        else if(gameState==='levelcomplete'){level++;document.getElementById('pm-level').textContent='LEVEL '+level;resetLevel();}
+      }
+    } else {keys[e.key]=false;}
+  };
+  if(typeof _gameKeyHandler!=='undefined')document.removeEventListener('keydown',_gameKeyHandler);
+  document.addEventListener('keydown',_pmKey);
+  document.addEventListener('keyup',_pmKey);
+  if(typeof _gameLoop!=='undefined'&&_gameLoop)clearInterval(_gameLoop);
+
+  // Store cleanup
+  const _origCleanup=typeof cleanupGame==='function'?cleanupGame:null;
+  window._pacmanCleanup=function(){cancelAnimationFrame(raf);document.removeEventListener('keydown',_pmKey);document.removeEventListener('keyup',_pmKey);};
+
+  init();loop();
+}
+
+// ════════════════════════════════════════════════════════════════
+// COMMAND PALETTE  (Cmd+K / Ctrl+K)
+// ════════════════════════════════════════════════════════════════
+window.addEventListener('load', function() {
+  let _cpOpen=false;
+
+  const _c = (fn, ...args) => () => { if(typeof window[fn]==='function') window[fn](...args); else if(typeof eval(fn)==='function') eval(fn)(...args); };
+  const COMMANDS=[
+    {label:'Go home',              icon:'🏠', group:'Navigate',  action:()=>goHome?.()},
+    {label:'Go to Arcade',         icon:'🎮', group:'Navigate',  action:()=>goArcade?.()},
+    {label:'Go to Settings',       icon:'⚙',  group:'Navigate',  action:()=>goSettings?.()},
+    {label:'Go to History',        icon:'📜', group:'Navigate',  action:()=>goHistory?.()},
+    {label:'Toggle Ghost Mode',    icon:'👻', group:'Toggle',    action:()=>toggleGhostMode?.()},
+    {label:'Toggle Dark/Light',    icon:'☀',  group:'Toggle',    action:()=>toggleThemeQuick?.()},
+    {label:'Keyboard shortcuts',   icon:'⌨',  group:'Help',      action:()=>showKeyboardShortcuts?.()},
+    {label:'Year in Review',       icon:'📅', group:'Help',      action:()=>showYearHeatmap?.()},
+    {label:'Share search link',    icon:'🔗', group:'Action',    action:()=>shareSearchURL?.()},
+    {label:'Play Wordle',          icon:'🟨', group:'Game',      action:()=>{goArcade?.();setTimeout(()=>launchArcadeGame?.('wordle'),200);}},
+    {label:'Play Snake',           icon:'🐍', group:'Game',      action:()=>{goArcade?.();setTimeout(()=>launchArcadeGame?.('snake'),200);}},
+    {label:'Play Tetris',          icon:'🟩', group:'Game',      action:()=>{goArcade?.();setTimeout(()=>launchArcadeGame?.('tetris'),200);}},
+    {label:'Play Chess',           icon:'♟',  group:'Game',      action:()=>{goArcade?.();setTimeout(()=>launchArcadeGame?.('chess'),200);}},
+    {label:'Play Pac-Man',         icon:'👾', group:'Game',      action:()=>{goArcade?.();setTimeout(()=>launchArcadeGame?.('pacman'),200);}},
+    {label:'Play Flappy Bird',     icon:'🐦', group:'Game',      action:()=>{goArcade?.();setTimeout(()=>launchArcadeGame?.('flappy'),200);}},
+    {label:'Play Simon Says',      icon:'🎵', group:'Game',      action:()=>{goArcade?.();setTimeout(()=>launchArcadeGame?.('simon'),200);}},
+    {label:'Open Terminal',        icon:'$',  group:'Tool',      action:()=>openTerminal?.()},
+    {label:'Text Adventure',       icon:'📖', group:'Game',      action:()=>openTextAdventure?.()},
+    {label:'Altura Status',        icon:'📡', group:'Action',    action:()=>doQuickSearch?.('altura status')},
+  ];
+
+  function openPalette(){
+    if(_cpOpen)return;
+    _cpOpen=true;
+    const overlay=document.createElement('div');
+    overlay.id='_cp-overlay';
+    overlay.style.cssText='position:fixed;inset:0;z-index:99995;background:rgba(5,6,10,.7);backdrop-filter:blur(4px);display:flex;align-items:flex-start;justify-content:center;padding-top:15vh;';
+    const box=document.createElement('div');
+    box.style.cssText='background:var(--bg1);border:1px solid var(--line);border-radius:12px;width:min(560px,92vw);box-shadow:0 24px 64px rgba(0,0,0,.6);overflow:hidden;';
+    box.innerHTML='<div style="display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--line2)">'
+      +'<span style="color:var(--t3);font-size:14px">⌘</span>'
+      +'<input id="_cp-input" placeholder="Search commands or type to search…" autocomplete="off" style="flex:1;background:none;border:none;outline:none;font-size:14px;color:var(--t0);font-family:\'Geist\',sans-serif;" />'
+      +'<kbd style="font-family:\'Geist Mono\',monospace;font-size:10px;color:var(--t3);background:var(--bg2);border:1px solid var(--line);border-radius:4px;padding:2px 6px;">esc</kbd>'
+      +'</div>'
+      +'<div id="_cp-list" style="max-height:340px;overflow-y:auto;padding:6px;"></div>';
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
+
+    let selected=0;
+
+    function renderList(filter){
+      const list=document.getElementById('_cp-list');
+      if(!list)return;
+      const q=(filter||'').toLowerCase().trim();
+      let items=[...COMMANDS];
+      // If query looks like a search term (not a command), prepend a "search for X" item
+      if(q&&!items.some(c=>c.label.toLowerCase().includes(q))){
+        items=[{label:'Search for "'+filter+'"',icon:'🔍',group:'Search',action:()=>doQuickSearch?.(filter)},{label:'Ask Oracle: "'+filter+'"',icon:'✨',group:'Search',action:()=>{doQuickSearch?.(filter);setTimeout(()=>showOracle?.(),400);}}, ...items];
+      } else if(q){
+        // Prepend search shortcut
+        items=[{label:'Search for "'+filter+'"',icon:'🔍',group:'Search',action:()=>doQuickSearch?.(filter)}, ...items.filter(c=>c.label.toLowerCase().includes(q)||c.group.toLowerCase().includes(q))];
+      }
+      list.innerHTML=items.map((cmd,i)=>`
+        <div class="_cp-item" data-idx="${i}" style="display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:7px;cursor:pointer;background:${i===selected?'var(--bg2)':'transparent'};transition:background .08s;"
+          onmouseenter="this.parentNode.querySelectorAll('._cp-item').forEach((el,j)=>{el.style.background=j===${i}?'var(--bg2)':'transparent';});_cpSel=${i};"
+          onclick="window._cpItems[${i}]()">
+          <span style="font-size:16px;width:20px;text-align:center">${cmd.icon}</span>
+          <span style="flex:1;font-size:13px;color:var(--t0)">${cmd.label}</span>
+          <span style="font-family:'Geist Mono',monospace;font-size:9px;color:var(--t3);letter-spacing:.08em">${cmd.group}</span>
+        </div>`).join('');
+      window._cpItems=items.map(c=>()=>{closePalette();c.action();});
+      window._cpSel=selected;
+    }
+
+    renderList('');
+    const inp=document.getElementById('_cp-input');
+    if(inp){inp.focus();inp.addEventListener('input',()=>{selected=0;renderList(inp.value);});}
+
+    overlay.addEventListener('click',e=>{if(e.target===overlay)closePalette();});
+
+    const _cpKey=function(e){
+      if(!_cpOpen)return;
+      const items=document.querySelectorAll('._cp-item');
+      if(e.key==='Escape'){closePalette();return;}
+      if(e.key==='ArrowDown'){e.preventDefault();selected=Math.min(selected+1,items.length-1);items.forEach((el,i)=>el.style.background=i===selected?'var(--bg2)':'transparent');}
+      if(e.key==='ArrowUp'){e.preventDefault();selected=Math.max(selected-1,0);items.forEach((el,i)=>el.style.background=i===selected?'var(--bg2)':'transparent');}
+      if(e.key==='Enter'){e.preventDefault();if(window._cpItems&&window._cpItems[selected])window._cpItems[selected]();}
+    };
+    document.addEventListener('keydown',_cpKey,true);
+    overlay._cleanup=()=>document.removeEventListener('keydown',_cpKey,true);
+  }
+
+  function closePalette(){
+    _cpOpen=false;
+    const ov=document.getElementById('_cp-overlay');
+    if(ov){if(ov._cleanup)ov._cleanup();ov.remove();}
+  }
+
+  // Cmd+K / Ctrl+K — intercept before existing handler
+  window.addEventListener('keydown',function(e){
+    if((e.metaKey||e.ctrlKey)&&e.key==='k'){
+      const tag=(e.target||{}).tagName||'';
+      if(tag==='INPUT'||tag==='TEXTAREA')return; // let existing handler focus search
+      e.preventDefault();e.stopPropagation();
+      if(_cpOpen)closePalette();else openPalette();
+    }
+  },true);
+
+  window.openCommandPalette=openPalette;
+  window.closeCommandPalette=closePalette;
+}); // end load listener
+
+// ════════════════════════════════════════════════════════════════
+// HIDDEN TERMINAL  (search "terminal" or "alta://terminal")
+// ════════════════════════════════════════════════════════════════
+function openTerminal(){
+  const _origRR=typeof renderResults==='function'?renderResults:null;
+  // Show as a full-page overlay
+  const ov=document.createElement('div');
+  ov.id='_term-overlay';
+  ov.style.cssText='position:fixed;inset:0;z-index:99996;background:#000;display:flex;flex-direction:column;font-family:"Geist Mono",monospace;';
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:#0d0d0d;border-bottom:1px solid #1a331a;';
+  hdr.innerHTML='<div style="display:flex;gap:8px"><div style="width:12px;height:12px;border-radius:50%;background:#cc4a4a;"></div><div style="width:12px;height:12px;border-radius:50%;background:#e0b84a;"></div><div style="width:12px;height:12px;border-radius:50%;background:#9ddb5e;"></div></div>'
+    +'<span style="font-size:11px;color:#33ff33;letter-spacing:.12em;">ALTURA TERMINAL — AT-SHELL v2.1 — SALT LAKE CITY</span>'
+    +'<button onclick="document.getElementById(\'_term-overlay\').remove()" style="background:none;border:none;color:#33ff33;cursor:pointer;font-size:14px;font-family:\'Geist Mono\',monospace;">✕</button>';
+  const output=document.createElement('div');
+  output.id='_term-out';
+  output.style.cssText='flex:1;overflow-y:auto;padding:16px;color:#33ff33;font-size:13px;line-height:1.8;';
+  const inputRow=document.createElement('div');
+  inputRow.style.cssText='display:flex;align-items:center;padding:10px 16px;border-top:1px solid #1a331a;gap:8px;';
+  inputRow.innerHTML='<span style="color:#9ddb5e;font-size:13px;">altura@slc-01:~$</span><input id="_term-inp" autocomplete="off" spellcheck="false" style="flex:1;background:none;border:none;outline:none;color:#33ff33;font-family:\'Geist Mono\',monospace;font-size:13px;caret-color:#33ff33;" />';
+  ov.append(hdr,output,inputRow);
+  document.body.appendChild(ov);
+
+  const history=[];let histIdx=-1;
+  const MOTD=[
+    'Altura Intelligence Shell — AT-SHELL v2.1',
+    'Connected to SLC-01. Clearance: CIVILIAN.',
+    'Type <span style="color:#9ddb5e">help</span> for available commands.',
+    '',
+  ];
+  MOTD.forEach(l=>print(l));
+
+  function print(line,color){
+    const div=document.createElement('div');
+    div.innerHTML='<span style="color:'+(color||'#33ff33')+'">'+line+'</span>';
+    output.appendChild(div);
+    output.scrollTop=output.scrollHeight;
+  }
+  function printCmd(cmd){print('<span style="color:#9ddb5e">altura@slc-01:~$</span> '+cmd);}
+
+  const FILES={
+    'classified.txt':'[REDACTED — CLEARANCE LEVEL 4 REQUIRED]\nContact your regional handler for access.',
+    'readme.txt':'Altura Shell v2.1 — Civilian Access Terminal\nDo not attempt to access restricted directories.',
+    'welcome.txt':'Welcome to the Altura Intelligence Shell.\nThis terminal provides access to public Altura systems only.',
+    'oracle.cfg':'# Oracle Standard Configuration\nmodel=AT-CIV-2015\nmax_tokens=4096\ntier=civilian\nrestricted_patterns=true',
+    'mission.doc':'[PARTIAL CORRUPTION DETECTED]\nProject Altura was established in 200_ to build a unified _______\nacross the Halonesia _______ region. The civilian search interface\nwas added in ______ as a cover for _________ operations.\n[END OF READABLE SEGMENT]',
+  };
+  const DIRS={'home':['classified.txt','readme.txt','welcome.txt'],'sys':['oracle.cfg'],'archive':['mission.doc']};
+  let cwd='home';
+
+  const CMDS={
+    help:()=>{
+      ['Available commands:',
+       '  ls              list files in current directory',
+       '  cat &lt;file&gt;       read a file',
+       '  cd &lt;dir&gt;        change directory (home, sys, archive)',
+       '  pwd             print working directory',
+       '  whoami          display current user',
+       '  ping &lt;host&gt;     ping a host',
+       '  date            display current date/time',
+       '  clear           clear terminal',
+       '  uname           system information',
+       '  ps              list processes',
+       '  netstat         network connections',
+       '  decrypt &lt;file&gt;  attempt decryption (restricted)',
+       '  exit            close terminal',
+      ].forEach(l=>print(l));
+    },
+    ls:()=>{const files=DIRS[cwd]||[];print(files.join('  ')||'(empty)');},
+    pwd:()=>print('/home/civilian/'+cwd),
+    whoami:()=>{print('civilian');print('<span style="color:#e0b84a">Clearance: PUBLIC — Tier 0</span>');},
+    date:()=>print(new Date().toString()),
+    clear:()=>output.innerHTML='',
+    uname:()=>print('AT-SHELL 2.1 SLC-01 2015-01-17 ALTURA_OS x86_64'),
+    exit:()=>ov.remove(),
+    ps:()=>{['PID   CMD','1     init','42    oracle-daemon','99    search-indexer','144   auth-service','201   fiber-monitor','[...137 processes hidden — insufficient clearance]'].forEach(l=>print(l));},
+    netstat:()=>{['Active connections:','SLC-01:443 → ORACLE-GW:8080   ESTABLISHED','SLC-01:443 → AUTH-SRV:9000    ESTABLISHED','SLC-01:443 → SEARCH-IDX:7777  ESTABLISHED','SLC-02:443 → SLC-01:443       ESTABLISHED','[...connections redacted]'].forEach(l=>print(l));},
+  };
+
+  function runCmd(raw){
+    const parts=raw.trim().split(/\s+/);
+    const cmd=parts[0].toLowerCase();
+    const arg=parts.slice(1).join(' ');
+    printCmd(raw);
+    if(!cmd)return;
+    history.unshift(raw);histIdx=-1;
+    if(CMDS[cmd]){CMDS[cmd](arg);return;}
+    if(cmd==='cat'){
+      if(!arg){print('Usage: cat <file>');return;}
+      const files=DIRS[cwd]||[];
+      if(!files.includes(arg)){print('cat: '+arg+': No such file or directory','#cc4a4a');return;}
+      const txt=FILES[arg]||'(empty)';
+      txt.split('\n').forEach(l=>print(l));
+      return;
+    }
+    if(cmd==='cd'){
+      if(DIRS[arg]){cwd=arg;print('');return;}
+      print('cd: '+arg+': No such directory','#cc4a4a');return;
+    }
+    if(cmd==='ping'){
+      const host=arg||'oracle';
+      print('PING '+host+'.altura.int: 56 bytes of data');
+      [12,14,11,13].forEach((ms,i)=>setTimeout(()=>print('64 bytes from '+host+'.altura.int: icmp_seq='+i+' ttl=64 time='+ms+' ms'),i*300));
+      setTimeout(()=>print('--- '+host+'.altura.int ping statistics ---\n4 packets transmitted, 4 received, 0% packet loss'),1400);
+      return;
+    }
+    if(cmd==='decrypt'){
+      print('Initiating decryption sequence…','#e0b84a');
+      setTimeout(()=>print('Checking clearance level…','#e0b84a'),600);
+      setTimeout(()=>print('ERROR: Clearance level insufficient. Access denied.','#cc4a4a'),1400);
+      setTimeout(()=>print('Incident logged. Ref: ATI-SEC-'+Math.floor(Math.random()*9000+1000),'#cc4a4a'),1800);
+      return;
+    }
+    print('Command not found: '+cmd+'. Type <span style="color:#9ddb5e">help</span> for available commands.','#cc4a4a');
+  }
+
+  const inp=document.getElementById('_term-inp');
+  if(inp){
+    inp.focus();
+    inp.addEventListener('keydown',function(e){
+      if(e.key==='Enter'){const v=inp.value;inp.value='';if(v.trim())runCmd(v);}
+      if(e.key==='ArrowUp'){e.preventDefault();if(histIdx<history.length-1){histIdx++;inp.value=history[histIdx]||'';}}
+      if(e.key==='ArrowDown'){e.preventDefault();if(histIdx>0){histIdx--;inp.value=history[histIdx];}else{histIdx=-1;inp.value='';}}
+      if(e.key==='Escape'){ov.remove();}
+      e.stopPropagation();
+    });
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// TEXT ADVENTURE  (Oracle as GM)
+// ════════════════════════════════════════════════════════════════
+function openTextAdventure(){
+  const ov=document.createElement('div');
+  ov.id='_adv-overlay';
+  ov.style.cssText='position:fixed;inset:0;z-index:99997;background:var(--bg);display:flex;flex-direction:column;font-family:"Geist Mono",monospace;';
+
+  const hdr=document.createElement('div');
+  hdr.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:10px 20px;border-bottom:1px solid var(--line);flex-shrink:0;';
+  hdr.innerHTML='<div style="display:flex;flex-direction:column;gap:1px">'
+    +'<div style="font-size:10px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase">Altura · Text Adventure</div>'
+    +'<div style="font-size:12px;color:var(--t2);">Powered by Oracle Standard · type your actions</div>'
+    +'</div>'
+    +'<button onclick="document.getElementById(\'_adv-overlay\').remove()" style="background:none;border:1px solid var(--line);border-radius:5px;color:var(--t2);cursor:pointer;padding:5px 12px;font-family:\'Geist Mono\',monospace;font-size:11px;">Exit</button>';
+
+  const output=document.createElement('div');
+  output.id='_adv-out';
+  output.style.cssText='flex:1;overflow-y:auto;padding:20px 24px;line-height:1.9;font-size:13px;color:var(--t1);max-width:720px;width:100%;margin:0 auto;';
+
+  const inputRow=document.createElement('div');
+  inputRow.style.cssText='border-top:1px solid var(--line);padding:12px 20px;display:flex;gap:10px;align-items:center;flex-shrink:0;max-width:720px;width:100%;margin:0 auto;';
+  inputRow.innerHTML='<span style="color:var(--g);font-size:13px;">&gt;</span><input id="_adv-inp" placeholder="What do you do?" autocomplete="off" style="flex:1;background:none;border:none;outline:none;color:var(--t0);font-family:\'Geist Mono\',monospace;font-size:13px;"/><button id="_adv-send" style="background:var(--g);color:var(--bg);border:none;border-radius:5px;padding:6px 14px;font-family:\'Geist Mono\',monospace;font-size:12px;font-weight:600;cursor:pointer;">Send</button>';
+  ov.append(hdr,output,inputRow);
+  document.body.appendChild(ov);
+
+  const SYSTEM_PROMPT=`You are the narrator and game master of an interactive text adventure. 
+Create an original, atmospheric adventure world (not Halonesia — something fresh: could be a haunted research station, a submarine, a strange library, a foreign city at night, a space colony, etc.). 
+Keep each response to 2-4 paragraphs. End every response with a subtle hint of what options exist but don't list them explicitly — let the player discover. 
+Track an internal world state. React logically to player actions. 
+If the player tries something clever, reward it. If dangerous, show consequences. 
+Keep the tone literary but terse — think Borges meets classic adventure games.
+Start by setting the scene for a new adventure without asking what the player wants to do.`;
+
+  let advHistory=[];
+  let waiting=false;
+
+  function printAdv(html,isPlayer){
+    const div=document.createElement('div');
+    div.style.cssText='margin-bottom:16px;'+(isPlayer?'color:var(--g);':'color:var(--t0);');
+    if(isPlayer) div.innerHTML='<span style="color:var(--t3)">&gt;</span> '+html;
+    else div.innerHTML=html.replace(/\n/g,'<br>');
+    output.appendChild(div);
+    output.scrollTop=output.scrollHeight;
+  }
+
+  function showTyping(){
+    const d=document.createElement('div');d.id='_adv-typing';
+    d.innerHTML='<span style="color:var(--t3);animation:_adv-blink 1s infinite">▋</span>';
+    if(!document.getElementById('_adv-type-style')){
+      const s=document.createElement('style');s.id='_adv-type-style';
+      s.textContent='@keyframes _adv-blink{0%,100%{opacity:1}50%{opacity:0}}';
+      document.head.appendChild(s);
+    }
+    output.appendChild(d);output.scrollTop=output.scrollHeight;
+    return d;
+  }
+
+  async function send(userMsg){
+    if(waiting)return;
+    waiting=true;
+    const sendBtn=document.getElementById('_adv-send');
+    const inp=document.getElementById('_adv-inp');
+    if(sendBtn)sendBtn.disabled=true;
+    if(inp)inp.disabled=true;
+    if(userMsg){printAdv(userMsg.replace(/</g,'&lt;'),true);}
+    advHistory.push({role:'user',content:userMsg||'[Begin the adventure]'});
+    const typing=showTyping();
+    try{
+      const res=await fetch(typeof SEARCH_WORKER_URL!=='undefined'?SEARCH_WORKER_URL+'/oracle':'',{
+        method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({messages:[{role:'system',content:SYSTEM_PROMPT},...advHistory],max_tokens:600}),
+      });
+      const data=await res.json();
+      const text=data.choices?.[0]?.message?.content||data.content||'';
+      if(typing)typing.remove();
+      if(text){printAdv(text);advHistory.push({role:'assistant',content:text});if(advHistory.length>20)advHistory=advHistory.slice(-18);}
+      else{printAdv('<span style="color:var(--amber)">Oracle is unavailable. The world goes quiet.</span>');}
+    }catch(err){
+      if(typing)typing.remove();
+      printAdv('<span style="color:var(--amber)">Oracle is unreachable. Try again.</span>');
+      advHistory.pop();
+    }
+    waiting=false;
+    if(sendBtn)sendBtn.disabled=false;
+    if(inp){inp.disabled=false;inp.focus();}
+  }
+
+  const inp2=document.getElementById('_adv-inp');
+  const sendBtn=document.getElementById('_adv-send');
+  if(inp2){
+    inp2.addEventListener('keydown',function(e){
+      if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();const v=inp2.value.trim();if(v&&!waiting){inp2.value='';send(v);}}
+      if(e.key==='Escape'){ov.remove();}
+      e.stopPropagation();
+    });
+    inp2.focus();
+  }
+  if(sendBtn)sendBtn.addEventListener('click',()=>{const v=inp2?.value.trim();if(v&&!waiting){inp2.value='';send(v);}});
+
+  // Start the adventure
+  send('');
+}
+
+// Wire "text adventure", "adventure", and "terminal" searches
+window.addEventListener('load', function(){
+  if(typeof doSearch==='function'){
+    const _origDSterm=doSearch;
+    doSearch=function(){
+      const inp=document.querySelector('.page.active #home-input, .page.active #res-input');
+      const q=(inp?.value||'').trim().toLowerCase();
+      if(q==='terminal'||q==='alta://terminal'){openTerminal();return;}
+      if(q==='text adventure'||q==='adventure game'||q==='alta://adventure'){openTextAdventure();return;}
+      _origDSterm.apply(this,arguments);
+    };
+  }
+  if(typeof ARCADE_GAMES!=='undefined'){
+    if(!ARCADE_GAMES.find(g=>g.id==='textadv'))
+      ARCADE_GAMES.push({id:'textadv',label:'Text Adventure',icon:'📖',desc:'AI-powered interactive fiction. Oracle is your game master.',keys:'Type actions'});
+  }
+  if(typeof launchArcadeGame==='function'){
+    const _origLAGadv=launchArcadeGame;
+    launchArcadeGame=function(id){
+      if(id==='textadv'){openTextAdventure();return;}
+      _origLAGadv(id);
+    };
+  }
+});
+</script>
+
+<script>
+// ════════════════════════════════════════════════════════════════
+// ── VISITED RESULT TRACKING ──────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+const VISITED_KEY = 'altura_visited_urls';
+let _visitedUrls = new Set(JSON.parse(localStorage.getItem(VISITED_KEY) || '[]'));
+
+(function() {
+  // Patch openResult to record visited URLs
+  const _origOpenResult = openResult;
+  openResult = function(el) {
+    const url = el?.dataset?.url;
+    if (url && url !== '#') {
+      _visitedUrls.add(url.split('?')[0].split('#')[0]); // normalise
+      try { localStorage.setItem(VISITED_KEY, JSON.stringify([..._visitedUrls].slice(-500))); } catch {}
+    }
+    _origOpenResult(el);
+  };
+
+  // Add CSS for visited results
+  const s = document.createElement('style');
+  s.textContent = `
+    .result-item.altura-visited .result-title { color: var(--t2) !important; }
+    .result-item.altura-visited .result-url::before {
+      content: '✓ visited';
+      font-family: 'Geist Mono', monospace;
+      font-size: 9px;
+      letter-spacing: .08em;
+      color: var(--t3);
+      margin-right: 8px;
+    }
+  `;
+  document.head.appendChild(s);
+
+  // Patch renderResults to mark visited items after render
+  const _origRR = renderResults;
+  renderResults = function() {
+    _origRR.apply(this, arguments);
+    setTimeout(_markVisited, 300);
+  };
+})();
+
+function _markVisited() {
+  document.querySelectorAll('.result-item[data-url]').forEach(el => {
+    const url = (el.dataset.url || '').split('?')[0].split('#')[0];
+    if (url && _visitedUrls.has(url)) {
+      el.classList.add('altura-visited');
+    }
+  });
+}
+
+// ════════════════════════════════════════════════════════════════
+// ── INSTANT ANSWER CARDS: NUTRITION, COUNTRY FACTS, ISS, STOCKS
+// ════════════════════════════════════════════════════════════════
+
+// Extend detectSpecial with async-capable instant answers
+// We use a post-render async injection pattern
+(function() {
+  const _origRR2 = renderResults;
+  renderResults = function() {
+    _origRR2.apply(this, arguments);
+    setTimeout(() => _checkInstantAnswers(currentQuery), 200);
+  };
+})();
+
+async function _checkInstantAnswers(q) {
+  const ql = q.toLowerCase().trim();
+  const main = document.getElementById('res-main');
+  if (!main) return;
+
+  // Find injection point (after special card, before oracle bar)
+  const existing = document.getElementById('_instant-card');
+  if (existing) existing.remove();
+
+  let card = null;
+
+  // ── Stock ticker (e.g. "AAPL", "TSLA stock", "price of MSFT") ──
+  const stockMatch = ql.match(/^([a-z]{1,5})(?:\s+(?:stock|share|price|ticker))?$/) ||
+                     ql.match(/^(?:stock|share|price of)\s+([a-z]{1,5})$/);
+  const KNOWN_TICKERS = new Set(['aapl','msft','googl','goog','amzn','meta','tsla','nvda','nflx','amd','intc','orcl','ibm','baba','uber','lyft','snap','twtr','spot','shop','sq','pypl','adbe','crm','zoom','coin','hood','rivn','gm','f','ba','dis','nke','ko','pep','jpm','gs','ms','bac','wfc','c','v','ma','axp','unh','jnj','pfe','mrk','abbv','lly','bmy','wmt','tgt','cost','hd','low','amgn','gild','biib','regn','vrtx','dhr','mdt','bsx','bdx','isrg','spgi','mco','ice','cme','ndaq','cboe','blk','bk','str','xom','cvx','cop','slb','hal','mpc','vlo','psx','eog']);
+
+  if (stockMatch) {
+    const ticker = (stockMatch[1] || stockMatch[2] || '').toLowerCase();
+    if (KNOWN_TICKERS.has(ticker)) {
+      try {
+        // Yahoo Finance unofficial endpoint
+        const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${ticker.toUpperCase()}?interval=1d&range=1d`, {signal: AbortSignal.timeout(5000)});
+        const data = await res.json();
+        const meta = data.chart?.result?.[0]?.meta;
+        if (meta) {
+          const price = meta.regularMarketPrice?.toFixed(2);
+          const prev = meta.previousClose?.toFixed(2);
+          const change = price && prev ? (price - prev).toFixed(2) : null;
+          const pct = change && prev ? ((change / prev) * 100).toFixed(2) : null;
+          const up = parseFloat(change) >= 0;
+          card = `<div class="special-card" id="_instant-card" style="border-left:3px solid ${up?'var(--g)':'var(--red)'}">
+            <div class="sc-badge"><div class="sc-badge-dot" style="background:${up?'var(--g)':'var(--red)'}"></div>Stock · ${ticker.toUpperCase()} · ${meta.exchangeName||''}</div>
+            <div style="display:flex;align-items:baseline;gap:12px;margin:8px 0">
+              <div style="font-size:36px;font-weight:700;letter-spacing:-.03em;color:var(--t0)">${meta.currency==='USD'?'$':''}${price}</div>
+              ${change?`<div style="font-size:16px;font-weight:600;color:${up?'var(--g)':'var(--red)'}">${up?'+':''}${change} (${up?'+':''}${pct}%)</div>`:''}
+            </div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap">
+              ${meta.regularMarketVolume?`<div class="ws">Volume <span>${(meta.regularMarketVolume/1e6).toFixed(1)}M</span></div>`:''}
+              ${meta.fiftyTwoWeekHigh?`<div class="ws">52w High <span>$${meta.fiftyTwoWeekHigh?.toFixed(2)}</span></div>`:''}
+              ${meta.fiftyTwoWeekLow?`<div class="ws">52w Low <span>$${meta.fiftyTwoWeekLow?.toFixed(2)}</span></div>`:''}
+              ${meta.marketCap?`<div class="ws">Mkt Cap <span>$${(meta.marketCap/1e9).toFixed(1)}B</span></div>`:''}
+            </div>
+            <div style="font-size:10px;color:var(--t3);margin-top:8px;font-family:'Geist Mono',monospace">Delayed · Yahoo Finance · not financial advice</div>
+          </div>`;
+        }
+      } catch {}
+    }
+  }
+
+  // ── Nutrition (e.g. "calories in banana", "nutrition apple") ──
+  if (!card) {
+    const nutMatch = ql.match(/^(?:calories?\s+in|nutrition(?:al\s+info)?(?:\s+for)?|how\s+many\s+calories\s+(?:in|are\s+in))\s+(.+)$/) ||
+                     ql.match(/^(.+)\s+(?:calories?|nutrition|nutritional\s+info)$/);
+    if (nutMatch) {
+      const food = (nutMatch[1] || nutMatch[2] || '').trim();
+      try {
+        const res = await fetch(`https://api.nal.usda.gov/fdc/v1/foods/search?query=${encodeURIComponent(food)}&pageSize=1&api_key=DEMO_KEY`, {signal: AbortSignal.timeout(5000)});
+        const data = await res.json();
+        const item = data.foods?.[0];
+        if (item) {
+          const get = (name) => item.foodNutrients?.find(n => n.nutrientName?.toLowerCase().includes(name.toLowerCase()))?.value;
+          const cals = get('Energy') || get('energy');
+          const protein = get('Protein');
+          const fat = get('Total lipid');
+          const carbs = get('Carbohydrate');
+          const fiber = get('Fiber');
+          if (cals) {
+            card = `<div class="special-card" id="_instant-card" style="border-left:3px solid var(--amber)">
+              <div class="sc-badge"><div class="sc-badge-dot" style="background:var(--amber)"></div>Nutrition · ${item.description?.slice(0,40)}</div>
+              <div style="display:flex;align-items:baseline;gap:8px;margin:8px 0">
+                <div style="font-size:36px;font-weight:700;color:var(--t0)">${Math.round(cals)}</div>
+                <div style="font-size:14px;color:var(--t2)">kcal per 100g</div>
+              </div>
+              <div style="display:flex;gap:16px;flex-wrap:wrap">
+                ${protein!=null?`<div class="ws">Protein <span>${parseFloat(protein).toFixed(1)}g</span></div>`:''}
+                ${fat!=null?`<div class="ws">Fat <span>${parseFloat(fat).toFixed(1)}g</span></div>`:''}
+                ${carbs!=null?`<div class="ws">Carbs <span>${parseFloat(carbs).toFixed(1)}g</span></div>`:''}
+                ${fiber!=null?`<div class="ws">Fibre <span>${parseFloat(fiber).toFixed(1)}g</span></div>`:''}
+              </div>
+              <div style="font-size:10px;color:var(--t3);margin-top:8px;font-family:'Geist Mono',monospace">Source: USDA FoodData Central · values per 100g</div>
+            </div>`;
+          }
+        }
+      } catch {}
+    }
+  }
+
+  // ── Country facts (e.g. "france facts", "population of brazil", "capital of germany") ──
+  if (!card) {
+    const countryMatch = ql.match(/^(?:facts?\s+(?:about\s+)?|info(?:rmation)?\s+(?:about\s+)?|capital\s+of\s+|population\s+of\s+|currency\s+of\s+)?(.{3,30})(?:\s+(?:facts?|info|country|population|capital|currency))?$/) ;
+    if (countryMatch) {
+      const cname = (countryMatch[1] || '').trim();
+      if (cname.length >= 3 && !/\s{2,}/.test(cname)) {
+        try {
+          const res = await fetch(`https://restcountries.com/v3.1/name/${encodeURIComponent(cname)}?fullText=false&fields=name,capital,population,currencies,flags,region,subregion,languages,area,tld`, {signal: AbortSignal.timeout(5000)});
+          if (res.ok) {
+            const data = await res.json();
+            const c = data[0];
+            if (c && c.name) {
+              const currencies = Object.values(c.currencies || {}).map(v => `${v.name} (${v.symbol||''})`).join(', ');
+              const langs = Object.values(c.languages || {}).slice(0,3).join(', ');
+              card = `<div class="special-card" id="_instant-card" style="border-left:3px solid var(--blue)">
+                <div class="sc-badge"><div class="sc-badge-dot" style="background:var(--blue)"></div>Country · ${c.region}</div>
+                <div style="display:flex;align-items:center;gap:14px;margin:8px 0">
+                  <span style="font-size:42px">${c.flags?.emoji||''}</span>
+                  <div>
+                    <div style="font-size:22px;font-weight:700;color:var(--t0);letter-spacing:-.02em">${c.name.common}</div>
+                    <div style="font-size:12px;color:var(--t2)">${c.name.official}</div>
+                  </div>
+                </div>
+                <div style="display:flex;gap:16px;flex-wrap:wrap">
+                  ${c.capital?.[0]?`<div class="ws">Capital <span>${c.capital[0]}</span></div>`:''}
+                  ${c.population?`<div class="ws">Population <span>${(c.population/1e6).toFixed(1)}M</span></div>`:''}
+                  ${c.area?`<div class="ws">Area <span>${c.area.toLocaleString()} km²</span></div>`:''}
+                  ${currencies?`<div class="ws">Currency <span>${currencies}</span></div>`:''}
+                  ${langs?`<div class="ws">Language <span>${langs}</span></div>`:''}
+                  ${c.tld?.[0]?`<div class="ws">Domain <span>${c.tld[0]}</span></div>`:''}
+                </div>
+              </div>`;
+            }
+          }
+        } catch {}
+      }
+    }
+  }
+
+  // ── ISS Location ──
+  if (!card) {
+    if (/^(?:where\s+is\s+the\s+)?iss(?:\s+location)?$|^international\s+space\s+station(?:\s+location)?$/.test(ql)) {
+      try {
+        const [issRes, astRes] = await Promise.all([
+          fetch('https://api.wheretheiss.at/v1/satellites/25544', {signal: AbortSignal.timeout(5000)}),
+          fetch('https://api.wheretheiss.at/v1/satellites/25544/positions?timestamps='+Math.floor(Date.now()/1000), {signal: AbortSignal.timeout(5000)}).catch(()=>null)
+        ]);
+        const iss = await issRes.json();
+        if (iss.latitude != null) {
+          card = `<div class="special-card" id="_instant-card" style="border-left:3px solid var(--teal,#4ac8cc)">
+            <div class="sc-badge"><div class="sc-badge-dot" style="background:var(--teal,#4ac8cc)"></div>ISS Live Location</div>
+            <div style="display:flex;align-items:center;gap:14px;margin:8px 0">
+              <span style="font-size:42px">🛸</span>
+              <div>
+                <div style="font-size:20px;font-weight:700;color:var(--t0);letter-spacing:-.02em;font-family:'Geist Mono',monospace">${parseFloat(iss.latitude).toFixed(4)}°  ${parseFloat(iss.longitude).toFixed(4)}°</div>
+                <div style="font-size:12px;color:var(--t2)">Currently over ${iss.latitude>0?'N':'S'} hemisphere</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:16px;flex-wrap:wrap">
+              <div class="ws">Altitude <span>${parseFloat(iss.altitude).toFixed(1)} km</span></div>
+              <div class="ws">Speed <span>${parseFloat(iss.velocity).toFixed(0)} km/h</span></div>
+              <div class="ws">Visibility <span>${iss.visibility||'—'}</span></div>
+            </div>
+            <div style="font-size:10px;color:var(--t3);margin-top:8px;font-family:'Geist Mono',monospace">Live · wheretheiss.at · updated every query</div>
+          </div>`;
+        }
+      } catch {}
+    }
+  }
+
+  // Inject card
+  if (card && main) {
+    const oracleBar = main.querySelector('.ask-oracle-bar');
+    if (oracleBar) {
+      oracleBar.insertAdjacentHTML('beforebegin', card);
+    } else {
+      main.insertAdjacentHTML('afterbegin', card);
+    }
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// ── RESULT HOVER PREVIEWS ─────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+(function() {
+  const style = document.createElement('style');
+  style.textContent = `
+    #_hover-preview {
+      position: fixed; z-index: 9000; width: 300px;
+      background: var(--bg1); border: 1px solid var(--line);
+      border-radius: 10px; padding: 14px 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,.5);
+      pointer-events: none;
+      transition: opacity .12s, transform .12s;
+      opacity: 0; transform: translateY(4px);
+      max-width: calc(100vw - 32px);
+    }
+    #_hover-preview.show { opacity: 1; transform: translateY(0); }
+    #_hover-preview .hp-url { font-family: 'Geist Mono', monospace; font-size: 9px; color: var(--t3); letter-spacing: .06em; margin-bottom: 6px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #_hover-preview .hp-title { font-size: 13px; font-weight: 600; color: var(--t0); margin-bottom: 6px; line-height: 1.4; }
+    #_hover-preview .hp-snippet { font-size: 12px; color: var(--t2); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+    #_hover-preview .hp-meta { display: flex; gap: 10px; margin-top: 8px; padding-top: 8px; border-top: 1px solid var(--line2); font-family: 'Geist Mono', monospace; font-size: 9px; color: var(--t3); }
+  `;
+  document.head.appendChild(style);
+
+  let _preview = null, _hoverTimer = null, _hideTimer = null;
+
+  function getOrCreatePreview() {
+    if (!_preview) {
+      _preview = document.createElement('div');
+      _preview.id = '_hover-preview';
+      document.body.appendChild(_preview);
+    }
+    return _preview;
+  }
+
+  function showPreview(el, e) {
+    const url = el.dataset.url || '';
+    const title = el.querySelector('.result-title')?.textContent || '';
+    const snippet = el.querySelector('.result-snippet')?.textContent || '';
+    const displayUrl = url.replace(/^https?:\/\//, '').split('/')[0];
+    const date = el.querySelector('.result-date')?.textContent || '';
+    const visited = el.classList.contains('altura-visited');
+
+    if (!title && !snippet) return;
+
+    const p = getOrCreatePreview();
+    p.innerHTML = `
+      <div class="hp-url">${displayUrl}${visited ? ' · <span style="color:var(--g)">✓ visited</span>' : ''}</div>
+      <div class="hp-title">${title}</div>
+      ${snippet ? `<div class="hp-snippet">${snippet}</div>` : ''}
+      <div class="hp-meta">
+        ${date ? `<span>${date}</span>` : ''}
+        <span style="margin-left:auto">Click to open ↗</span>
+      </div>`;
+
+    // Position: prefer right of cursor, flip if off-screen
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const pw = 300, ph = 160;
+    let left = e.clientX + 16;
+    let top = e.clientY - 20;
+    if (left + pw > vw - 8) left = e.clientX - pw - 16;
+    if (top + ph > vh - 8) top = vh - ph - 8;
+    if (top < 8) top = 8;
+    p.style.left = Math.max(8, left) + 'px';
+    p.style.top = top + 'px';
+    p.classList.add('show');
+  }
+
+  function hidePreview() {
+    if (_preview) _preview.classList.remove('show');
+  }
+
+  // Delegate hover events on result items
+  document.addEventListener('mouseover', function(e) {
+    const item = e.target.closest('.result-item[data-url]');
+    if (!item) return;
+    clearTimeout(_hoverTimer);
+    clearTimeout(_hideTimer);
+    _hoverTimer = setTimeout(() => showPreview(item, e), 420);
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    const item = e.target.closest('.result-item[data-url]');
+    if (item && _preview?.classList.contains('show')) {
+      // Update position
+      const vw = window.innerWidth, pw = 300;
+      let left = e.clientX + 16;
+      if (left + pw > vw - 8) left = e.clientX - pw - 16;
+      _preview.style.left = Math.max(8, left) + 'px';
+    }
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    const item = e.target.closest('.result-item[data-url]');
+    if (!item) return;
+    clearTimeout(_hoverTimer);
+    _hideTimer = setTimeout(hidePreview, 120);
+  });
+
+  // Hide on click
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.result-item')) hidePreview();
+  });
+})();
+
+// ════════════════════════════════════════════════════════════════
+// ── DAILY CROSSWORD ───────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+
+// Register in arcade
+window.addEventListener('load', function() {
+  if (typeof ARCADE_GAMES !== 'undefined' && !ARCADE_GAMES.find(g => g.id === 'crossword')) {
+    ARCADE_GAMES.push({ id:'crossword', label:'Crossword', icon:'📰', desc:'Daily crossword — same puzzle for everyone today.', keys:'Click a cell to select' });
+  }
+  if (typeof launchArcadeGame === 'function') {
+    const _orig = launchArcadeGame;
+    launchArcadeGame = function(id) {
+      if (id === 'crossword') { _initCrossword(document.getElementById('arcade-game-area') || document.createElement('div')); return; }
+      _orig(id);
+    };
+  }
+});
+
+function _initCrossword(area) {
+  // Daily seed — same puzzle for everyone on the same day
+  const today = new Date();
+  const seed = today.getFullYear() * 10000 + (today.getMonth()+1) * 100 + today.getDate();
+
+  // 5 puzzles cycling by day-of-year mod 5
+  const PUZZLES = [
+    {
+      grid: [
+        ['P','L','A','N','E','T'],
+        ['#','I','#','O','#','#'],
+        ['O','G','H','O','N','#'],
+        ['C','H','#','N','#','#'],
+        ['E','T','H','I','N','K'],
+        ['A','#','#','G','#','#'],
+        ['N','#','#','#','#','#'],
+      ],
+      across: {
+        '0,0': {n:1, clue:'Orbits a star (6)'},
+        '2,0': {n:4, clue:'Deep in thought: "on another _____" (5)'},
+        '4,4': {n:7, clue:'Use your brain (5)'},
+      },
+      down: {
+        '0,0': {n:1, clue:'Great Lake, or a body of water (5)'},
+        '0,1': {n:2, clue:'Illum-___: shedding light (6)'},
+        '0,3': {n:3, clue:'Evening meal (6)'},
+      }
+    },
+    {
+      grid: [
+        ['C','L','O','U','D'],
+        ['#','E','#','N','#'],
+        ['W','A','V','E','S'],
+        ['#','F','#','#','T'],
+        ['O','#','S','K','Y'],
+      ],
+      across: {
+        '0,0': {n:1, clue:'Floats in the sky (5)'},
+        '2,0': {n:3, clue:'Ocean motion (5)'},
+        '4,2': {n:5, clue:'Above the clouds (3)'},
+      },
+      down: {
+        '0,0': {n:1, clue:'It costs nothing (4)'},
+        '0,3': {n:2, clue:'Joined (6)'},
+        '2,2': {n:4, clue:'Pointed sticks (4)'},
+      }
+    },
+    {
+      grid: [
+        ['B','R','I','D','G','E'],
+        ['#','I','#','E','#','#'],
+        ['S','V','E','R','#','#'],
+        ['T','E','#','#','#','#'],
+        ['A','R','A','D','I','O'],
+        ['R','#','#','#','#','#'],
+      ],
+      across: {
+        '0,0': {n:1, clue:'Spans a gap (6)'},
+        '2,0': {n:4, clue:'A stream or _____ bend (5)'},
+        '4,0': {n:6, clue:'It broadcasts (5)'},
+      },
+      down: {
+        '0,0': {n:1, clue:'Celestial body (4)'},
+        '0,1': {n:2, clue:'A river bank (5)'},
+        '0,3': {n:3, clue:'Worn to identify (4)'},
+      }
+    },
+    {
+      grid: [
+        ['O','C','E','A','N'],
+        ['#','O','#','P','#'],
+        ['T','R','A','I','N'],
+        ['#','A','#','R','#'],
+        ['L','L','I','G','H','T'],
+      ],
+      across: {
+        '0,0': {n:1, clue:'Vast body of water (5)'},
+        '2,0': {n:3, clue:'Runs on tracks (5)'},
+        '4,0': {n:5, clue:'Illumination (5)'},
+      },
+      down: {
+        '0,0': {n:1, clue:'Midnight release (4)'},
+        '0,1': {n:2, clue:'Center of an apple (4)'},
+        '0,3': {n:4, clue:'April showers (4)'},
+      }
+    },
+    {
+      grid: [
+        ['S','T','A','R','S'],
+        ['#','I','#','A','#'],
+        ['M','D','A','W','N'],
+        ['#','E','#','N','#'],
+        ['N','#','M','O','O','N'],
+      ],
+      across: {
+        '0,0': {n:1, clue:'Twinkle in the sky (5)'},
+        '2,0': {n:3, clue:'Day\'s first light (4)'},
+        '4,2': {n:5, clue:'Earth\'s satellite (4)'},
+      },
+      down: {
+        '0,0': {n:1, clue:'Short sleep (6)'},
+        '0,1': {n:2, clue:'Ocean movement (5)'},
+        '0,3': {n:4, clue:'Rain, sleet, or snow (5)'},
+      }
+    },
+  ];
+
+  const dayOfYear = Math.floor((today - new Date(today.getFullYear(), 0, 0)) / 86400000);
+  const puzzle = PUZZLES[dayOfYear % PUZZLES.length];
+  const ROWS = puzzle.grid.length;
+  const COLS = puzzle.grid[0].length;
+  const SAVE_KEY = 'altura_crossword_' + seed;
+
+  let savedState = {};
+  try { savedState = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}'); } catch {}
+
+  let selected = null, selectedDir = 'across';
+
+  area.innerHTML = '';
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:16px;padding:12px;width:100%;';
+  area.appendChild(wrap);
+
+  // Title
+  const title = document.createElement('div');
+  title.style.cssText = 'font-family:"Geist Mono",monospace;font-size:10px;letter-spacing:.16em;color:var(--t3);text-transform:uppercase;';
+  title.textContent = 'Daily Crossword · ' + today.toLocaleDateString('en-GB', {day:'numeric',month:'long'});
+  wrap.appendChild(title);
+
+  // Grid
+  const gridEl = document.createElement('div');
+  gridEl.style.cssText = `display:grid;grid-template-columns:repeat(${COLS},34px);gap:2px;`;
+  wrap.appendChild(gridEl);
+
+  const cells = [];
+  puzzle.grid.forEach((row, r) => {
+    cells[r] = [];
+    row.forEach((letter, c) => {
+      const cell = document.createElement('div');
+      if (letter === '#') {
+        cell.style.cssText = 'width:34px;height:34px;background:var(--bg);border-radius:2px;';
+      } else {
+        const clueNum = Object.entries({...puzzle.across, ...puzzle.down})
+          .find(([pos]) => pos === `${r},${c}`)?.[1]?.n;
+        cell.style.cssText = 'width:34px;height:34px;background:var(--bg2);border:1px solid var(--line);border-radius:2px;position:relative;cursor:pointer;transition:background .08s;';
+        if (clueNum) {
+          const num = document.createElement('div');
+          num.style.cssText = 'position:absolute;top:2px;left:2px;font-size:8px;color:var(--t3);font-family:"Geist Mono",monospace;line-height:1;';
+          num.textContent = clueNum;
+          cell.appendChild(num);
+        }
+        const input = document.createElement('div');
+        input.style.cssText = 'position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--t0);text-transform:uppercase;';
+        input.textContent = savedState[`${r},${c}`] || '';
+        cell.appendChild(input);
+        cell.dataset.r = r; cell.dataset.c = c; cell.dataset.letter = letter;
+        cell.addEventListener('click', () => selectCell(r, c));
+        cells[r][c] = cell;
+      }
+      gridEl.appendChild(cell);
+    });
+  });
+
+  // Clues
+  const cluePanel = document.createElement('div');
+  cluePanel.style.cssText = 'display:flex;gap:20px;width:100%;max-width:420px;font-size:12px;';
+
+  ['across','down'].forEach(dir => {
+    const col = document.createElement('div');
+    col.style.cssText = 'flex:1;';
+    col.innerHTML = `<div style="font-family:'Geist Mono',monospace;font-size:9px;letter-spacing:.14em;color:var(--t3);text-transform:uppercase;margin-bottom:8px;">${dir}</div>`;
+    Object.entries(puzzle[dir]).forEach(([pos, {n, clue}]) => {
+      const cl = document.createElement('div');
+      cl.style.cssText = 'padding:3px 6px;border-radius:4px;color:var(--t2);cursor:pointer;margin-bottom:2px;transition:background .08s;';
+      cl.dataset.clue = pos; cl.dataset.dir = dir;
+      cl.innerHTML = `<span style="font-weight:700;color:var(--t0);margin-right:4px">${n}</span>${clue}`;
+      cl.addEventListener('click', () => { const [r,c] = pos.split(',').map(Number); selectedDir = dir; selectCell(r,c); });
+      cl.addEventListener('mouseover', () => { if(cl.style.background==='') cl.style.background = 'var(--bg2)'; });
+      cl.addEventListener('mouseout', () => { if(!cl.classList.contains('active-clue')) cl.style.background = ''; });
+      col.appendChild(cl);
+    });
+    cluePanel.appendChild(col);
+  });
+  wrap.appendChild(cluePanel);
+
+  // Keyboard
+  const statusEl = document.createElement('div');
+  statusEl.style.cssText = 'font-family:"Geist Mono",monospace;font-size:10px;color:var(--t3);min-height:16px;';
+  wrap.appendChild(statusEl);
+
+  function selectCell(r, c) {
+    selected = {r, c};
+    cells.forEach(row => row.forEach(cell => { if(cell) { cell.style.background='var(--bg2)'; cell.style.borderColor='var(--line)'; }}));
+    const cell = cells[r]?.[c];
+    if (cell) { cell.style.background = 'rgba(157,219,94,.2)'; cell.style.borderColor = 'var(--g)'; }
+    // Highlight active clue
+    document.querySelectorAll('[data-clue]').forEach(cl => { cl.classList.remove('active-clue'); cl.style.background=''; });
+    const activeClue = Object.entries(puzzle[selectedDir]).find(([pos]) => {
+      const [cr, cc] = pos.split(',').map(Number);
+      return r >= cr && c >= cc && (selectedDir==='across' ? r===cr : c===cc);
+    });
+    if (activeClue) {
+      const clueEl = document.querySelector(`[data-clue="${activeClue[0]}"][data-dir="${selectedDir}"]`);
+      if (clueEl) { clueEl.classList.add('active-clue'); clueEl.style.background = 'var(--bg2)'; clueEl.scrollIntoView({block:'nearest'}); }
+    }
+  }
+
+  document.addEventListener('keydown', function _cw(e) {
+    if (!selected || !area.isConnected) { document.removeEventListener('keydown', _cw); return; }
+    const {r, c} = selected;
+    if (e.key === 'Escape') { selected = null; return; }
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      selectedDir = selectedDir === 'across' ? 'down' : 'across';
+      selectCell(r, c); return;
+    }
+    if (['ArrowRight','ArrowLeft','ArrowUp','ArrowDown'].includes(e.key)) {
+      e.preventDefault();
+      const dr = e.key==='ArrowDown'?1:e.key==='ArrowUp'?-1:0;
+      const dc = e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0;
+      let nr=r+dr, nc=c+dc;
+      while (nr>=0&&nr<ROWS&&nc>=0&&nc<COLS) {
+        if (puzzle.grid[nr][nc] !== '#') { selectCell(nr, nc); break; }
+        nr+=dr; nc+=dc;
+      }
+      return;
+    }
+    if (e.key === 'Backspace') {
+      const cell = cells[r]?.[c];
+      const inp = cell?.querySelector('div:last-child');
+      if (inp && inp.textContent) { inp.textContent=''; delete savedState[`${r},${c}`]; }
+      else {
+        const dr = selectedDir==='across'?0:-1, dc = selectedDir==='across'?-1:0;
+        let nr=r+dr, nc=c+dc;
+        while (nr>=0&&nr<ROWS&&nc>=0&&nc<COLS) {
+          if (puzzle.grid[nr][nc] !== '#') { selectCell(nr, nc); const pc=cells[nr]?.[nc]?.querySelector('div:last-child'); if(pc){pc.textContent='';delete savedState[`${nr},${nc}`];} break; }
+          nr+=dr; nc+=dc;
+        }
+      }
+      localStorage.setItem(SAVE_KEY, JSON.stringify(savedState));
+      return;
+    }
+    if (/^[a-zA-Z]$/.test(e.key)) {
+      const cell = cells[r]?.[c];
+      const inp = cell?.querySelector('div:last-child');
+      if (inp) {
+        inp.textContent = e.key.toUpperCase();
+        savedState[`${r},${c}`] = e.key.toUpperCase();
+        inp.style.color = e.key.toUpperCase() === puzzle.grid[r][c] ? 'var(--g)' : 'var(--t0)';
+        localStorage.setItem(SAVE_KEY, JSON.stringify(savedState));
+      }
+      // Advance cursor
+      const dr = selectedDir==='down'?1:0, dc = selectedDir==='across'?1:0;
+      let nr=r+dr, nc=c+dc;
+      while (nr>=0&&nr<ROWS&&nc>=0&&nc<COLS) {
+        if (puzzle.grid[nr][nc] !== '#') { selectCell(nr, nc); break; }
+        nr+=dr; nc+=dc;
+      }
+      // Check completion
+      let complete = true;
+      puzzle.grid.forEach((row, rr) => row.forEach((letter, cc) => {
+        if (letter !== '#' && savedState[`${rr},${cc}`] !== letter) complete = false;
+      }));
+      if (complete) {
+        statusEl.textContent = '🎉 Solved!';
+        statusEl.style.color = 'var(--g)';
+        showToast({icon:'📰', title:'Crossword solved!', sub:'Come back tomorrow for a new puzzle.', dur:4000});
+      }
+    }
+  });
+
+  // Restore saved answers with colour
+  puzzle.grid.forEach((row, r) => row.forEach((letter, c) => {
+    if (letter !== '#' && savedState[`${r},${c}`]) {
+      const inp = cells[r]?.[c]?.querySelector('div:last-child');
+      if (inp) inp.style.color = savedState[`${r},${c}`] === letter ? 'var(--g)' : 'var(--t0)';
+    }
+  }));
+
+  selectCell(0, 0);
+}
+
+// ════════════════════════════════════════════════════════════════
+// ── ROBOTS.TXT EASTER EGG ─────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+window.addEventListener('load', function() {
+  // Check URL param
+  if (new URLSearchParams(location.search).has('robots')) {
+    _showRobotsTxt();
+    return;
+  }
+
+  // Intercept search
+  if (typeof doSearch === 'function') {
+    const _orig = doSearch;
+    doSearch = function() {
+      const inp = document.querySelector('.page.active #home-input, .page.active #res-input');
+      const q = (inp?.value || '').trim().toLowerCase();
+      if (q === 'robots.txt' || q === 'robots' || q === '/robots.txt') { _showRobotsTxt(); return; }
+      _orig.apply(this, arguments);
+    };
+  }
+});
+
+function _showRobotsTxt() {
+  const content = `User-agent: *
+Disallow: /oracle/restricted/
+Disallow: /rampart/
+Disallow: /vantage/
+Disallow: /internal/
+Disallow: /clearance-4/
+Disallow: /slc-02/admin/
+Disallow: /district-iii/
+Allow: /search/
+Allow: /fiber/status/
+Allow: /arcade/
+Allow: /id/
+
+# Altura Intelligence Systems — Search Crawler Policy
+# Version: 2.1 | Effective: 01 Jan 2015
+# Contact: crawler-policy@altura.int
+
+User-agent: OracleBot
+Allow: /
+Disallow: /civilian/
+
+User-agent: RampartSweep
+Allow: /internal/
+Allow: /rampart/
+Disallow: /
+
+User-agent: Googlebot
+Disallow: /
+
+# Note: Civilian search results are indexed internally.
+# External crawlers are not authorised to index Altura properties.
+# Unauthorised crawling will be logged and flagged.
+# Clearance ref: ATI-CRAWL-POLICY-2015-Q1
+
+Sitemap: https://search.altura.int/sitemap.xml`;
+
+  _showModal(`<div style="font-family:'Geist Mono',monospace">
+    <div style="padding:16px 20px;background:var(--bg2);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:9px;letter-spacing:.18em;color:var(--t3);text-transform:uppercase;margin-bottom:2px">https://search.altura.int</div>
+        <div style="font-size:14px;font-weight:700;color:var(--t0)">/robots.txt</div>
+      </div>
+      <div style="font-size:9px;color:var(--g);background:var(--g3);border:1px solid rgba(157,219,94,.2);border-radius:3px;padding:3px 8px;">200 OK</div>
+    </div>
+    <div style="padding:20px;overflow-x:auto">
+      <pre style="font-size:11px;line-height:1.8;color:var(--t1);margin:0;white-space:pre-wrap">${content.replace(/</g,'&lt;').replace(/^(Disallow:.*)$/gm,'<span style="color:var(--red)">$1</span>').replace(/^(Allow:.*)$/gm,'<span style="color:var(--g)">$1</span>').replace(/^(#.*)$/gm,'<span style="color:var(--t3)">$1</span>').replace(/^(User-agent:.*)$/gm,'<span style="color:var(--amber);font-weight:700">$1</span>').replace(/^(Sitemap:.*)$/gm,'<span style="color:var(--blue)">$1</span>')}</pre>
+    </div>
+    <div class="am-footer"><button class="am-btn primary" onclick="closeModal()">Close</button></div>
+  </div>`);
+}
+
+// ════════════════════════════════════════════════════════════════
+// ── EXPORT YOUR DATA ──────────────────────────────────────────
+// ════════════════════════════════════════════════════════════════
+function exportAllData() {
+  const exportData = {
+    meta: {
+      exportedAt: new Date().toISOString(),
+      exportedBy: 'Altura Search',
+      version: '1.0',
+      account: authState ? { email: authState.email, name: authState.name } : null,
+    },
+    searchHistory: searchHistory || [],
+    settings: settings || {},
+    savedSearches: (typeof savedSearches !== 'undefined' ? savedSearches : []),
+    searchAlerts: (typeof searchAlerts !== 'undefined' ? searchAlerts : []),
+    collections: (typeof collections !== 'undefined' ? collections : []),
+    blockedSites: (typeof blockedSites !== 'undefined' ? blockedSites : []),
+    gameScores: (() => { try { return JSON.parse(localStorage.getItem('altura_game_scores') || '{}'); } catch { return {}; } })(),
+    streak: (() => { try { return JSON.parse(localStorage.getItem('altura_streak') || '{}'); } catch { return {}; } })(),
+    widgets: (() => { try { return JSON.parse(localStorage.getItem('altura_widgets') || '[]'); } catch { return []; } })(),
+    notes: (() => { try { return JSON.parse(localStorage.getItem('altura_notes') || '[]'); } catch { return []; } })(),
+    historyTimestamps: (() => { try { return JSON.parse(localStorage.getItem('altura_history_ts') || '[]'); } catch { return []; } })(),
+  };
+
+  const json = JSON.stringify(exportData, null, 2);
+  const blob = new Blob([json], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'altura-data-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+  showToast({ icon: '📦', title: 'Export complete', sub: 'altura-data-' + new Date().toISOString().slice(0,10) + '.json', dur: 3500 });
+}
+
+// Wire export to Account Centre exports tab
+(function() {
+  if (typeof acTab === 'function') {
+    const _orig = acTab;
+    acTab = function(tab, btn) {
+      _orig(tab, btn);
+      if (tab === 'exports') {
+        setTimeout(() => {
+          const panel = document.getElementById('ac-exports-panel');
+          if (!panel || document.getElementById('_export-btn')) return;
+
+          panel.innerHTML = `
+            <div style="padding:8px 0 20px">
+              <div style="font-size:14px;font-weight:600;color:var(--t0);margin-bottom:6px">Export your Altura data</div>
+              <div style="font-size:12px;color:var(--t2);line-height:1.7;margin-bottom:16px">
+                Download everything Altura Search has stored locally — search history, settings, saved searches, game scores, notes, and more. All as a single readable JSON file.
+              </div>
+              <div style="display:grid;gap:8px;margin-bottom:20px;font-size:12px;color:var(--t2)">
+                ${[
+                  ['🔍', 'Search history', searchHistory?.length || 0, 'searches'],
+                  ['⚙', 'Settings', Object.keys(settings||{}).length, 'preferences'],
+                  ['★', 'Saved searches', (typeof savedSearches!=='undefined'?savedSearches.length:0), 'items'],
+                  ['🏆', 'Game scores', Object.keys(JSON.parse(localStorage.getItem('altura_game_scores')||'{}')).length, 'games'],
+                ].map(([icon, label, count, unit]) => `
+                  <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:var(--bg2);border-radius:6px">
+                    <span>${icon} ${label}</span>
+                    <span style="font-family:'Geist Mono',monospace;color:var(--g)">${count} ${unit}</span>
+                  </div>`).join('')}
+              </div>
+              <button id="_export-btn" onclick="exportAllData()"
+                style="width:100%;background:var(--g);color:var(--bg);border:none;border-radius:8px;padding:12px;font-size:13px;font-weight:700;cursor:pointer;font-family:'Geist',sans-serif;letter-spacing:-.01em;">
+                📦 Download my data
+              </button>
+              <div style="font-size:10px;color:var(--t3);text-align:center;margin-top:10px;font-family:'Geist Mono',monospace;">
+                All data is stored locally in your browser · nothing is sent to Altura servers
+              </div>
+            </div>
+            <div style="border-top:1px solid var(--line);padding-top:16px;margin-top:4px">
+              <div style="font-size:13px;font-weight:600;color:var(--t0);margin-bottom:6px">Year in Review</div>
+              <div style="font-size:12px;color:var(--t2);margin-bottom:10px">Visual heatmap of your search activity over the past year.</div>
+              <button onclick="showYearHeatmap?.()"
+                style="width:100%;background:var(--bg2);border:1px solid var(--line);color:var(--t1);border-radius:8px;padding:10px;font-size:12px;cursor:pointer;font-family:'Geist',sans-serif;">
+                📅 View year in review
+              </button>
+            </div>`;
+        }, 80);
+      }
+    };
+  }
+})();
 </script>
 </body>
 </html>
